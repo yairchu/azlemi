@@ -63,6 +63,8 @@ class Game:
                 else:
                     continue
                 party_id = party_of_member[id_from_uri(vote['member'])]
+                if not party_id in parties:
+                    continue
                 score = val * question.answer
                 party_results = results.setdefault(party_id, {-1: 0, 1: 0})
                 party_results[score] += 1
