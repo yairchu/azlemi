@@ -3,7 +3,7 @@
 
 import json
 
-from browser import document, html
+from browser import ajax, document, html, timer
 
 class Question:
     vals = list(zip([-1, 0, 1], ['כן', 'אולי', 'לא']))
@@ -29,7 +29,10 @@ class Question:
 
         game.update_results()
         if first_answer:
-            game.add_question()
+            timer.request_animation_frame(self.add_question)
+
+    def add_question(self, *args):
+        game.add_question()
 
 class Game:
     def __init__(self):
@@ -42,12 +45,18 @@ class Game:
         else:
             self.add_question()
     def add_question(self):
-        # Get new question (not already asked)
-        while True:
-            question_data = json.loads(open('/get_question/').read())
-            question_id = question_data['id']
-            if question_id not in self.questions:
-                break
+        req = ajax.ajax()
+        req.bind('complete', self.got_question)
+        req.open('GET', '/get_question/')
+        req.send()
+    def got_question(self, req):
+        assert req.status in [0, 200]
+        question_data = json.loads(req.text)
+        question_id = question_data['id']
+        if question_id in self.questions:
+            # Already have this question - get another!
+            self.add_question()
+            return
         question = Question(question_data)
         self.questions[question_id] = question
     def update_results(self):
