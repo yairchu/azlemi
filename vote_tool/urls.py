@@ -2,9 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'vote_tool.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+    url(r'^get_question/$', 'vote.views.get_question'),
     url(r'^admin/', include(admin.site.urls)),
 )
