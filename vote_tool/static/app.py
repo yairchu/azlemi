@@ -16,8 +16,8 @@ class Question:
         header <= self.data['title']
         document['questions'] <= header
         self.radios = []
-        for _, name in self.vals:
-            radio = html.INPUT(type='radio', name=str(self.data['id']))
+        for val, name in self.vals:
+            radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
             radio.bind('change', self.set_answer)
             self.radios.append(radio)
             document['questions'] <= radio
@@ -25,11 +25,7 @@ class Question:
 
     def set_answer(self, event):
         first_answer = self.answer is None
-        for i, radio in enumerate(self.radios):
-            if radio.checked:
-                val, _ = self.vals[i]
-                break
-        self.answer = val
+        self.answer = int(radio_val(self.radios))
 
         game.update_results()
         if first_answer:
@@ -38,11 +34,13 @@ class Question:
 class Game:
     def __init__(self):
         self.questions = {}
-    def start(self, event):
+    def set_party(self, event):
+        prev_party = radio_val(party_radios)
+        self.prev_party = int(prev_party) if prev_party else None
         if self.questions:
-            # already started
-            return
-        self.add_question()
+            self.update_results()
+        else:
+            self.add_question()
     def add_question(self):
         # Get new question (not already asked)
         while True:
@@ -73,7 +71,7 @@ class Game:
         row <= html.TH('מפלגה') <= html.th('ניקוד')
         table <= row
         def key(x):
-            return x[1]
+            return -x[1]
         for party_id, score in sorted(list(results.items()), key=key):
             if party_id not in parties:
                 # party_id is per knesset session at the moment
@@ -81,7 +79,10 @@ class Game:
                 # see https://oknesset.org/party/5/ ("ישראל ביתנו בכנסת ה-18")
                 continue
             row = html.TR()
-            row <= html.TD(parties[party_id]['name'])
+            party_name = parties[party_id]['name']
+            if party_id == self.prev_party:
+                party_name = html.B(party_name)
+            row <= html.TD(party_name)
             row <= html.TD(str(score))
             table <= row
         document['results'].clear()
@@ -91,6 +92,11 @@ class Game:
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])
 
+def radio_val(radios):
+    for radio in radios:
+        if radio.checked:
+            return radio.value
+
 game = Game()
 
 parties = json.loads(open('oknesset/api/v2/party').read())['objects']
@@ -99,9 +105,12 @@ parties = dict((x['id'], x) for x in parties)
 members = json.loads(open('data/member_info.json').read())
 party_of_member = dict((x['id'], x['party_id']) for x in members)
 
+party_radios = []
+
 def party_entry(val, name):
     radio = html.INPUT(type='radio', name='previous_vote', value=val)
-    radio.bind('change', game.start)
+    radio.bind('change', game.set_party)
+    party_radios.append(radio)
     document['previous_vote'] <= radio
     document['previous_vote'] <= name
 
