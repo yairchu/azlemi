@@ -11,7 +11,11 @@ votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
 num_votes = votes_meta['total_count']
 
 def get_question(request):
-    vote_id = random.randint(1, num_votes)
+    already_asked = set(
+        int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
+    did_not_ask = set(range(1, num_votes+1)) - already_asked
+    vote_id = random.choice(list(did_not_ask))
+
     vote_raw_json = urllib.request.urlopen(
         'https://oknesset.org/api/v2/vote/%d/' % vote_id
         ).read().decode('utf8')

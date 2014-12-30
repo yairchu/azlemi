@@ -57,16 +57,16 @@ class Game:
     def add_question(self):
         req = ajax.ajax()
         req.bind('complete', self.got_question)
-        req.open('GET', '/get_question/')
+        params = ['pp=%d' % self.prev_party]
+        for question_id, question in self.questions.items():
+            params.append('q%d=%d' % (question_id, question.answer))
+        req.open('GET', '/get_question/?'+'&'.join(params))
         req.send()
     def got_question(self, req):
         assert req.status in [0, 200]
         question_data = json.loads(req.text)
         question_id = question_data['id']
-        if question_id in self.questions:
-            # Already have this question - get another!
-            self.add_question()
-            return
+        assert question_id not in self.questions
         question = Question(question_data)
         self.questions[question_id] = question
     def update_results(self):
