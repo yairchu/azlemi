@@ -6,7 +6,7 @@ import json
 from browser import ajax, document, html, timer
 
 class Question:
-    vals = list(zip([-1, 0, 1], ['בעד', 'נמנע', 'נגד']))
+    vals = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
     def __init__(self, data):
         self.data = data
@@ -15,6 +15,12 @@ class Question:
         header = html.H4()
         header <= self.data['title']
         document['questions'] <= header
+        if self.data['summary']:
+            for block in self.data['summary'].split('<br>'):
+                if not block.strip():
+                    continue
+                document['questions'] <= block
+                document['questions'] <= html.BR()
         document['questions'] <= html.A('מידע נוסף',
             href='https://oknesset.org/vote/%d/' % self.data['id'])
         document['questions'] <= html.BR()
@@ -65,9 +71,11 @@ class Game:
         self.questions[question_id] = question
     def update_results(self):
         results = {}
+        num_questions = 0
         for question in self.questions.values():
             if not question.answer:
                 continue
+            num_questions += 1
             for vote in question.data['votes']:
                 if 'for' == vote['vote_type']:
                     val = 1
@@ -81,9 +89,12 @@ class Game:
                 score = val * question.answer
                 party_results = results.setdefault(party_id, {-1: 0, 1: 0})
                 party_results[score] += 1
+        document['results'].clear()
+        if not num_questions:
+            return
         for party_id, s in results.items():
             s['overall'] = s[1] - s[-1]
-            max_count = parties[party_id]['number_of_seats'] * len(self.questions)
+            max_count = parties[party_id]['number_of_seats'] * num_questions
             for k in s.keys():
                 s[k] /= max_count
 
@@ -110,7 +121,6 @@ class Game:
             for k in [1, -1, 'overall']:
                 row <= html.TD('%.0f%%'%(100*score[k]), dir='ltr')
             table <= row
-        document['results'].clear()
         document['results'] <= html.H3('תוצאות:')
         document['results'] <= table
 
