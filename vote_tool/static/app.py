@@ -6,7 +6,7 @@ import json
 from browser import ajax, document, html, timer
 
 class Question:
-    vals = list(zip([-1, 0, 1], ['כן', 'אולי', 'לא']))
+    vals = list(zip([-1, 0, 1], ['בעד', 'נמנע', 'נגד']))
 
     def __init__(self, data):
         self.data = data
@@ -15,6 +15,10 @@ class Question:
         header = html.H4()
         header <= self.data['title']
         document['questions'] <= header
+        document['questions'] <= html.A('מידע נוסף',
+            href='https://oknesset.org/vote/%d/' % self.data['id'])
+        document['questions'] <= html.BR()
+        document['questions'] <= 'הצבעתך:'
         self.radios = []
         for val, name in self.vals:
             radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
@@ -79,8 +83,9 @@ class Game:
                 party_results[score] += 1
         for party_id, s in results.items():
             s['overall'] = s[1] - s[-1]
+            max_count = parties[party_id]['number_of_seats'] * len(self.questions)
             for k in s.keys():
-                s[k] /= parties[party_id]['number_of_seats']
+                s[k] /= max_count
 
         table = html.TABLE()
         row = html.TR()
