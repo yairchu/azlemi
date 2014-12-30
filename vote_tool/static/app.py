@@ -64,14 +64,22 @@ class Game:
                     continue
                 party_id = party_of_member[id_from_uri(vote['member'])]
                 score = val * question.answer
-                results[party_id] = score + results.get(party_id, 0)
+                party_results = results.setdefault(party_id, {-1: 0, 1: 0})
+                party_results[score] += 1
+        for party_id, s in results.items():
+            s['overall'] = s[1] - s[-1]
+            for k in s.keys():
+                s[k] /= parties[party_id]['number_of_seats']
 
         table = html.TABLE()
         row = html.TR()
-        row <= html.TH('מפלגה') <= html.th('ניקוד')
+        row <= html.TH('מפלגה')
+        row <= html.TH('איתך')
+        row <= html.TH('נגדך')
+        row <= html.TH('סה״כ')
         table <= row
         def key(x):
-            return -x[1]
+            return -x[1]['overall']
         for party_id, score in sorted(list(results.items()), key=key):
             if party_id not in parties:
                 # party_id is per knesset session at the moment
@@ -83,7 +91,8 @@ class Game:
             if party_id == self.prev_party:
                 party_name = html.B(party_name)
             row <= html.TD(party_name)
-            row <= html.TD(str(score))
+            for k in [1, -1, 'overall']:
+                row <= html.TD('%.0f%%'%(100*score[k]), dir='ltr')
             table <= row
         document['results'].clear()
         document['results'] <= html.H3('תוצאות:')
