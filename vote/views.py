@@ -47,14 +47,35 @@ def fetch_vote(vote_id):
         # import vote from oknesset
         raw_json = urllib.request.urlopen(
             'https://oknesset.org/api/v2/vote/%d/' % vote_id).read()
-        vote = models.Vote(id=vote_id, oknesset_data=raw_json)
+        data = json.loads(raw_json.decode('utf8'))
+        vote = models.Vote(
+            id=vote_id, oknesset_data=raw_json,
+            against_votes_count = data['against_votes_count'],
+            for_votes_count = data['for_votes_count'],
+            title = data['title'],
+            )
         vote.save()
-    return bytes(vote.oknesset_data).decode('utf8')
+    return vote
 
 def get_question(request):
     track_changes(request)
+
     already_asked = set(
         int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
-    did_not_ask = set(range(1, num_votes+1)) - already_asked
-    vote_raw_json = fetch_vote(random.choice(list(did_not_ask)))
+
+    vote = None
+    if random.random() < 0.8:
+        # 80% of the time ask existing interesting questions from db
+        # 20% of the time will ask totally random question
+        interesting_votes_in_db = models.Vote.objects.filter(
+            for_votes_count__gte = 10, against_votes_count__gte = 10)
+        interesting_votes_in_db = [
+            x for x in interesting_votes_in_db
+            if x.id not in already_asked]
+        if interesting_votes_in_db:
+            vote = random.choice(interesting_votes_in_db)
+    if vote is None:
+        did_not_ask = set(range(1, num_votes+1)) - already_asked
+        vote = fetch_vote(random.choice(list(did_not_ask)))
+    vote_raw_json = bytes(vote.oknesset_data).decode('utf8')
     return HttpResponse(vote_raw_json)

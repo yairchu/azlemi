@@ -64,9 +64,15 @@ class Question:
             party_results[val] += 1
 
     def show_party_votes(self):
+        self.party_votes_doc.clear()
+        if self.answer is None:
+            return
         def key(x):
             results = x[1]
-            return -sum(results.values())
+            return (x[0] != game.prev_party, -sum(results.values()))
+        if game.prev_party != 0 and game.prev_party not in self.party_votes:
+            self.party_votes_doc <= html.B(
+                '%s לא הצביעה. ' % parties[game.prev_party]['name'])
         for party_id, results in sorted(self.party_votes.items(), key=key):
             party = parties[party_id]
             txt = party['name']+':'
@@ -75,6 +81,8 @@ class Question:
             if results[-1]:
                 txt += ' %d נגד' % results[-1]
             txt += ' (מתוך %d), ' % party['number_of_seats']
+            if party_id == game.prev_party:
+                txt = html.B(txt)
             self.party_votes_doc <= txt
 
     def add_question(self, *args):
@@ -88,6 +96,8 @@ class Game:
         self.prev_party = int(prev_party) if prev_party else 0
         if self.questions:
             self.update_results()
+            for question in self.questions.values():
+                question.show_party_votes()
         else:
             self.add_question()
     def add_question(self):
@@ -99,7 +109,9 @@ class Game:
         req.open('GET', '/get_question/?'+'&'.join(params))
         req.send()
     def got_question(self, req):
-        assert req.status in [0, 200]
+        if req.status not in [0, 200]:
+            document['debug'].html = req.text
+            return
         question_data = json.loads(req.text)
         question_id = question_data['id']
         assert question_id not in self.questions
@@ -146,7 +158,10 @@ class Game:
                 party_name = html.B(party_name)
             row <= html.TD(party_name)
             for k in [1, -1, 'overall']:
-                row <= html.TD('%.0f%%'%(100*score[k]), dir='ltr')
+                cell = '%.0f%%'%(100*score[k])
+                if party_id == self.prev_party:
+                    cell = html.B(cell)
+                row <= html.TD(cell, dir='ltr')
             table <= row
         document['results'] <= html.H3('תוצאות:')
         document['results'] <= table
