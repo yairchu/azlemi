@@ -9,12 +9,22 @@ from django.shortcuts import render
 
 from vote import models
 
-oknesset_path = os.path.dirname(__file__)+'/../vote_tool/static/oknesset'
+dirname = os.path.dirname(__file__)
+oknesset_path = dirname+'/../vote_tool/static/oknesset'
 votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
 num_votes = votes_meta['total_count']
 
 def home(request):
-    return render(request, 'vote/home.html')
+    context = {
+        'parties':
+            str(dict(
+            (int(x['id']), x) for x in
+            json.loads(open(oknesset_path+'/api/v2/party').read())['objects']
+            )),
+        'members':
+            str(json.loads(open(dirname+'/data/member_info.json').read())),
+        }
+    return render(request, 'vote/home.html', context)
 
 def track_changes(request):
     prev_state = request.session.get('state', {})

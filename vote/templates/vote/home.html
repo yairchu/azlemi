@@ -6,6 +6,10 @@
   <script type="text/javascript" src="/static/brython/src/brython.js"></script>
 </head>
 <body onload="brython(debug=1)">
+  <script type="text/python">
+    parties = {{parties|safe}}
+    members = {{members|safe}}
+  </script>
   <script type="text/python" src="/static/app.py"></script>
   <h2> מה זה פה? </h2>
   <p>
