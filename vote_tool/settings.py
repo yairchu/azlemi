@@ -24,9 +24,6 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
-ADMINS = (
-    ('yairchu', 'yairchu@gmail.com'),
-)
 
 # Application definition
 
