@@ -85,7 +85,7 @@ class Game:
         self.questions = {}
     def set_party(self, event):
         prev_party = radio_val(party_radios)
-        self.prev_party = int(prev_party) if prev_party else None
+        self.prev_party = int(prev_party) if prev_party else 0
         if self.questions:
             self.update_results()
         else:
