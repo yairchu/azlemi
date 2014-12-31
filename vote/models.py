@@ -13,7 +13,7 @@ class Vote(models.Model):
         return 'Vote %d: %s' % (self.id, self.title)
 
 class UserAnswer(models.Model):
-    session_key = models.CharField(max_length=100)
+    session_key = models.CharField(max_length=100, null=True)
     # No vote means which party user votes for
     vote = models.ForeignKey(Vote, null=True)
     answer = models.IntegerField()
