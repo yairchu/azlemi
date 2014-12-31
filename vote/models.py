@@ -11,7 +11,7 @@ class Vote(models.Model):
         return 'Vote %d: %s' % (self.id, desc)
 
 class UserAnswer(models.Model):
-    session = models.ForeignKey(Session)
+    session_key = models.CharField(max_length=100)
     # No vote means which party user votes for
     vote = models.ForeignKey(Vote, null=True)
     answer = models.IntegerField()
@@ -21,4 +21,4 @@ class UserAnswer(models.Model):
             t = 'pp=%d' % self.answer
         else:
             t = 'q%d=%d' % (self.vote.id, self.answer)
-        return 'UserAnswer %s session=%s when=%s' % (t, self.session.session_key, self.when)
+        return 'UserAnswer %s session=%s when=%s' % (t, self.session_key, self.when)

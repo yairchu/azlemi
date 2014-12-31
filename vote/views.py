@@ -14,7 +14,6 @@ votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
 num_votes = votes_meta['total_count']
 
 def track_changes(request):
-    session = Session.objects.get(session_key=request.session.session_key)
     prev_state = request.session.get('state', {})
     request.session['state'] = request.GET
     for k, v in request.GET.items():
@@ -24,7 +23,9 @@ def track_changes(request):
             vote = models.Vote.objects.get(id=int(k[1:]))
         else:
             vote = None
-        models.UserAnswer(session=session, vote=vote, answer=int(v)).save()
+        models.UserAnswer(
+            session_key=request.session.session_key,
+            vote=vote, answer=int(v)).save()
 
 def fetch_vote(vote_id):
     try:
