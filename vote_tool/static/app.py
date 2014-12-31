@@ -161,10 +161,10 @@ def radio_val(radios):
 
 game = Game()
 
-parties = json.loads(open('oknesset/api/v2/party').read())['objects']
+parties = json.loads(open('/static/oknesset/api/v2/party').read())['objects']
 parties = dict((x['id'], x) for x in parties)
 
-members = json.loads(open('data/member_info.json').read())
+members = json.loads(open('/static/data/member_info.json').read())
 party_of_member = dict((x['id'], x['party_id']) for x in members)
 
 party_radios = []

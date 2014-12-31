@@ -13,6 +13,9 @@ oknesset_path = os.path.dirname(__file__)+'/../vote_tool/static/oknesset'
 votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
 num_votes = votes_meta['total_count']
 
+def home(request):
+    return render(request, 'vote/home.html')
+
 def track_changes(request):
     prev_state = request.session.get('state', {})
     request.session['state'] = request.GET
