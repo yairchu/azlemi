@@ -12,34 +12,70 @@ class Question:
         self.data = data
         self.answer = None
 
-        header = html.H4()
-        header <= self.data['title']
-        document['questions'] <= header
+        document['questions'] <= html.H4(self.data['title'])
+        summary = html.P()
         if self.data['summary']:
             for block in self.data['summary'].split('<br>'):
                 if not block.strip():
                     continue
-                document['questions'] <= block
-                document['questions'] <= html.BR()
-        document['questions'] <= html.A('מידע נוסף',
+                summary <= block
+                summary <= html.BR()
+        summary <= html.A('מידע נוסף',
             href='https://oknesset.org/vote/%d/' % self.data['id'])
-        document['questions'] <= html.BR()
-        document['questions'] <= 'הצבעתך:'
+        document['questions'] <= summary
+        uservote = html.P()
+        uservote <= 'הצבעתך:'
         self.radios = []
         for val, name in self.vals:
             radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
             radio.bind('change', self.set_answer)
             self.radios.append(radio)
-            document['questions'] <= radio
-            document['questions'] <= name
+            uservote <= radio
+            uservote <= name
+        document['questions'] <= uservote
+        self.party_votes_doc = html.P()
+        document['questions'] <= self.party_votes_doc
 
     def set_answer(self, event):
         first_answer = self.answer is None
         self.answer = int(radio_val(self.radios))
 
+        if first_answer:
+            self.calc_party_votes()
+            self.show_party_votes()
+
         game.update_results()
         if first_answer:
             timer.request_animation_frame(self.add_question)
+
+    def calc_party_votes(self):
+        self.party_votes = {}
+        for vote in self.data['votes']:
+            if 'for' == vote['vote_type']:
+                val = 1
+            elif 'against' == vote['vote_type']:
+                val = -1
+            else:
+                continue
+            party_id = party_of_member[id_from_uri(vote['member'])]
+            if not party_id in parties:
+                continue
+            party_results = self.party_votes.setdefault(party_id, {-1: 0, 1: 0})
+            party_results[val] += 1
+
+    def show_party_votes(self):
+        def key(x):
+            results = x[1]
+            return -sum(results.values())
+        for party_id, results in sorted(self.party_votes.items(), key=key):
+            party = parties[party_id]
+            txt = party['name']+':'
+            if results[1]:
+                txt += ' %d בעד' % results[1]
+            if results[-1]:
+                txt += ' %d נגד' % results[-1]
+            txt += ' (מתוך %d), ' % party['number_of_seats']
+            self.party_votes_doc <= txt
 
     def add_question(self, *args):
         game.add_question()
@@ -76,19 +112,10 @@ class Game:
             if not question.answer:
                 continue
             num_questions += 1
-            for vote in question.data['votes']:
-                if 'for' == vote['vote_type']:
-                    val = 1
-                elif 'against' == vote['vote_type']:
-                    val = -1
-                else:
-                    continue
-                party_id = party_of_member[id_from_uri(vote['member'])]
-                if not party_id in parties:
-                    continue
-                score = val * question.answer
+            for party_id, votes in question.party_votes.items():
                 party_results = results.setdefault(party_id, {-1: 0, 1: 0})
-                party_results[score] += 1
+                for k, v in votes.items():
+                    party_results[k * question.answer] += v
         document['results'].clear()
         if not num_questions:
             return
