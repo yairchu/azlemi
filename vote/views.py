@@ -57,6 +57,21 @@ def fetch_vote(vote_id):
         vote.save()
     return vote
 
+def choose_question_set(already_asked):
+    result = set()
+    r = random.random()
+    if r < 0.6:
+        result = set([5586]) - already_asked
+    if not result and r < 0.8:
+        result = set(
+            x.id for x in
+            models.Vote.objects.filter(
+                for_votes_count__gte = 10, against_votes_count__gte = 10)
+            ) - already_asked
+    if not result:
+        result = set(range(1, num_votes+1)) - already_asked
+    return result
+
 def get_question(request):
     track_changes(request)
 
@@ -64,18 +79,7 @@ def get_question(request):
         int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
 
     vote = None
-    if random.random() < 0.8:
-        # 80% of the time ask existing interesting questions from db
-        # 20% of the time will ask totally random question
-        interesting_votes_in_db = models.Vote.objects.filter(
-            for_votes_count__gte = 10, against_votes_count__gte = 10)
-        interesting_votes_in_db = [
-            x for x in interesting_votes_in_db
-            if x.id not in already_asked]
-        if interesting_votes_in_db:
-            vote = random.choice(interesting_votes_in_db)
-    if vote is None:
-        did_not_ask = set(range(1, num_votes+1)) - already_asked
-        vote = fetch_vote(random.choice(list(did_not_ask)))
+    question_set = choose_question_set(already_asked)
+    vote = fetch_vote(random.choice(list(question_set)))
     vote_raw_json = bytes(vote.oknesset_data).decode('utf8')
     return HttpResponse(vote_raw_json)
