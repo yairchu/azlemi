@@ -72,14 +72,16 @@ def choose_question_set(already_asked):
         result = set(range(1, num_votes+1)) - already_asked
     return result
 
-def get_question(request):
+def get_question(request, question_id = None):
     track_changes(request)
 
-    already_asked = set(
-        int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
-
-    vote = None
-    question_set = choose_question_set(already_asked)
-    vote = fetch_vote(random.choice(list(question_set)))
+    if question_id is None:
+        already_asked = set(
+            int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
+        question_set = choose_question_set(already_asked)
+        question_id = random.choice(list(question_set))
+    else:
+        question_id = int(question_id)
+    vote = fetch_vote(question_id)
     vote_raw_json = bytes(vote.oknesset_data).decode('utf8')
     return HttpResponse(vote_raw_json)
