@@ -61,7 +61,10 @@ def choose_question_set(already_asked):
     result = set()
     r = random.random()
     if r < 0.6:
-        result = set([5586]) - already_asked
+        result = set(
+            x.id for x in
+            models.Vote.objects.filter(is_interesting = True)
+            ) - already_asked
     if not result and r < 0.8:
         result = set(
             x.id for x in

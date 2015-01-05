@@ -9,8 +9,12 @@ class Vote(models.Model):
     for_votes_count = models.IntegerField()
     against_votes_count = models.IntegerField()
     oknesset_data = models.BinaryField()
+    is_interesting = models.BooleanField(default = False)
     def __str__(self):
-        return 'Vote %d: %s' % (self.id, self.title)
+        return '%s %d: %s' % (
+            'INTERESTING VOTE' if self.is_interesting else 'vote',
+            self.id, self.title
+            )
 
 class UserAnswer(models.Model):
     session_key = models.CharField(max_length=100, null=True)
