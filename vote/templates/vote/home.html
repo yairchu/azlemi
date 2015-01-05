@@ -7,7 +7,7 @@
 </head>
 <body onload="brython(debug=1)">
   <script type="text/python">
-    parties = {{parties|safe}}
+    parties = dict((x['id'], x) for x in {{parties|safe}})
     members = {{members|safe}}
   </script>
   <script type="text/python" src="/static/app.py"></script>
@@ -22,7 +22,14 @@
   </p>
   <h2> יאללה </h2>
   <h3> לאיזו מפלגה הצבעת בבחירות האחרונות: </h3>
-  <div id="previous_vote"></div>
+  <div id="previous_vote">
+    <input type="radio" name="previous_vote" value="" />
+    לא הצבעתי
+    {% for party in parties %}
+      <input type="radio" name="previous_vote" value="{{party.id}}" />
+      {{party.name}}
+    {% endfor %}
+  </div>
   <div id="questions"></div>
   <div id="results"></div>
   <br><br><br><br><br><br><br>

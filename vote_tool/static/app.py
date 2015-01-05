@@ -178,16 +178,6 @@ game = Game()
 
 party_of_member = dict((x['id'], x['party_id']) for x in members)
 
-party_radios = []
-
-def party_entry(val, name):
-    radio = html.INPUT(type='radio', name='previous_vote', value=val)
+party_radios = document['previous_vote'].get(selector='INPUT')
+for radio in party_radios:
     radio.bind('change', game.set_party)
-    party_radios.append(radio)
-    document['previous_vote'] <= radio
-    document['previous_vote'] <= name
-
-parties_list = html.UL()
-party_entry('', 'לא הצבעתי')
-for party in parties.values():
-    party_entry(party['id'], party['name'])
