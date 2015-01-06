@@ -16,7 +16,8 @@ class Question:
         if not title:
             title = self.data['title']
             for prefix in [
-                'להעביר את הצעת החוק לוועדה - '
+                'להעביר את הצעת החוק לוועדה - ',
+                'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
                 ]:
                 if title.startswith(prefix):
                     title = title[len(prefix):]
