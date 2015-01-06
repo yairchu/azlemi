@@ -12,8 +12,16 @@ class Question:
         self.data = data
         self.answer = None
 
-        document['questions'] <= html.H3(
-            self.data.get('vt_title') or self.data['title'])
+        title = self.data.get('vt_title')
+        if not title:
+            title = self.data['title']
+            for prefix in [
+                'להעביר את הצעת החוק לוועדה - '
+                ]:
+                if title.startswith(prefix):
+                    title = title[len(prefix):]
+                    break
+        document['questions'] <= html.H3(title)
         summary = html.P()
         description = self.data.get('vt_description') or self.data['summary']
         if description:
