@@ -4,8 +4,11 @@
   <meta charset="utf-8">
   <title>אתר כזה לקראת הבחירות</title>
   <script type="text/javascript" src="/static/brython/src/brython.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 </head>
 <body onload="brython(debug=1)">
+<div class="container">
   <script type="text/python">
     parties = dict((x['id'], x) for x in {{parties|safe}})
     members = {{members|safe}}
@@ -23,16 +26,45 @@
   <h2> יאללה </h2>
   <h3> לאיזו מפלגה הצבעת בבחירות האחרונות: </h3>
   <div id="previous_vote">
-    <input type="radio" name="previous_vote" value="" />
-    לא הצבעתי
+    <label>
+      <div class="btn btn-lg btn-default">
+        <input type="radio" name="previous_vote" value="" />
+        לא הצבעתי
+      </div>
+    </label>
     {% for party in parties %}
-      <input type="radio" name="previous_vote" value="{{party.id}}" />
-      {{party.name}}
+      <label>
+        <div class="btn btn-lg btn-default">
+          <input type="radio" name="previous_vote" value="{{party.id}}" />
+          {{party.name}}
+        </div>
+      </label>
     {% endfor %}
   </div>
   <div id="questions"></div>
-  <div id="results"></div>
+  <h2> תוצאות </h2>
+  <div class="row">
+    <div class="col-md-6"> </div>
+    <div class="col-md-6">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th style="text-align: right;"> מפלגה </th>
+            <th> איתך </th>
+            <th> נגדך </th>
+            <th> סה״כ </th>
+          </tr>
+        </thead>
+        <tbody id="results">
+          <tr>
+            <td colspan=4> תענה על שאלות כדי לקבל תוצאות.. </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <br><br><br><br><br><br><br>
   <div id="debug" dir="ltr"></div>
+</div>
 </body>
 </html>

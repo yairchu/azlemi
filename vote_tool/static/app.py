@@ -12,7 +12,7 @@ class Question:
         self.data = data
         self.answer = None
 
-        document['questions'] <= html.H4(self.data['title'])
+        document['questions'] <= html.H3(self.data['title'])
         summary = html.P()
         if self.data['summary']:
             for block in self.data['summary'].split('<br>'):
@@ -24,14 +24,17 @@ class Question:
             href='https://oknesset.org/vote/%d/' % self.data['id'])
         document['questions'] <= summary
         uservote = html.P()
-        uservote <= 'הצבעתך:'
         self.radios = []
         for val, name in self.vals:
+            label = html.LABEL()
+            btn_div = html.DIV(**{'class': 'btn btn-lg btn-default'})
+            label <= btn_div
             radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
             radio.bind('change', self.set_answer)
             self.radios.append(radio)
-            uservote <= radio
-            uservote <= name
+            btn_div <= radio
+            btn_div <= ' '+name+' '
+            uservote <= label
         document['questions'] <= uservote
         self.party_votes_doc = html.P()
         document['questions'] <= self.party_votes_doc
@@ -137,13 +140,7 @@ class Game:
             for k in s.keys():
                 s[k] /= max_count
 
-        table = html.TABLE()
-        row = html.TR()
-        row <= html.TH('מפלגה')
-        row <= html.TH('איתך')
-        row <= html.TH('נגדך')
-        row <= html.TH('סה״כ')
-        table <= row
+        table = document['results']
         def key(x):
             return -x[1]['overall']
         for party_id, score in sorted(list(results.items()), key=key):
@@ -163,8 +160,6 @@ class Game:
                     cell = html.B(cell)
                 row <= html.TD(cell, dir='ltr')
             table <= row
-        document['results'] <= html.H3('תוצאות:')
-        document['results'] <= table
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])
