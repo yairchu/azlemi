@@ -12,10 +12,12 @@ class Question:
         self.data = data
         self.answer = None
 
-        document['questions'] <= html.H3(self.data['title'])
+        document['questions'] <= html.H3(
+            self.data.get('vt_title') or self.data['title'])
         summary = html.P()
-        if self.data['summary']:
-            for block in self.data['summary'].split('<br>'):
+        description = self.data.get('vt_description') or self.data['summary']
+        if description:
+            for block in description.split('<br>'):
                 if not block.strip():
                     continue
                 summary <= block

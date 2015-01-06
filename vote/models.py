@@ -8,8 +8,11 @@ class Vote(models.Model):
     title = models.CharField(max_length=1000)
     for_votes_count = models.IntegerField()
     against_votes_count = models.IntegerField()
+
     oknesset_data = models.BinaryField()
     is_interesting = models.BooleanField(default = False)
+    vt_title = models.CharField(max_length=120, blank=True, default='')
+    vt_description = models.CharField(max_length=2000, blank=True, default='')
     def __str__(self):
         return '%s %d: %s' % (
             'INTERESTING VOTE' if self.is_interesting else 'vote',

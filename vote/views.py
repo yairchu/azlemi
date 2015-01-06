@@ -82,4 +82,9 @@ def get_question(request, question_id = None):
         question_id = int(question_id)
     vote = fetch_vote(question_id)
     vote_raw_json = bytes(vote.oknesset_data).decode('utf8')
-    return HttpResponse(vote_raw_json)
+    vote_json = json.loads(vote_raw_json)
+    for key in ['vt_title', 'vt_description']:
+        val = getattr(vote, key, None)
+        if val:
+            vote_json[key] = val
+    return HttpResponse(json.dumps(vote_json))
