@@ -4,12 +4,18 @@
 import json
 
 from browser import ajax, document, html, timer
+from browser.local_storage import storage
+
+for q in questions:
+    q['raw_json'] = json.dumps(q)
+party_of_member = dict((x['id'], x['party_id']) for x in members)
 
 class Question:
     vals = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
-    def __init__(self, data):
+    def __init__(self, data, loaded=False):
         self.data = data
+        self.id = data['id']
         self.answer = None
 
         question = html.DIV(**{'class': 'panel panel-primary'})
@@ -36,7 +42,7 @@ class Question:
                 summary <= block
                 summary <= html.BR()
         summary <= html.A('מידע נוסף',
-            href='https://oknesset.org/vote/%d/' % self.data['id'])
+            href='https://oknesset.org/vote/%d/' % self.id)
         content <= summary
         uservote = html.P()
         self.radios = []
@@ -44,8 +50,7 @@ class Question:
             label = html.LABEL()
             btn_div = html.DIV(**{'class': 'btn btn-default'})
             label <= btn_div
-            radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
-            radio.bind('change', self.set_answer)
+            radio = html.INPUT(type='radio', name=str(self.id), value=str(val))
             self.radios.append(radio)
             btn_div <= radio
             btn_div <= ' '+name+' '
@@ -54,10 +59,24 @@ class Question:
         content <= uservote
         self.party_votes_doc = html.P()
         content <= self.party_votes_doc
+        if loaded:
+            self.load_answer()
+        for radio in self.radios:
+            radio.bind('change', self.set_answer)
+
+    def load_answer(self):
+        key = 'q%d_answer' % self.id
+        if key not in storage:
+            return
+        self.answer = int(storage[key])
+        set_radio_val(self.radios, str(self.answer))
+        self.calc_party_votes()
+        self.show_party_votes()
 
     def set_answer(self, event):
         first_answer = self.answer is None
         self.answer = int(radio_val(self.radios))
+        storage['q%d_answer' % self.id] = str(self.answer)
 
         if first_answer:
             self.calc_party_votes()
@@ -136,15 +155,38 @@ def is_boring_question(question_data):
             return True
     return False
 
+def parse_json(raw_json):
+    result = json.loads(raw_json)
+    result['raw_json'] = raw_json
+    return result
+
 class Game:
     def __init__(self):
-        self.questions = {}
+        self.questions = []
+    def load(self):
+        if 'prev_party' not in storage:
+            return
+        self.prev_party = int(storage['prev_party'])
+        set_radio_val(party_radios, str(self.prev_party) if self.prev_party else '')
+        if 'questions' in storage:
+            for qid in json.loads(storage['questions']):
+                question_data = json.loads(storage['q%d_data' % qid])
+                question = self.got_question(question_data, loaded=True)
+            self.update_results()
+            qids = [q.id for q in self.questions]
+            questions[:] = [q for q in questions if q['id'] not in qids]
+        for q in self.questions:
+            if q.answer is None:
+                break
+        else:
+            self.add_question()
     def set_party(self, event):
         prev_party = radio_val(party_radios)
         self.prev_party = int(prev_party) if prev_party else 0
+        storage['prev_party'] = str(self.prev_party)
         if self.questions:
             self.update_results()
-            for question in self.questions.values():
+            for question in self.questions:
                 question.show_party_votes()
         else:
             self.add_question()
@@ -158,35 +200,38 @@ class Game:
         req = ajax.ajax()
         req.bind('complete', handler)
         params = ['pp=%d' % self.prev_party]
-        for question_id, question in self.questions.items():
+        for question in self.questions:
             if question.answer is None:
                 continue
-            params.append('q%d=%d' % (question_id, question.answer))
+            params.append('q%d=%d' % (question.id, question.answer))
         req.open('GET', '/get_question/?'+'&'.join(params))
         req.send()
     def ajax_response_add_question(self, req):
         if req.status not in [0, 200]:
             document['debug'].html = req.text
             return
-        self.got_question(json.loads(req.text))
+        self.got_question(parse_json(req.text))
     def ajax_response_add_question_to_queue(self, req):
         if req.status not in [0, 200]:
             document['debug'].html = req.text
             return
-        question_data = json.loads(req.text)
+        question_data = parse_json(req.text)
         if is_boring_question(question_data):
             self.ajax_request_question(self.ajax_response_add_question_to_queue)
             return
         questions.append(question_data)
-    def got_question(self, question_data):
-        question_id = question_data['id']
-        assert question_id not in self.questions
-        question = Question(question_data)
-        self.questions[question_id] = question
+    def got_question(self, question_data, loaded=False):
+        assert question_data['id'] not in [x.id for x in self.questions]
+        question = Question(question_data, loaded)
+        if not loaded:
+            storage['q%d_data' % question.id] = question_data['raw_json']
+        self.questions.append(question)
+        storage['questions'] = json.dumps([x.id for x in self.questions])
+        return question
     def update_results(self):
         results = {}
         num_questions = 0
-        for question in self.questions.values():
+        for question in self.questions:
             if not question.answer:
                 continue
             num_questions += 1
@@ -232,10 +277,15 @@ def radio_val(radios):
         if radio.checked:
             return radio.value
 
-game = Game()
-
-party_of_member = dict((x['id'], x['party_id']) for x in members)
+def set_radio_val(radios, val):
+    for radio in radios:
+        if radio.value == val:
+            radio.checked = True
+            return
 
 party_radios = document['previous_vote'].get(selector='INPUT')
+game = Game()
 for radio in party_radios:
     radio.bind('change', game.set_party)
+
+game.load()
