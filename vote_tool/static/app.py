@@ -95,8 +95,8 @@ class Question:
                 '%s לא הצביעה. ' % parties[game.prev_party]['name'])
         table = html.TABLE(
             style={'text-align': 'center', 'background': '#f9f9f9'},
-            **{'class': 'table'})
-        self.party_votes_doc <= table
+            **{'class': 'table table-packed'})
+        self.party_votes_doc <= html.DIV(table, **{'class': 'table-responsive'})
         parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
         table <= html.THEAD(parties_row)
         tbody = html.TBODY()
