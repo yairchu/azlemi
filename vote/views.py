@@ -4,10 +4,13 @@ import random
 import urllib.request
 
 from django.contrib.sessions.models import Session
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
+from browser import html
+
 from vote import models
+from vote import render_content
 
 dirname = os.path.dirname(__file__)
 oknesset_path = dirname+'/../vote_tool/static/oknesset'
@@ -26,18 +29,55 @@ def home(request):
         name = short_names.get(p['name'])
         if name:
             p['short_name'] = name
+    parties_dict = dict((x['id'], x) for x in parties)
 
     state = request.session.get('state', {})
+    if 'pp' in state:
+        prev_party = int(state['pp'])
+    else:
+        prev_party = None
+    prev_question_ids = [int(x[1:]) for x in state.keys() if x.startswith('q')]
+    prev_questions = [
+        export_vote(v) for v in
+        models.Vote.objects.filter(id__in=tuple(prev_question_ids))]
+    rendered_prevs_questions = []
+    user_answers = {}
+    for question in prev_questions:
+        panel, party_votes_doc, radios = render_content.question_panel(question)
+        answer = int(state['q%d'%question['id']])
+        user_answers[question['id']] = answer
+        for radio in radios:
+            if int(radio.attrs['value']) == answer:
+                radio.attrs['checked'] = 'true'
+        render_content.question_party_votes(party_votes_doc, question, answer, prev_party, parties_dict)
+        rendered_prevs_questions.append(str(panel))
+    results = render_content.calc_results(
+        dict((q['id'], q) for q in prev_questions),
+        user_answers,
+        parties_dict
+        )
+    results_html = html.TBODY(id='results')
+    small_results_html = html.DIV(id="results-small", style={'color': 'gray'})
+    render_content.render_results(results_html, small_results_html, results, prev_party, parties_dict)
 
-    start_votes = list(models.Vote.objects.filter(is_interesting = True))
+    start_votes = [
+        x for x in
+        models.Vote.objects.filter(is_interesting = True)
+        if x.id not in prev_question_ids
+        ]
     random.shuffle(start_votes)
     start_votes = [export_vote(x) for x in start_votes[:2]]
 
     context = {
-        'parties': parties,
+        'parties_list': parties,
+        'parties_dict': parties_dict,
         'members': members,
+        'prev_questions': prev_questions,
+        'prev_questions_html': '\n'.join(rendered_prevs_questions),
         'questions': start_votes,
-        'previous_party': int(state.get('pp', '-1')),
+        'previous_party': prev_party,
+        'results_html': results_html,
+        'small_results_html': small_results_html,
         }
     return render(request, 'vote/home.html', context)
 
@@ -118,3 +158,11 @@ def get_question(request):
     question_set = choose_question_set(already_asked)
     question_id = random.choice(list(question_set))
     return HttpResponse(json.dumps(export_vote(fetch_vote(question_id))))
+
+def save_vote(request):
+    track_changes(request)
+    return HttpResponse('ok')
+
+def restart(request):
+    request.session['state'] = {}
+    return HttpResponseRedirect('/')

@@ -35,8 +35,9 @@
 </head>
 <body onload="brython(debug=1)">
 <script type="text/python">
-  parties = dict((x['id'], x) for x in {{parties|safe}})
+  parties = {{parties_dict|safe}}
   members = {{members|safe}}
+  prev_questions = {{prev_questions|safe}}
   questions = {{questions|safe}}
 </script>
 <script type="text/python" src="/static/app.py"></script>
@@ -69,7 +70,7 @@
               לא הצבעתי
             </div>
           </label>
-          {% for party in parties %}
+          {% for party in parties_list %}
             <label>
               <div class="btn btn-default">
                 {% if previous_party == party.id %}
@@ -83,12 +84,14 @@
           {% endfor %}
         </div>
       </div>
-      <div id="questions"></div>
+      <div id="questions">
+        {{prev_questions_html|safe}}
+      </div>
     </div>
     <div class="col-md-2" role="complementary">
       <nav class="nav hidden-print hidden-xs hidden-sm affix" style='font-size: 14px;'>
         <a href="#results">
-          <div id="results-small" style="color: gray;"></div>
+          {{small_results_html|safe}}
         </a>
       </nav>
     </div>
@@ -106,12 +109,10 @@
             <th> סה״כ </th>
           </tr>
         </thead>
-        <tbody id="results">
-          <tr>
-            <td colspan=4> תענה על שאלות כדי לקבל תוצאות.. </td>
-          </tr>
-        </tbody>
+        {{results_html|safe}}
       </table>
+      <a href="https://github.com/yairchu/vote_tool/wiki">על האתר</a>
+      <a href="/restart/">אפס מצב</a>
     </div>
   </div>
   <div id="debug" dir="ltr" class="row"></div>

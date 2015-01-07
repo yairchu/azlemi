@@ -1,0 +1,1 @@
+../../vote/render_content.py
