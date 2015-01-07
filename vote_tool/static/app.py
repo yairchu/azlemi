@@ -61,7 +61,7 @@ class Question:
 
         if first_answer:
             self.calc_party_votes()
-            self.show_party_votes()
+        self.show_party_votes()
 
         game.update_results()
         if first_answer:
@@ -88,33 +88,40 @@ class Question:
             return
         def key(x):
             results = x[1]
-            return (x[0] != game.prev_party, -sum(results.values()))
+            party = parties[x[0]]
+            return (-sum(results.values()), -party['number_of_seats'], -x[0])
         if game.prev_party != 0 and game.prev_party not in self.party_votes:
             self.party_votes_doc <= html.B(
                 '%s לא הצביעה. ' % parties[game.prev_party]['name'])
-        table = html.TABLE(**{'class': 'table'})
+        table = html.TABLE(
+            style={'text-align': 'center', 'background': '#f9f9f9'},
+            **{'class': 'table'})
         self.party_votes_doc <= table
-        parties_row = html.TR()
-        parties_row <= html.TH('מפלגה', style={'vertical-align': 'top'})
+        parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
         table <= html.THEAD(parties_row)
         tbody = html.TBODY()
         table <= tbody
-        for_row = html.TR()
-        tbody <= for_row
-        for_row <= html.TH('בעד')
-        vs_row = html.TR()
-        tbody <= vs_row
-        vs_row <= html.TH('נגד')
-        from_row = html.TR()
-        tbody <= from_row
-        from_row <= html.TH('מתוך')
+        rows = {}
+        for (v, name) in self.vals:
+            if not v:
+                continue
+            style = {}
+            if self.answer:
+                style['background'] = ['#ffdddd', '#ccfacc'][v == self.answer]
+            elif not rows:
+                style['background'] = 'white'
+            row = html.TR(html.TH(name), style=style)
+            tbody <= row
+            rows[v] = row
         for party_id, results in sorted(self.party_votes.items(), key=key):
             party = parties[party_id]
+            [for_txt, vs_txt] = [
+                '%.0f%%'%(100*r/party['number_of_seats']) if r else '-'
+                for r in [results[1], results[-1]]]
             for row, val in [
                 (parties_row, party.get('short_name') or party['name']),
-                (for_row, results[1] or '-'),
-                (vs_row, results[-1] or '-'),
-                (from_row, party['number_of_seats']),
+                (rows[1], for_txt),
+                (rows[-1], vs_txt),
                 ]:
                 if party_id == game.prev_party:
                     val = html.B(val)
