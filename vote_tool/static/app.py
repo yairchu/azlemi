@@ -240,6 +240,9 @@ class Game:
                 for k, v in votes.items():
                     party_results[k * question.answer] += v
         document['results'].clear()
+        results_small = document['results-small']
+        results_small.clear()
+        results_small <= html.B('תוצאות:')
         if not num_questions:
             return
         for party_id, s in results.items():
@@ -251,7 +254,12 @@ class Game:
         table = document['results']
         def key(x):
             return -x[1]['overall']
-        for party_id, score in sorted(list(results.items()), key=key):
+        prev_score = None
+        for idx, (party_id, score) in enumerate(sorted(list(results.items()), key=key)):
+            if idx == 0 or score['overall'] < prev_score['overall']:
+                pos = idx+1
+            prev_score = score
+
             if party_id not in parties:
                 # party_id is per knesset session at the moment
                 # and the oknesset api doesn't give data for old sessions
@@ -259,8 +267,15 @@ class Game:
                 continue
             row = html.TR()
             party_name = parties[party_id]['name']
+            short_name = '%d. %s' % (pos, parties[party_id].get('short_name') or party_name)
+            pos_txt = str(pos)
             if party_id == self.prev_party:
+                pos_txt = html.B(pos_txt)
                 party_name = html.B(party_name)
+                short_name = html.B(short_name)
+            results_small <= html.BR()
+            results_small <= short_name
+            row <= html.TD(pos_txt)
             row <= html.TD(party_name)
             for k in [1, -1, 'overall']:
                 cell = '%.0f%%'%(100*score[k])

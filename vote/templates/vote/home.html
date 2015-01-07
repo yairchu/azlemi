@@ -28,6 +28,9 @@
         font-size: 10px;
       }
     }
+    a:hover {
+      text-decoration: none;
+    }
   </style>
 </head>
 <body onload="brython(debug=1)">
@@ -52,7 +55,7 @@
     </div>
   </div>
   <div class="row bigger-font">
-    <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
+    <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0" role="main">
       <div class="panel panel-default">
         <div class="panel-heading"> לאיזו מפלגה הצבעת בבחירות האחרונות: </div>
         <div class="panel-body" id="previous_vote">
@@ -74,6 +77,13 @@
       </div>
       <div id="questions"></div>
     </div>
+    <div class="col-md-2" role="complementary">
+      <nav class="nav hidden-print hidden-xs hidden-sm affix" style='font-size: 14px;'>
+        <a href="#results">
+          <div id="results-small" style="color: gray;"></div>
+        </a>
+      </nav>
+    </div>
   </div>
   <div class="row bigger-font">
     <div class="col-md-6 col-md-offset-4 col-sm-10 col-sm-offset-2">
@@ -81,6 +91,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            <th style="text-align: right;"> מקום </th>
             <th style="text-align: right;"> מפלגה </th>
             <th> איתך </th>
             <th> נגדך </th>
