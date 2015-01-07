@@ -61,14 +61,22 @@
         <div class="panel-body" id="previous_vote">
           <label>
             <div class="btn btn-default">
-              <input type="radio" name="previous_vote" value="" />
+              {% if previous_party == 0 %}
+                <input type="radio" name="previous_vote" value="" checked=true />
+              {% else %}
+                <input type="radio" name="previous_vote" value="" />
+              {% endif %}
               לא הצבעתי
             </div>
           </label>
           {% for party in parties %}
             <label>
               <div class="btn btn-default">
-                <input type="radio" name="previous_vote" value="{{party.id}}" />
+                {% if previous_party == party.id %}
+                  <input type="radio" name="previous_vote" value="{{party.id}}" checked=true />
+                {% else %}
+                  <input type="radio" name="previous_vote" value="{{party.id}}" />
+                {% endif %}
                 {{party.name}}
               </div>
             </label>

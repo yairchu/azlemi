@@ -132,7 +132,7 @@ def is_boring_question(question_data):
 class Game:
     def __init__(self):
         self.questions = {}
-    def set_party(self, event):
+    def set_party(self, event = None):
         prev_party = radio_val(party_radios)
         self.prev_party = int(prev_party) if prev_party else 0
         if self.questions:
@@ -250,3 +250,5 @@ party_of_member = dict((x['id'], x['party_id']) for x in members)
 party_radios = document['previous_vote'].get(selector='INPUT')
 for radio in party_radios:
     radio.bind('change', game.set_party)
+    if radio.checked:
+        game.set_party()

@@ -27,6 +27,8 @@ def home(request):
         if name:
             p['short_name'] = name
 
+    state = request.session.get('state', {})
+
     start_votes = list(models.Vote.objects.filter(is_interesting = True))
     random.shuffle(start_votes)
     start_votes = [export_vote(x) for x in start_votes[:2]]
@@ -35,6 +37,7 @@ def home(request):
         'parties': parties,
         'members': members,
         'questions': start_votes,
+        'previous_party': int(state.get('pp', '-1')),
         }
     return render(request, 'vote/home.html', context)
 
