@@ -130,6 +130,12 @@ class Question:
     def add_question(self, *args):
         game.add_question()
 
+def is_boring_question(question_data):
+    for x in ['for_votes_count', 'against_votes_count']:
+        if question_data[x] <= 5:
+            return True
+    return False
+
 class Game:
     def __init__(self):
         self.questions = {}
@@ -143,18 +149,34 @@ class Game:
         else:
             self.add_question()
     def add_question(self):
+        if questions:
+            self.got_question(questions.pop())
+            self.ajax_request_question(self.ajax_response_add_question_to_queue)
+        else:
+            self.ajax_request_question(self.ajax_response_add_question)
+    def ajax_request_question(self, handler):
         req = ajax.ajax()
-        req.bind('complete', self.got_question)
+        req.bind('complete', handler)
         params = ['pp=%d' % self.prev_party]
         for question_id, question in self.questions.items():
-            params.append('q%d=%d' % (question_id, question.answer))
+            params.append('q%d=%d' % (question_id, question.answer or 0))
         req.open('GET', '/get_question/?'+'&'.join(params))
         req.send()
-    def got_question(self, req):
+    def ajax_response_add_question(self, req):
+        if req.status not in [0, 200]:
+            document['debug'].html = req.text
+            return
+        self.got_question(json.loads(req.text))
+    def ajax_response_add_question_to_queue(self, req):
         if req.status not in [0, 200]:
             document['debug'].html = req.text
             return
         question_data = json.loads(req.text)
+        if is_boring_question(question_data):
+            self.ajax_request_question(self.ajax_response_add_question_to_queue)
+            return
+        questions.append(question_data)
+    def got_question(self, question_data):
         question_id = question_data['id']
         assert question_id not in self.questions
         question = Question(question_data)

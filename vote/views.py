@@ -24,9 +24,15 @@ def home(request):
         name = short_names.get(p['name'])
         if name:
             p['short_name'] = name
+
+    start_votes = list(models.Vote.objects.filter(is_interesting = True))
+    random.shuffle(start_votes)
+    start_votes = [export_vote(x) for x in start_votes[:2]]
+
     context = {
         'parties': parties,
         'members': json.loads(open(dirname+'/data/member_info.json').read()),
+        'questions': start_votes,
         }
     return render(request, 'vote/home.html', context)
 
@@ -79,17 +85,17 @@ def choose_question_set(already_asked):
         result = set(range(1, num_votes+1)) - already_asked
     return result
 
-def vote_to_json(vote):
+def export_vote(vote):
     vote_raw_json = bytes(vote.oknesset_data).decode('utf8')
     vote_json = json.loads(vote_raw_json)
     for key in ['vt_title', 'vt_description']:
         val = getattr(vote, key, None)
         if val:
             vote_json[key] = val
-    return json.dumps(vote_json)
+    return vote_json
 
 def get_specific_question(request, question_id = None):
-    return HttpResponse(vote_to_json(fetch_vote(int(question_id))))
+    return HttpResponse(json.dumps(export_vote(fetch_vote(int(question_id)))))
 
 def get_question(request):
     track_changes(request)
@@ -97,4 +103,4 @@ def get_question(request):
         int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
     question_set = choose_question_set(already_asked)
     question_id = random.choice(list(question_set))
-    return HttpResponse(vote_to_json(fetch_vote(question_id)))
+    return HttpResponse(json.dumps(export_vote(fetch_vote(question_id))))
