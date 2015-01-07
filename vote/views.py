@@ -13,6 +13,8 @@ dirname = os.path.dirname(__file__)
 oknesset_path = dirname+'/../vote_tool/static/oknesset'
 votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
 num_votes = votes_meta['total_count']
+members = json.loads(open(dirname+'/data/member_info.json').read())
+party_of_member = dict((x['id'], x['party_id']) for x in members)
 
 def home(request):
     parties = json.loads(open(oknesset_path+'/api/v2/party').read())['objects']
@@ -31,7 +33,7 @@ def home(request):
 
     context = {
         'parties': parties,
-        'members': json.loads(open(dirname+'/data/member_info.json').read()),
+        'members': members,
         'questions': start_votes,
         }
     return render(request, 'vote/home.html', context)
@@ -92,6 +94,15 @@ def export_vote(vote):
         val = getattr(vote, key, None)
         if val:
             vote_json[key] = val
+    party_votes = {}
+    for vote in vote_json['votes']:
+        def id_from_uri(uri):
+            return int(uri.rstrip('/').rsplit('/', 1)[1])
+        party_id = party_of_member[id_from_uri(vote['member'])]
+        party_res = party_votes.setdefault(party_id, {})
+        vote_type = vote['vote_type']
+        party_res[vote_type] = 1 + party_res.get(vote_type, 0)
+    vote_json['party_votes'] = party_votes
     return vote_json
 
 def get_specific_question(request, question_id = None):
