@@ -102,8 +102,10 @@ def calc_results(questions, user_answers, parties):
                 continue
             party_results = results.setdefault(party_id, {-1: 0, 1: 0})
             for k, v in votes.items():
-                pval = {'for': 1, 'against': -1}[k]
-                party_results[pval * answer] += v
+                vote_vals = {'for': 1, 'against': -1}
+                if k not in vote_vals:
+                    continue
+                party_results[vote_vals[k] * answer] += v
     for party_id, s in results.items():
         s['overall'] = s[1] - s[-1]
         max_count = parties[party_id]['number_of_seats'] * num_questions
