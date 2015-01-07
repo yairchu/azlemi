@@ -5,55 +5,106 @@ import json
 
 from browser import ajax, document, html, timer
 
-class Question:
-    vals = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
+answers = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
+def render_question_panel(data):
+    panel = html.DIV(**{'class': 'panel panel-primary'})
+    title = data.get('vt_title')
+    if not title:
+        title = data['title']
+        for prefix in [
+            'להעביר את הצעת החוק לוועדה - ',
+            'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
+            ]:
+            if title.startswith(prefix):
+                title = title[len(prefix):]
+                break
+    panel <= html.DIV(title, **{'class': 'panel-heading'})
+    content = html.DIV(**{'class': 'panel-body'})
+    panel <= content
+    summary = html.P()
+    description = data.get('vt_description') or data['summary']
+    if description:
+        for block in description.split('<br>'):
+            if not block.strip():
+                continue
+            summary <= block
+            summary <= html.BR()
+    summary <= html.A('מידע נוסף',
+        href='https://oknesset.org/vote/%d/' % data['id'])
+    content <= summary
+    uservote = html.P()
+    radios = []
+    for val, name in answers:
+        label = html.LABEL()
+        btn_div = html.DIV(**{'class': 'btn btn-default'})
+        label <= btn_div
+        radio = html.INPUT(type='radio', name=str(data['id']), value=str(val))
+        radios.append(radio)
+        btn_div <= radio
+        btn_div <= ' '+name+' '
+        uservote <= label
+        uservote <= ' '
+    content <= uservote
+    party_votes_doc = html.P()
+    content <= party_votes_doc
+    return panel, party_votes_doc, radios
+
+def render_question_party_votes(party_votes_doc, data, user_answer, highlight_party):
+    def key(x):
+        results = x[1]
+        party = parties[x[0]]
+        return (-sum(results.values()), -party['number_of_seats'], -x[0])
+    party_votes = data['party_votes'].copy()
+    for x in list(party_votes.keys()):
+        if x not in parties:
+            # Old party not in knesset
+            del party_votes[x]
+    if highlight_party:
+        party_votes.setdefault(highlight_party, {})
+    table = html.TABLE(
+        style={'text-align': 'center', 'background': '#f9f9f9'},
+        **{'class': 'table table-packed'})
+    party_votes_doc <= html.DIV(table, **{'class': 'table-responsive'})
+    parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
+    table <= html.THEAD(parties_row)
+    tbody = html.TBODY()
+    table <= tbody
+    rows = {}
+    for (v, name) in answers:
+        if not v:
+            continue
+        style = {}
+        if user_answer:
+            style['background'] = ['#ffdddd', '#ccfacc'][v == user_answer]
+        elif not rows:
+            style['background'] = 'white'
+        row = html.TR(html.TH(name), style=style)
+        tbody <= row
+        rows[v] = row
+    for party_id, results in sorted(party_votes.items(), key=key):
+        party = parties[party_id]
+        [for_txt, vs_txt] = [
+            '%.0f%%'%(100*r/party['number_of_seats']) if r else '-'
+            for r in [results.get('for'), results.get('against')]]
+        for row, val in [
+            (parties_row, party.get('short_name') or party['name']),
+            (rows[1], for_txt),
+            (rows[-1], vs_txt),
+            ]:
+            if party_id == highlight_party:
+                val = html.B(val)
+            row <= html.TD(val)
+
+class Question:
     def __init__(self, data):
         self.data = data
         self.answer = None
 
-        question = html.DIV(**{'class': 'panel panel-primary'})
-        document['questions'] <= question
-        title = self.data.get('vt_title')
-        if not title:
-            title = self.data['title']
-            for prefix in [
-                'להעביר את הצעת החוק לוועדה - ',
-                'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
-                ]:
-                if title.startswith(prefix):
-                    title = title[len(prefix):]
-                    break
-        question <= html.DIV(title, **{'class': 'panel-heading'})
-        content = html.DIV(**{'class': 'panel-body'})
-        question <= content
-        summary = html.P()
-        description = self.data.get('vt_description') or self.data['summary']
-        if description:
-            for block in description.split('<br>'):
-                if not block.strip():
-                    continue
-                summary <= block
-                summary <= html.BR()
-        summary <= html.A('מידע נוסף',
-            href='https://oknesset.org/vote/%d/' % self.data['id'])
-        content <= summary
-        uservote = html.P()
-        self.radios = []
-        for val, name in self.vals:
-            label = html.LABEL()
-            btn_div = html.DIV(**{'class': 'btn btn-default'})
-            label <= btn_div
-            radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
+        panel, self.party_votes_doc, self.radios = render_question_panel(data)
+        document['questions'] <= panel
+        for radio in self.radios:
             radio.bind('change', self.set_answer)
-            self.radios.append(radio)
-            btn_div <= radio
-            btn_div <= ' '+name+' '
-            uservote <= label
-            uservote <= ' '
-        content <= uservote
-        self.party_votes_doc = html.P()
-        content <= self.party_votes_doc
 
     def set_answer(self, event):
         first_answer = self.answer is None
@@ -67,50 +118,7 @@ class Question:
         self.party_votes_doc.clear()
         if self.answer is None:
             return
-        def key(x):
-            results = x[1]
-            party = parties[x[0]]
-            return (-sum(results.values()), -party['number_of_seats'], -x[0])
-        party_votes = self.data['party_votes'].copy()
-        for x in list(party_votes.keys()):
-            if x not in parties:
-                # Old party not in knesset
-                del party_votes[x]
-        if game.prev_party not in party_votes:
-            party_votes[game.prev_party] = {'against': 0, 'for': 0}
-        table = html.TABLE(
-            style={'text-align': 'center', 'background': '#f9f9f9'},
-            **{'class': 'table table-packed'})
-        self.party_votes_doc <= html.DIV(table, **{'class': 'table-responsive'})
-        parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
-        table <= html.THEAD(parties_row)
-        tbody = html.TBODY()
-        table <= tbody
-        rows = {}
-        for (v, name) in self.vals:
-            if not v:
-                continue
-            style = {}
-            if self.answer:
-                style['background'] = ['#ffdddd', '#ccfacc'][v == self.answer]
-            elif not rows:
-                style['background'] = 'white'
-            row = html.TR(html.TH(name), style=style)
-            tbody <= row
-            rows[v] = row
-        for party_id, results in sorted(party_votes.items(), key=key):
-            party = parties[party_id]
-            [for_txt, vs_txt] = [
-                '%.0f%%'%(100*r/party['number_of_seats']) if r else '-'
-                for r in [results.get('for'), results.get('against')]]
-            for row, val in [
-                (parties_row, party.get('short_name') or party['name']),
-                (rows[1], for_txt),
-                (rows[-1], vs_txt),
-                ]:
-                if party_id == game.prev_party:
-                    val = html.B(val)
-                row <= html.TD(val)
+        render_question_party_votes(self.party_votes_doc, self.data, self.answer, game.prev_party)
 
     def add_question(self, *args):
         game.add_question()
