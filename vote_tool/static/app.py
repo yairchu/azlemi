@@ -12,6 +12,8 @@ class Question:
         self.data = data
         self.answer = None
 
+        question = html.DIV(**{'class': 'panel panel-primary'})
+        document['questions'] <= question
         title = self.data.get('vt_title')
         if not title:
             title = self.data['title']
@@ -22,7 +24,9 @@ class Question:
                 if title.startswith(prefix):
                     title = title[len(prefix):]
                     break
-        document['questions'] <= html.H3(title)
+        question <= html.DIV(title, **{'class': 'panel-heading'})
+        content = html.DIV(**{'class': 'panel-body'})
+        question <= content
         summary = html.P()
         description = self.data.get('vt_description') or self.data['summary']
         if description:
@@ -33,12 +37,12 @@ class Question:
                 summary <= html.BR()
         summary <= html.A('מידע נוסף',
             href='https://oknesset.org/vote/%d/' % self.data['id'])
-        document['questions'] <= summary
+        content <= summary
         uservote = html.P()
         self.radios = []
         for val, name in self.vals:
             label = html.LABEL()
-            btn_div = html.DIV(**{'class': 'btn btn-lg btn-default'})
+            btn_div = html.DIV(**{'class': 'btn btn-default'})
             label <= btn_div
             radio = html.INPUT(type='radio', name=str(self.data['id']), value=str(val))
             radio.bind('change', self.set_answer)
@@ -46,9 +50,10 @@ class Question:
             btn_div <= radio
             btn_div <= ' '+name+' '
             uservote <= label
-        document['questions'] <= uservote
+            uservote <= ' '
+        content <= uservote
         self.party_votes_doc = html.P()
-        document['questions'] <= self.party_votes_doc
+        content <= self.party_votes_doc
 
     def set_answer(self, event):
         first_answer = self.answer is None
@@ -87,17 +92,33 @@ class Question:
         if game.prev_party != 0 and game.prev_party not in self.party_votes:
             self.party_votes_doc <= html.B(
                 '%s לא הצביעה. ' % parties[game.prev_party]['name'])
+        table = html.TABLE(**{'class': 'table'})
+        self.party_votes_doc <= table
+        parties_row = html.TR()
+        parties_row <= html.TH('מפלגה', style={'vertical-align': 'top'})
+        table <= html.THEAD(parties_row)
+        tbody = html.TBODY()
+        table <= tbody
+        for_row = html.TR()
+        tbody <= for_row
+        for_row <= html.TH('בעד')
+        vs_row = html.TR()
+        tbody <= vs_row
+        vs_row <= html.TH('נגד')
+        from_row = html.TR()
+        tbody <= from_row
+        from_row <= html.TH('מתוך')
         for party_id, results in sorted(self.party_votes.items(), key=key):
             party = parties[party_id]
-            txt = party['name']+':'
-            if results[1]:
-                txt += ' %d בעד' % results[1]
-            if results[-1]:
-                txt += ' %d נגד' % results[-1]
-            txt += ' (מתוך %d), ' % party['number_of_seats']
-            if party_id == game.prev_party:
-                txt = html.B(txt)
-            self.party_votes_doc <= txt
+            for row, val in [
+                (parties_row, party.get('short_name') or party['name']),
+                (for_row, results[1] or '-'),
+                (vs_row, results[-1] or '-'),
+                (from_row, party['number_of_seats']),
+                ]:
+                if party_id == game.prev_party:
+                    val = html.B(val)
+                row <= html.TD(val)
 
     def add_question(self, *args):
         game.add_question()

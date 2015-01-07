@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 </head>
 <body onload="brython(debug=1)">
+<script type="text/python">
+  parties = dict((x['id'], x) for x in {{parties|safe}})
+  members = {{members|safe}}
+</script>
+<script type="text/python" src="/static/app.py"></script>
 <div class="container">
-  <script type="text/python">
-    parties = dict((x['id'], x) for x in {{parties|safe}})
-    members = {{members|safe}}
-  </script>
-  <script type="text/python" src="/static/app.py"></script>
   <div class="row">
-    <div class="col-md-6"> </div>
+    <div class="col-md-3"> </div>
     <div class="col-md-6">
       <div class="alert alert-info">
         <p>
@@ -29,28 +29,35 @@
       </div>
     </div>
   </div>
-  <h3> לאיזו מפלגה הצבעת בבחירות האחרונות: </h3>
-  <div id="previous_vote">
-    <label>
-      <div class="btn btn-lg btn-default">
-        <input type="radio" name="previous_vote" value="" />
-        לא הצבעתי
-      </div>
-    </label>
-    {% for party in parties %}
-      <label>
-        <div class="btn btn-lg btn-default">
-          <input type="radio" name="previous_vote" value="{{party.id}}" />
-          {{party.name}}
-        </div>
-      </label>
-    {% endfor %}
-  </div>
-  <div id="questions"></div>
-  <h2> תוצאות </h2>
   <div class="row">
-    <div class="col-md-6"> </div>
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-heading"> לאיזו מפלגה הצבעת בבחירות האחרונות: </div>
+        <div class="panel-body" id="previous_vote">
+          <label>
+            <div class="btn btn-default">
+              <input type="radio" name="previous_vote" value="" />
+              לא הצבעתי
+            </div>
+          </label>
+          {% for party in parties %}
+            <label>
+              <div class="btn btn-default">
+                <input type="radio" name="previous_vote" value="{{party.id}}" />
+                {{party.name}}
+              </div>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div id="questions"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"> </div>
     <div class="col-md-6">
+      <h2> תוצאות </h2>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -68,8 +75,7 @@
       </table>
     </div>
   </div>
-  <br><br><br><br><br><br><br>
-  <div id="debug" dir="ltr"></div>
+  <div id="debug" dir="ltr" class="row"></div>
 </div>
 </body>
 </html>

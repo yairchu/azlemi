@@ -15,8 +15,17 @@ votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
 num_votes = votes_meta['total_count']
 
 def home(request):
+    parties = json.loads(open(oknesset_path+'/api/v2/party').read())['objects']
+    short_names = {
+      'חזית דמוקרטית לשלום ושוויון': 'חד״ש',
+      'ברית לאומית דמוקרטית': 'בל״ד',
+      }
+    for p in parties:
+        name = short_names.get(p['name'])
+        if name:
+            p['short_name'] = name
     context = {
-        'parties': json.loads(open(oknesset_path+'/api/v2/party').read())['objects'],
+        'parties': parties,
         'members': json.loads(open(dirname+'/data/member_info.json').read()),
         }
     return render(request, 'vote/home.html', context)
