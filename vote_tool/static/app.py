@@ -58,29 +58,10 @@ class Question:
     def set_answer(self, event):
         first_answer = self.answer is None
         self.answer = int(radio_val(self.radios))
-
-        if first_answer:
-            self.calc_party_votes()
         self.show_party_votes()
-
         game.update_results()
         if first_answer:
             timer.request_animation_frame(self.add_question)
-
-    def calc_party_votes(self):
-        self.party_votes = {}
-        for vote in self.data['votes']:
-            if 'for' == vote['vote_type']:
-                val = 1
-            elif 'against' == vote['vote_type']:
-                val = -1
-            else:
-                continue
-            party_id = party_of_member[id_from_uri(vote['member'])]
-            if not party_id in parties:
-                continue
-            party_results = self.party_votes.setdefault(party_id, {-1: 0, 1: 0})
-            party_results[val] += 1
 
     def show_party_votes(self):
         self.party_votes_doc.clear()
@@ -90,9 +71,13 @@ class Question:
             results = x[1]
             party = parties[x[0]]
             return (-sum(results.values()), -party['number_of_seats'], -x[0])
-        party_votes = self.party_votes
+        party_votes = self.data['party_votes'].copy()
+        for x in list(party_votes.keys()):
+            if x not in parties:
+                # Old party not in knesset
+                del party_votes[x]
         if game.prev_party not in party_votes:
-            party_votes[game.prev_party] = {-1: 0, 1: 0}
+            party_votes[game.prev_party] = {'against': 0, 'for': 0}
         table = html.TABLE(
             style={'text-align': 'center', 'background': '#f9f9f9'},
             **{'class': 'table table-packed'})
@@ -117,7 +102,7 @@ class Question:
             party = parties[party_id]
             [for_txt, vs_txt] = [
                 '%.0f%%'%(100*r/party['number_of_seats']) if r else '-'
-                for r in [results[1], results[-1]]]
+                for r in [results.get('for'), results.get('against')]]
             for row, val in [
                 (parties_row, party.get('short_name') or party['name']),
                 (rows[1], for_txt),
@@ -190,10 +175,13 @@ class Game:
             if not question.answer:
                 continue
             num_questions += 1
-            for party_id, votes in question.party_votes.items():
+            for party_id, votes in question.data['party_votes'].items():
+                if party_id not in parties:
+                    continue
                 party_results = results.setdefault(party_id, {-1: 0, 1: 0})
                 for k, v in votes.items():
-                    party_results[k * question.answer] += v
+                    pval = {'for': 1, 'against': -1}[k]
+                    party_results[pval * question.answer] += v
         document['results'].clear()
         results_small = document['results-small']
         results_small.clear()
