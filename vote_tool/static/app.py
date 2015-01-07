@@ -90,9 +90,9 @@ class Question:
             results = x[1]
             party = parties[x[0]]
             return (-sum(results.values()), -party['number_of_seats'], -x[0])
-        if game.prev_party != 0 and game.prev_party not in self.party_votes:
-            self.party_votes_doc <= html.B(
-                '%s לא הצביעה. ' % parties[game.prev_party]['name'])
+        party_votes = self.party_votes
+        if game.prev_party not in party_votes:
+            party_votes[game.prev_party] = {-1: 0, 1: 0}
         table = html.TABLE(
             style={'text-align': 'center', 'background': '#f9f9f9'},
             **{'class': 'table table-packed'})
@@ -113,7 +113,7 @@ class Question:
             row = html.TR(html.TH(name), style=style)
             tbody <= row
             rows[v] = row
-        for party_id, results in sorted(self.party_votes.items(), key=key):
+        for party_id, results in sorted(party_votes.items(), key=key):
             party = parties[party_id]
             [for_txt, vs_txt] = [
                 '%.0f%%'%(100*r/party['number_of_seats']) if r else '-'
