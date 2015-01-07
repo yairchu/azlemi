@@ -159,7 +159,9 @@ class Game:
         req.bind('complete', handler)
         params = ['pp=%d' % self.prev_party]
         for question_id, question in self.questions.items():
-            params.append('q%d=%d' % (question_id, question.answer or 0))
+            if question.answer is None:
+                continue
+            params.append('q%d=%d' % (question_id, question.answer))
         req.open('GET', '/get_question/?'+'&'.join(params))
         req.send()
     def ajax_response_add_question(self, req):
