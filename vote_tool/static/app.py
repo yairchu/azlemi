@@ -48,10 +48,15 @@ def is_boring_question(question_data):
 class Game:
     def __init__(self):
         self.questions = {}
-        self.prev_party = 0
+        self.prev_party = None
     def set_party(self, event = None):
         prev_party = radio_val('previous_vote')
-        self.prev_party = int(prev_party) if prev_party else 0
+        if prev_party is None:
+            self.prev_party = None
+        elif prev_party == '':
+            self.prev_party = 0
+        else:
+            self.prev_party = int(prev_party)
         if self.questions and event is not None:
             self.update_results()
             for question in self.questions.values():
@@ -137,13 +142,15 @@ game = Game()
 
 for question in prev_questions:
     game.got_question(question, False)
-for question in game.questions.values():
-    if question.answer is None:
-        break
-else:
-    timer.request_animation_frame(game.add_question)
 
 for radio in radios_of('previous_vote'):
     radio.bind('change', game.set_party)
     if radio.checked:
         game.set_party()
+
+for question in game.questions.values():
+    if question.answer is None:
+        break
+else:
+    if game.prev_party is not None:
+        timer.request_animation_frame(game.add_question)
