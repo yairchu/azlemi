@@ -31,6 +31,26 @@
     a:hover {
       text-decoration: none;
     }
+
+    /* tooltip based on http://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/ */
+    .has-tooltip{
+      position: relative;
+    }
+
+    .has-tooltip:hover:after{
+      background: #333;
+      background: rgba(0,0,0,.8);
+      border-radius: 5px;
+      top: 26px;
+      color: #fff;
+      content: attr(tooltip);
+      right: 30%;
+      padding: 5px 15px;
+      position: absolute;
+      z-index: 98;
+      width: 550px;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body onload="brython(debug=1)">

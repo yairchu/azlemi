@@ -17,16 +17,23 @@ def question_panel(data):
     panel <= html.DIV(title, **{'class': 'panel-heading'})
     content = html.DIV(**{'class': 'panel-body'})
     panel <= content
-    summary = html.P()
     description = data.get('vt_description') or data['summary']
+    summary = html.P()
     if description:
+        if len(description) > 120:
+            summary = html.P(
+                tooltip=description.replace('<br>', ' '),
+                **{'class': 'has-tooltip'})
+            description = description[:117]+'...'
         for block in description.split('<br>'):
             if not block.strip():
                 continue
             summary <= block
             summary <= html.BR()
-    summary <= html.A('מידע נוסף',
-        href='https://oknesset.org/vote/%d/' % data['id'])
+    summary <= html.A(
+        'מידע נוסף',
+        href='https://oknesset.org/vote/%d/' % data['id'],
+        )
     content <= summary
     radios = []
     for val, name in answers:
