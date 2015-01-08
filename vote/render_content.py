@@ -98,10 +98,12 @@ def calc_results(questions, user_answers, parties):
         num_questions += 1
         question = questions[qid]
         for party_id, votes in question['party_votes'].items():
+            party_id = int(party_id)
             if party_id not in parties:
                 continue
             party_results = results.setdefault(party_id, {-1: 0, 1: 0})
             for k, v in votes.items():
+                v = int(v)
                 vote_vals = {'for': 1, 'against': -1}
                 if k not in vote_vals:
                     continue
