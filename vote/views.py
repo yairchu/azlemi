@@ -85,7 +85,13 @@ def home(request):
         if x.id not in prev_question_ids
         ]
     random.shuffle(start_votes)
-    start_votes = [export_vote(x) for x in start_votes[:2]]
+    start_votes = [export_vote(x) for x in start_votes[:3]]
+
+    if start_votes:
+        question = start_votes.pop()
+        prev_questions.append(question)
+        panel, _, _ = render_content.question_panel(question)
+        rendered_prevs_questions.append(str(panel))
 
     context = {
         'parties_dict': common_data['parties'],

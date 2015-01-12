@@ -116,7 +116,7 @@ class Game:
 
         document['results'].clear()
         document['results-small'].clear()
-        results_small = render_content.render_results(document['results'], document['results-small'], results, parties)
+        render_content.render_results(document['results'], document['results-small'], results, parties)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])
