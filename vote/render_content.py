@@ -132,7 +132,7 @@ def render_results(results_dest, results_small, results, highlight_party, partie
     results_small <= html.B('תוצאות:')
 
     def key(x):
-        return -x[1]['overall']
+        return (-x[1]['overall'], x[0])
     prev_score = None
     for idx, (party_id, score) in enumerate(sorted(list(results.items()), key=key)):
         if idx == 0 or score['overall'] < prev_score['overall']:
