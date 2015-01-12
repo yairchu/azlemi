@@ -179,8 +179,13 @@ def get_specific_question(request, question_id = None):
 
 def get_question(request):
     track_changes(request)
-    already_asked = set(
-        int(x[1:]) for x in request.GET.keys() if x.startswith('q'))
+
+    already_asked = list(request.session['state'].keys())
+    queue = request.GET.get('queue', '')
+    if queue:
+        already_asked += queue.split(',')
+    already_asked = set( int(x[1:]) for x in already_asked if x.startswith('q'))
+
     question_set = choose_question_set(already_asked)
     question_id = random.choice(list(question_set))
     return HttpResponse(json.dumps(export_vote(fetch_vote(question_id))))
@@ -191,4 +196,5 @@ def save_vote(request):
 
 def restart(request):
     request.session['state'] = {}
+    request.session['questions_order'] = []
     return HttpResponseRedirect('/')

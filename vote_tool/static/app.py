@@ -88,7 +88,12 @@ class Game:
     def ajax_request_question(self, handler):
         req = ajax.ajax()
         req.bind('complete', handler)
-        req.open('GET', '/get_question/?'+self.save_vote_query())
+        queue = [q['id'] for q in questions]
+        for question_id, question in self.questions.items():
+            if question.answer is None:
+                queue.append(question_id)
+        req.open('GET', '/get_question/?queue=%s&%s' %
+            (','.join('q%d'%x for x in queue), self.save_vote_query()))
         req.send()
     def ajax_response_add_question(self, req):
         if req.status not in [0, 200]:
@@ -107,7 +112,9 @@ class Game:
 
     def got_question(self, question_data, render=True):
         question_id = question_data['id']
-        assert question_id not in self.questions
+        assert question_id not in self.questions, (
+            'already got question %d in %s' %
+            (question_id, self.questions.keys()))
         question = Question(question_data)
         if render:
             question.render()
