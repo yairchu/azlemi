@@ -49,7 +49,10 @@ def home(request):
         prev_party = int(state['pp'])
     else:
         prev_party = None
-    prev_question_ids = [int(x[1:]) for x in state.keys() if x.startswith('q')]
+    prev_question_ids = [
+        int(x[1:])
+        for x in request.session.get('questions_order', [])
+        if x.startswith('q')]
     prev_questions = [
         export_vote(v) for v in
         models.Vote.objects.filter(id__in=tuple(prev_question_ids))]
@@ -101,8 +104,13 @@ def home(request):
 
 def track_changes(request):
     prev_state = request.session.get('state', {})
-    request.session['state'] = request.GET
-    for k, v in request.GET.items():
+    if 's' in request.GET:
+        t = [x.split(':') for x in request.GET['s'].split(',')]
+        request.session['questions_order'] = [x[0] for x in t]
+        request.session['state'] = dict(t)
+    else:
+        request.session['state'] = {}
+    for k, v in request.session['state'].items():
         if v == prev_state.get(k):
             continue
         if k.startswith('q'):

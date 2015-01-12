@@ -75,12 +75,12 @@ class Game:
         else:
             self.ajax_request_question(self.ajax_response_add_question)
     def save_vote_query(self):
-        params = ['pp=%d' % self.prev_party]
+        params = ['pp:%d' % self.prev_party]
         for question_id, question in self.questions.items():
             if question.answer is None:
                 continue
-            params.append('q%d=%d' % (question_id, question.answer))
-        return '&'.join(params)
+            params.append('q%d:%d' % (question_id, question.answer))
+        return 's='+','.join(params)
     def save_vote(self, *args):
         req = ajax.ajax()
         req.open('GET', '/save_vote/?'+self.save_vote_query())
