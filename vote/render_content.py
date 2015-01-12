@@ -32,6 +32,7 @@ def question_panel(data):
             summary <= html.BR()
     summary <= html.A(
         'מידע נוסף',
+        target='_blank',
         href='https://oknesset.org/vote/%d/' % data['id'],
         )
     content <= summary
