@@ -48,7 +48,7 @@ def question_panel(data):
         btn_div <= radio
         btn_div <= ' '+name+' '
         content <= ' '
-    party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'])
+    party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'], **{'class': 'table-responsive'})
     content <= party_votes_doc
     return panel, party_votes_doc, radios
 
@@ -65,7 +65,7 @@ def question_party_votes(party_votes_doc, data, user_answer, parties):
     table = html.TABLE(
         style={'text-align': 'center', 'background': '#f9f9f9'},
         **{'class': 'table table-packed'})
-    party_votes_doc <= html.DIV(table, **{'class': 'table-responsive'})
+    party_votes_doc <= table
     parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
     table <= html.THEAD(parties_row)
     tbody = html.TBODY()
