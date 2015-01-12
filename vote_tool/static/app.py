@@ -37,7 +37,7 @@ class Question:
         party_votes_doc.clear()
         if self.answer is None:
             return
-        render_content.question_party_votes(party_votes_doc, self.data, self.answer, game.prev_party, parties)
+        render_content.question_party_votes(party_votes_doc, self.data, self.answer, parties)
 
 def is_boring_question(question_data):
     for x in ['for_votes_count', 'against_votes_count']:
@@ -48,27 +48,6 @@ def is_boring_question(question_data):
 class Game:
     def __init__(self):
         self.questions = []
-        self.prev_party = None
-    def set_party(self, event = None):
-        prev_val = self.prev_party
-        prev_party = radio_val('previous_vote')
-        if prev_party is None:
-            self.prev_party = None
-        elif prev_party == '':
-            self.prev_party = 0
-        else:
-            self.prev_party = int(prev_party)
-
-        if event is None:
-            return
-
-        self.save_vote()
-        if self.questions:
-            self.update_results()
-            for question in self.questions:
-                question.show_party_votes()
-        if prev_val is None:
-            self.add_question()
     def add_question(self, *args):
         if questions:
             self.got_question(questions.pop())
@@ -76,12 +55,14 @@ class Game:
         else:
             self.ajax_request_question(self.ajax_response_add_question)
     def save_vote_query(self):
-        params = ['pp:%d' % self.prev_party]
+        params = []
         for question in self.questions:
             if question.answer is None:
                 continue
             params.append('q%d:%d' % (question.data['id'], question.answer))
-        return 's='+','.join(params)
+        if not params:
+            return {}
+        return {'s': ','.join(params)}
     def save_vote(self, *args):
         req = ajax.ajax()
         req.open('GET', '/save_vote/?'+self.save_vote_query())
@@ -93,8 +74,11 @@ class Game:
         for question in self.questions:
             if question.answer is None:
                 queue.append(question.data['id'])
-        req.open('GET', '/get_question/?queue=%s&%s' %
-            (','.join('q%d'%x for x in queue), self.save_vote_query()))
+        params = self.save_vote_query()
+        params['queue'] = ','.join('q%d'%x for x in queue)
+        req.open('GET',
+            '/get_question/?'+
+            '&'.join('%s=%s'%(k, v) for k, v in params.items()))
         req.send()
     def ajax_response_add_question(self, req):
         if req.status not in [0, 200]:
@@ -132,7 +116,7 @@ class Game:
 
         document['results'].clear()
         document['results-small'].clear()
-        results_small = render_content.render_results(document['results'], document['results-small'], results, self.prev_party, parties)
+        results_small = render_content.render_results(document['results'], document['results-small'], results, parties)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])
@@ -150,14 +134,8 @@ game = Game()
 for question in prev_questions:
     game.got_question(question, False)
 
-for radio in radios_of('previous_vote'):
-    radio.bind('change', game.set_party)
-    if radio.checked:
-        game.set_party()
-
 for question in game.questions:
     if question.answer is None:
         break
 else:
-    if game.prev_party is not None:
-        timer.request_animation_frame(game.add_question)
+    timer.request_animation_frame(game.add_question)

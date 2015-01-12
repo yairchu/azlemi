@@ -45,10 +45,6 @@ common_data = CommonData()
 
 def home(request):
     state = request.session.get('state', {})
-    if 'pp' in state:
-        prev_party = int(state['pp'])
-    else:
-        prev_party = None
     prev_question_ids = [
         int(x[1:])
         for x in request.session.get('questions_order', [])
@@ -71,7 +67,7 @@ def home(request):
             if int(radio.attrs['value']) == answer:
                 radio.attrs['checked'] = 'true'
         render_content.question_party_votes(
-            party_votes_doc, question, answer, prev_party, common_data['parties'])
+            party_votes_doc, question, answer, common_data['parties'])
         rendered_prevs_questions.append(str(panel))
     results = render_content.calc_results(
         dict((q['id'], q) for q in prev_questions),
@@ -81,8 +77,7 @@ def home(request):
     results_html = html.TBODY(id='results')
     small_results_html = html.DIV(id="results-small", style={'color': 'gray'})
     render_content.render_results(
-        results_html, small_results_html, results,
-        prev_party, common_data['parties'])
+        results_html, small_results_html, results, common_data['parties'])
 
     start_votes = [
         x for x in
@@ -93,15 +88,11 @@ def home(request):
     start_votes = [export_vote(x) for x in start_votes[:2]]
 
     context = {
-        'parties_list':
-            sorted(common_data['parties'].values(),
-                key=lambda p: (-p['number_of_seats'], p['name'])),
         'parties_dict': common_data['parties'],
         'members': common_data['members'],
         'prev_questions': prev_questions,
         'prev_questions_html': '\n'.join(rendered_prevs_questions),
         'questions': start_votes,
-        'previous_party': prev_party,
         'results_html': results_html,
         'small_results_html': small_results_html,
         }
@@ -115,6 +106,7 @@ def track_changes(request):
         request.session['questions_order'] = [x[0] for x in t]
     else:
         request.session['state'] = {}
+        request.session['questions_order'] = []
     for k, v in request.session['state'].items():
         if v == prev_state.get(k):
             continue

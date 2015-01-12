@@ -76,37 +76,8 @@
     </div>
   </div>
   <div class="row bigger-font">
-    <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0" role="main">
-      <div class="panel panel-default">
-        <div class="panel-heading"> לאיזו מפלגה הצבעת בבחירות האחרונות: </div>
-        <div class="panel-body" id="previous_vote">
-          <label>
-            <div class="btn btn-default">
-              {% if previous_party == 0 %}
-                <input type="radio" name="previous_vote" value="" checked=true />
-              {% else %}
-                <input type="radio" name="previous_vote" value="" />
-              {% endif %}
-              לא הצבעתי
-            </div>
-          </label>
-          {% for party in parties_list %}
-            <label>
-              <div class="btn btn-default">
-                {% if previous_party == party.id %}
-                  <input type="radio" name="previous_vote" value="{{party.id}}" checked=true />
-                {% else %}
-                  <input type="radio" name="previous_vote" value="{{party.id}}" />
-                {% endif %}
-                {{party.name}}
-              </div>
-            </label>
-          {% endfor %}
-        </div>
-      </div>
-      <div id="questions">
-        {{prev_questions_html|safe}}
-      </div>
+    <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0" role="main" id="questions">
+      {{prev_questions_html|safe}}
     </div>
     <div class="col-md-2" role="complementary">
       <nav class="nav hidden-print hidden-xs hidden-sm affix" style='font-size: 14px;'>

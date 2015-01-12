@@ -52,7 +52,7 @@ def question_panel(data):
     content <= party_votes_doc
     return panel, party_votes_doc, radios
 
-def question_party_votes(party_votes_doc, data, user_answer, highlight_party, parties):
+def question_party_votes(party_votes_doc, data, user_answer, parties):
     def key(x):
         results = x[1]
         party = parties[x[0]]
@@ -62,8 +62,6 @@ def question_party_votes(party_votes_doc, data, user_answer, highlight_party, pa
         if x not in parties:
             # Old party not in knesset
             del party_votes[x]
-    if highlight_party:
-        party_votes.setdefault(highlight_party, {})
     table = html.TABLE(
         style={'text-align': 'center', 'background': '#f9f9f9'},
         **{'class': 'table table-packed'})
@@ -94,8 +92,6 @@ def question_party_votes(party_votes_doc, data, user_answer, highlight_party, pa
             (rows[1], for_txt),
             (rows[-1], vs_txt),
             ]:
-            if party_id == highlight_party:
-                val = html.B(val)
             row <= html.TD(val)
 
 def calc_results(questions, user_answers, parties):
@@ -124,7 +120,7 @@ def calc_results(questions, user_answers, parties):
             s[k] /= max_count
     return results
 
-def render_results(results_dest, results_small, results, highlight_party, parties):
+def render_results(results_dest, results_small, results, parties):
     if not results:
         results_dest <= html.TR(html.TD('תענה על שאלות כדי לקבל תוצאות..', colspan=5))
         return
@@ -148,17 +144,11 @@ def render_results(results_dest, results_small, results, highlight_party, partie
         party_name = parties[party_id]['name']
         short_name = '%d. %s' % (pos, parties[party_id].get('short_name') or party_name)
         pos_txt = str(pos)
-        if party_id == highlight_party:
-            pos_txt = html.B(pos_txt)
-            party_name = html.B(party_name)
-            short_name = html.B(short_name)
         results_small <= html.BR()
         results_small <= short_name
         row <= html.TD(pos_txt)
         row <= html.TD(party_name)
         for k in [1, -1, 'overall']:
             cell = '%.0f%%'%(100*score[k])
-            if party_id == highlight_party:
-                cell = html.B(cell)
             row <= html.TD(cell, dir='ltr')
         results_dest <= row
