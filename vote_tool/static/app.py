@@ -88,7 +88,7 @@ class Game:
     def ajax_request_question(self, handler):
         req = ajax.ajax()
         req.bind('complete', handler)
-        queue = [q.data['id'] for q in questions]
+        queue = [q['id'] for q in questions]
         for question in self.questions:
             if question.answer is None:
                 queue.append(question.data['id'])
