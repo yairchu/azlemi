@@ -50,6 +50,7 @@ class Game:
         self.questions = []
         self.prev_party = None
     def set_party(self, event = None):
+        prev_val = self.prev_party
         prev_party = radio_val('previous_vote')
         if prev_party is None:
             self.prev_party = None
@@ -57,16 +58,16 @@ class Game:
             self.prev_party = 0
         else:
             self.prev_party = int(prev_party)
-        if self.questions and event is not None:
+
+        if event is None:
+            return
+
+        self.save_vote()
+        if self.questions:
             self.update_results()
             for question in self.questions:
                 question.show_party_votes()
-        for question in self.questions:
-            if question.answer is not None:
-                if event is not None:
-                    self.save_vote()
-                break
-        else:
+        if prev_val is None:
             self.add_question()
     def add_question(self, *args):
         if questions:
