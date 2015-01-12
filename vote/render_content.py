@@ -20,11 +20,12 @@ def question_panel(data):
     description = data.get('vt_description') or data['summary']
     summary = html.P()
     if description:
-        if len(description) > 120:
+        too_long = 300
+        if len(description) > too_long:
             summary = html.P(
                 tooltip=description.replace('<br>', ' '),
                 **{'class': 'has-tooltip'})
-            description = description[:117]+'...'
+            description = description[:too_long-3]+'...'
         for block in description.split('<br>'):
             if not block.strip():
                 continue
