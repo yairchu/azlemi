@@ -16,6 +16,8 @@ class _Node:
             ''.join(' %s=%r'%(k, v) for k, v in self.attrs.items()),
             )
         if not self.content:
+            if self.tag == 'div':
+                return '<%s></div>' % open_tag
             return '<%s />' % open_tag
         return '<%s>%s</%s>' % (
             open_tag,
