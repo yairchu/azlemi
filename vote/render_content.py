@@ -3,7 +3,7 @@ from browser import html
 answers = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
 def question_panel(data):
-    panel = html.DIV(id='q%d'%data['id'], **{'class': 'panel panel-primary'})
+    panel = html.DIV(id='q%d'%data['id'], Class='panel panel-primary')
     title = data.get('vt_title')
     if not title:
         title = data['title']
@@ -14,8 +14,8 @@ def question_panel(data):
             if title.startswith(prefix):
                 title = title[len(prefix):]
                 break
-    panel <= html.DIV(title, **{'class': 'panel-heading'})
-    content = html.DIV(**{'class': 'panel-body'})
+    panel <= html.DIV(title, Class='panel-heading')
+    content = html.DIV(Class='panel-body')
     panel <= content
     description = data.get('vt_description') or data['summary']
     summary = html.P()
@@ -24,7 +24,7 @@ def question_panel(data):
         if len(description) > too_long:
             summary = html.P(
                 tooltip=description.replace('<br>', ' '),
-                **{'class': 'has-tooltip'})
+                Class='has-tooltip')
             description = description[:too_long-3]+'...'
         for block in description.split('<br>'):
             if not block.strip():
@@ -41,14 +41,14 @@ def question_panel(data):
     for val, name in answers:
         label = html.LABEL()
         content <= label
-        btn_div = html.DIV(**{'class': 'btn btn-default'})
+        btn_div = html.DIV(Class='btn btn-default')
         label <= btn_div
         radio = html.INPUT(type='radio', name=str(data['id']), value=str(val))
         radios.append(radio)
         btn_div <= radio
         btn_div <= ' '+name+' '
         content <= ' '
-    party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'], **{'class': 'table-responsive'})
+    party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'], Class='table-responsive')
     content <= party_votes_doc
     return panel, party_votes_doc, radios
 
@@ -64,7 +64,7 @@ def question_party_votes(party_votes_doc, data, user_answer, parties):
             del party_votes[x]
     table = html.TABLE(
         style={'text-align': 'center', 'background': '#f9f9f9'},
-        **{'class': 'table table-packed'})
+        Class='table table-packed')
     party_votes_doc <= table
     parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
     table <= html.THEAD(parties_row)
