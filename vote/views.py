@@ -53,9 +53,14 @@ def home(request):
         int(x[1:])
         for x in request.session.get('questions_order', [])
         if x.startswith('q')]
+    print(prev_question_ids)
     prev_questions = [
         export_vote(v) for v in
         models.Vote.objects.filter(id__in=tuple(prev_question_ids))]
+    # sort prev_questions by order
+    prev_questions = dict((q['id'], q) for q in prev_questions)
+    prev_questions = [prev_questions[qid] for qid in prev_question_ids]
+
     rendered_prevs_questions = []
     user_answers = {}
     for question in prev_questions:
@@ -106,8 +111,8 @@ def track_changes(request):
     prev_state = request.session.get('state', {})
     if 's' in request.GET:
         t = [x.split(':') for x in request.GET['s'].split(',')]
-        request.session['questions_order'] = [x[0] for x in t]
         request.session['state'] = dict(t)
+        request.session['questions_order'] = [x[0] for x in t]
     else:
         request.session['state'] = {}
     for k, v in request.session['state'].items():

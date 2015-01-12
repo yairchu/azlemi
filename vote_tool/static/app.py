@@ -47,7 +47,7 @@ def is_boring_question(question_data):
 
 class Game:
     def __init__(self):
-        self.questions = {}
+        self.questions = []
         self.prev_party = None
     def set_party(self, event = None):
         prev_party = radio_val('previous_vote')
@@ -59,9 +59,9 @@ class Game:
             self.prev_party = int(prev_party)
         if self.questions and event is not None:
             self.update_results()
-            for question in self.questions.values():
+            for question in self.questions:
                 question.show_party_votes()
-        for question in self.questions.values():
+        for question in self.questions:
             if question.answer is not None:
                 if event is not None:
                     self.save_vote()
@@ -76,10 +76,10 @@ class Game:
             self.ajax_request_question(self.ajax_response_add_question)
     def save_vote_query(self):
         params = ['pp:%d' % self.prev_party]
-        for question_id, question in self.questions.items():
+        for question in self.questions:
             if question.answer is None:
                 continue
-            params.append('q%d:%d' % (question_id, question.answer))
+            params.append('q%d:%d' % (question.data['id'], question.answer))
         return 's='+','.join(params)
     def save_vote(self, *args):
         req = ajax.ajax()
@@ -88,10 +88,10 @@ class Game:
     def ajax_request_question(self, handler):
         req = ajax.ajax()
         req.bind('complete', handler)
-        queue = [q['id'] for q in questions]
-        for question_id, question in self.questions.items():
+        queue = [q.data['id'] for q in questions]
+        for question in self.questions:
             if question.answer is None:
-                queue.append(question_id)
+                queue.append(question.data['id'])
         req.open('GET', '/get_question/?queue=%s&%s' %
             (','.join('q%d'%x for x in queue), self.save_vote_query()))
         req.send()
@@ -112,21 +112,20 @@ class Game:
 
     def got_question(self, question_data, render=True):
         question_id = question_data['id']
-        assert question_id not in self.questions, (
-            'already got question %d in %s' %
-            (question_id, self.questions.keys()))
+        for question in self.questions:
+            assert question_id != question.data['id']
         question = Question(question_data)
         if render:
             question.render()
         else:
             question.bind_buttons()
-        self.questions[question_id] = question
+        self.questions.append(question)
 
     def update_results(self):
         results = render_content.calc_results(
-            dict((k, v.data) for k, v in self.questions.items()),
-            dict((k, v.answer) for k, v in self.questions.items()
-                if v.answer is not None),
+            dict((q.data['id'], q.data) for q in self.questions),
+            dict((q.data['id'], q.answer) for q in self.questions
+                if q.answer is not None),
             parties,
             )
 
@@ -155,7 +154,7 @@ for radio in radios_of('previous_vote'):
     if radio.checked:
         game.set_party()
 
-for question in game.questions.values():
+for question in game.questions:
     if question.answer is None:
         break
 else:
