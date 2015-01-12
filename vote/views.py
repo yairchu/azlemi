@@ -13,24 +13,37 @@ from vote import models
 from vote import render_content
 
 dirname = os.path.dirname(__file__)
-oknesset_path = dirname+'/../vote_tool/static/oknesset'
-votes_meta = json.load(open(oknesset_path+'/api/v2/vote/_limit=1'))['meta']
-num_votes = votes_meta['total_count']
-members = json.loads(open(dirname+'/data/member_info.json').read())
-party_of_member = dict((x['id'], x['party_id']) for x in members)
+
+class CommonData:
+    oknesset_path = dirname+'/../vote_tool/static/oknesset'
+    def __init__(self):
+        self.data = {}
+    def __getitem__(self, key):
+        if key not in self.data:
+            self.data['key'] = getattr(self, 'load_'+key)()
+        return self.data['key']
+    def load_num_votes(self):
+        return json.load(open(self.oknesset_path+'/api/v2/vote/_limit=1')
+            )['meta']['total_count']
+    def load_members(self):
+        return json.loads(open(dirname+'/data/member_info.json').read())
+    def load_party_of_member(self):
+        return dict((x['id'], x['party_id']) for x in self['members'])
+    def load_parties(self):
+        parties = json.loads(open(
+            self.oknesset_path+'/api/v2/party').read())['objects']
+        short_names = {
+          'חזית דמוקרטית לשלום ושוויון': 'חד״ש',
+          'ברית לאומית דמוקרטית': 'בל״ד',
+          }
+        for p in parties:
+            name = short_names.get(p['name'])
+            if name:
+                p['short_name'] = name
+        return dict((x['id'], x) for x in parties)
+common_data = CommonData()
 
 def home(request):
-    parties = json.loads(open(oknesset_path+'/api/v2/party').read())['objects']
-    short_names = {
-      'חזית דמוקרטית לשלום ושוויון': 'חד״ש',
-      'ברית לאומית דמוקרטית': 'בל״ד',
-      }
-    for p in parties:
-        name = short_names.get(p['name'])
-        if name:
-            p['short_name'] = name
-    parties_dict = dict((x['id'], x) for x in parties)
-
     state = request.session.get('state', {})
     if 'pp' in state:
         prev_party = int(state['pp'])
@@ -49,16 +62,19 @@ def home(request):
         for radio in radios:
             if int(radio.attrs['value']) == answer:
                 radio.attrs['checked'] = 'true'
-        render_content.question_party_votes(party_votes_doc, question, answer, prev_party, parties_dict)
+        render_content.question_party_votes(
+            party_votes_doc, question, answer, prev_party, common_data['parties'])
         rendered_prevs_questions.append(str(panel))
     results = render_content.calc_results(
         dict((q['id'], q) for q in prev_questions),
         user_answers,
-        parties_dict
+        common_data['parties']
         )
     results_html = html.TBODY(id='results')
     small_results_html = html.DIV(id="results-small", style={'color': 'gray'})
-    render_content.render_results(results_html, small_results_html, results, prev_party, parties_dict)
+    render_content.render_results(
+        results_html, small_results_html, results,
+        prev_party, common_data['parties'])
 
     start_votes = [
         x for x in
@@ -69,9 +85,11 @@ def home(request):
     start_votes = [export_vote(x) for x in start_votes[:2]]
 
     context = {
-        'parties_list': parties,
-        'parties_dict': parties_dict,
-        'members': members,
+        'parties_list':
+            sorted(common_data['parties'].values(),
+                key=lambda p: (-p['number_of_seats'], p['name'])),
+        'parties_dict': common_data['parties'],
+        'members': common_data['members'],
         'prev_questions': prev_questions,
         'prev_questions_html': '\n'.join(rendered_prevs_questions),
         'questions': start_votes,
@@ -127,7 +145,7 @@ def choose_question_set(already_asked):
                 for_votes_count__gte = 10, against_votes_count__gte = 10)
             ) - already_asked
     if not result:
-        result = set(range(1, num_votes+1)) - already_asked
+        result = set(range(1, common_data['num_votes']+1)) - already_asked
     return result
 
 def export_vote(vote):
@@ -141,7 +159,7 @@ def export_vote(vote):
     for vote in vote_json['votes']:
         def id_from_uri(uri):
             return int(uri.rstrip('/').rsplit('/', 1)[1])
-        party_id = party_of_member[id_from_uri(vote['member'])]
+        party_id = common_data['party_of_member'][id_from_uri(vote['member'])]
         party_res = party_votes.setdefault(party_id, {})
         vote_type = vote['vote_type']
         party_res[vote_type] = 1 + party_res.get(vote_type, 0)
