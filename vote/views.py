@@ -15,7 +15,7 @@ from vote import render_content
 dirname = os.path.dirname(__file__)
 
 class CommonData:
-    oknesset_path = dirname+'/../vote_tool/static/oknesset'
+    oknesset_path = dirname+'/data/oknesset'
     def __init__(self):
         self.data = {}
     def __getitem__(self, key):
