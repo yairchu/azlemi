@@ -1,6 +1,7 @@
 Django==1.7.1
 SQLAlchemy==0.9.8
 dj-database-url==0.3.0
+django-debug-toolbar==1.2.2
 django-postgrespool==0.3.0
 django-smuggler==0.6.0
 gunicorn==19.1.1
