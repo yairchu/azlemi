@@ -15,7 +15,7 @@ from vote import render_content
 dirname = os.path.dirname(__file__)
 
 class CommonData:
-    oknesset_path = dirname+'/data/oknesset'
+    oknesset_path = dirname+'/data/oknesset/api/v2'
     def __init__(self):
         self.data = {}
     def __getitem__(self, key):
@@ -23,7 +23,7 @@ class CommonData:
             self.data['key'] = getattr(self, 'load_'+key)()
         return self.data['key']
     def load_num_votes(self):
-        return json.load(open(self.oknesset_path+'/api/v2/vote/_limit=1')
+        return json.load(open(self.oknesset_path+'/vote/_limit=1')
             )['meta']['total_count']
     def load_members(self):
         return json.loads(open(dirname+'/data/member_info.json').read())
@@ -31,7 +31,7 @@ class CommonData:
         return dict((x['id'], x['party_id']) for x in self['members'])
     def load_parties(self):
         parties = json.loads(open(
-            self.oknesset_path+'/api/v2/party').read())['objects']
+            self.oknesset_path+'/party/_knesset=all').read())['objects']
         short_names = {
           'חזית דמוקרטית לשלום ושוויון': 'חד״ש',
           'ברית לאומית דמוקרטית': 'בל״ד',
@@ -40,7 +40,7 @@ class CommonData:
             name = short_names.get(p['name'])
             if name:
                 p['short_name'] = name
-        return dict((x['id'], x) for x in parties)
+        return dict((x['id'], x) for x in parties if x['knesset_id'] == 19)
 common_data = CommonData()
 
 def home(request):
