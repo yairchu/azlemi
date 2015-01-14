@@ -7,8 +7,6 @@ from browser import ajax, document, html, timer
 
 import render_content
 
-party_of_member = dict((x['id'], x['party_id']) for x in members)
-
 class Question:
     def __init__(self, data):
         self.data = data
@@ -37,7 +35,7 @@ class Question:
         party_votes_doc.clear()
         if self.answer is None:
             return
-        render_content.question_party_votes(party_votes_doc, self.data, self.answer, parties)
+        render_content.question_party_votes(party_votes_doc, self.data, self.answer)
 
 def is_boring_question(question_data):
     for x in ['for_votes_count', 'against_votes_count']:
@@ -111,12 +109,11 @@ class Game:
             dict((q.data['id'], q.data) for q in self.questions),
             dict((q.data['id'], q.answer) for q in self.questions
                 if q.answer is not None),
-            parties,
             )
 
         document['results'].clear()
         document['results-small'].clear()
-        render_content.render_results(document['results'], document['results-small'], results, parties)
+        render_content.render_results(document['results'], document['results-small'], results)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])

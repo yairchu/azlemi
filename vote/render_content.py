@@ -1,6 +1,13 @@
+import datetime
+
 from browser import html
 
 answers = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
+
+short_name_of_long_name = {
+  'חזית דמוקרטית לשלום ושוויון': 'חד”ש',
+  'ברית לאומית דמוקרטית': 'בל”ד',
+  }
 
 def question_panel(data):
     panel = html.DIV(id='q%d'%data['id'], Class='panel panel-primary')
@@ -52,16 +59,10 @@ def question_panel(data):
     content <= party_votes_doc
     return panel, party_votes_doc, radios
 
-def question_party_votes(party_votes_doc, data, user_answer, parties):
+def question_party_votes(party_votes_doc, data, user_answer):
     def key(x):
         results = x[1]
-        party = parties[x[0]]
-        return (-sum(results.values()), -party['number_of_seats'], -x[0])
-    party_votes = dict((int(k), v) for k, v in data['party_votes'].items())
-    for x in list(party_votes.keys()):
-        if x not in parties:
-            # Old party not in knesset
-            del party_votes[x]
+        return x[0]
     table = html.TABLE(
         style={'text-align': 'center', 'background': '#f9f9f9'},
         Class='table table-packed')
@@ -82,45 +83,42 @@ def question_party_votes(party_votes_doc, data, user_answer, parties):
         row = html.TR(html.TH(name), style=style)
         tbody <= row
         rows[v] = row
-    for party_id, results in sorted(party_votes.items(), key=key):
-        party = parties[party_id]
+    for party_name, results in sorted(data['party_votes'].items(), key=key):
         [for_txt, vs_txt] = [
-            '%.0f%%'%(100*r/party['number_of_seats']) if r else '-'
+            '%.0f%%'%(100*r) if r else '-'
             for r in [results.get('for'), results.get('against')]]
+        short_name = short_name_of_long_name.get(party_name, party_name)
         for row, val in [
-            (parties_row, party.get('short_name') or party['name']),
+            (parties_row, short_name),
             (rows[1], for_txt),
             (rows[-1], vs_txt),
             ]:
             row <= html.TD(val)
 
-def calc_results(questions, user_answers, parties):
+def calc_results(questions, user_answers):
     results = {}
-    num_questions = 0
     for qid, answer in user_answers.items():
         if not answer:
             continue
-        num_questions += 1
         question = questions[qid]
-        for party_id, votes in question['party_votes'].items():
-            party_id = int(party_id)
-            if party_id not in parties:
-                continue
-            party_results = results.setdefault(party_id, {-1: 0, 1: 0})
+        for party_name, votes in question['party_votes'].items():
+            vote_results = {-1: 0, 1: 0}
             for k, v in votes.items():
                 v = int(v)
                 vote_vals = {'for': 1, 'against': -1}
                 if k not in vote_vals:
                     continue
-                party_results[vote_vals[k] * answer] += v
-    for party_id, s in results.items():
+                vote_results[vote_vals[k] * answer] += v
+            results.setdefault(party_name, []).append(vote_results)
+    for party_name, t in results.items():
+        s = {}
+        for k in [-1, 1]:
+            s[k] = sum(x[k] for x in t) / len(t)
         s['overall'] = s[1] - s[-1]
-        max_count = parties[party_id]['number_of_seats'] * num_questions
-        for k in s.keys():
-            s[k] /= max_count
+        results[party_name] = s
     return results
 
-def render_results(results_dest, results_small, results, parties):
+def render_results(results_dest, results_small, results):
     if not results:
         results_dest <= html.TR(html.TD('תענה על שאלות כדי לקבל תוצאות..', colspan=5))
         return
@@ -130,19 +128,14 @@ def render_results(results_dest, results_small, results, parties):
     def key(x):
         return (-x[1]['overall'], x[0])
     prev_score = None
-    for idx, (party_id, score) in enumerate(sorted(list(results.items()), key=key)):
+    for idx, (party_name, score) in enumerate(sorted(list(results.items()), key=key)):
         if idx == 0 or score['overall'] < prev_score['overall']:
             pos = idx+1
         prev_score = score
 
-        if party_id not in parties:
-            # party_id is per knesset session at the moment
-            # and the oknesset api doesn't give data for old sessions
-            # see https://oknesset.org/party/5/ ("ישראל ביתנו בכנסת ה-18")
-            continue
         row = html.TR()
-        party_name = parties[party_id]['name']
-        short_name = '%d. %s' % (pos, parties[party_id].get('short_name') or party_name)
+        short_name = '%d. %s' % (
+            pos, short_name_of_long_name.get(party_name, party_name))
         pos_txt = str(pos)
         results_small <= html.BR()
         results_small <= short_name
