@@ -6,6 +6,7 @@ from vote import models
 class VoteForm(forms.ModelForm):
     class Meta:
         model = models.Vote
+        exclude = []
         widgets = {
             'vt_description':
                 forms.Textarea(attrs={'cols': 80, 'rows': 20, 'dir': 'rtl'}),
