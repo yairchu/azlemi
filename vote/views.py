@@ -67,6 +67,9 @@ class CommonData:
         return json.loads(open(dirname+'/data/parties_of_member.json').read())
     def load_party_max_scores(self):
         return json.loads(open(dirname+'/data/party_max_scores.json').read())
+    def load_parties_in_knesset(self):
+        return json.loads(open(dirname+'/data/parties_in_knesset.json').read())
+
 common_data = CommonData()
 
 def home(request):
@@ -195,6 +198,10 @@ def calc_party_votes(vote):
     member_of_id = common_data['member_of_id']
     parties_of_member = common_data['parties_of_member']
     vote_knesset_id = vote['knesset_id']
+
+    for party_name in common_data['parties_in_knesset'][str(vote_knesset_id)]:
+        result[party_name] = {}
+
     for member_vote in vote['votes']:
         def id_from_uri(uri):
             return int(uri.rstrip('/').rsplit('/', 1)[1])
@@ -221,7 +228,7 @@ def calc_party_votes(vote):
             if knesset_id_str not in member_parties:
                 continue
             party_name = member_parties[knesset_id_str]
-            party_res = result.setdefault(party_name, {})
+            party_res = result[party_name]
             party_res[member_vote_type] = 1 + party_res.get(member_vote_type, 0)
     party_max_scores = common_data['party_max_scores']
     for party_name, party_res in result.items():
