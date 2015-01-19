@@ -104,7 +104,6 @@ def calc_results(questions, user_answers):
         for party_name, votes in question['party_votes'].items():
             vote_results = {-1: 0, 1: 0}
             for k, v in votes.items():
-                v = int(v)
                 vote_vals = {'for': 1, 'against': -1}
                 if k not in vote_vals:
                     continue
