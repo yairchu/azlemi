@@ -32,6 +32,30 @@
       text-decoration: none;
     }
 
+    .intro {
+      background-image: url("static/crossing-by-steven-lewis-cropped-light.jpg");
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width:1050px) {
+      .intro {
+        background-size: auto 100%;
+      }
+    }
+
+    .logo-left {
+      background-image: url("static/logo-left.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: auto 66%;
+      width: 240px;
+      height: 240px;
+      float: left;
+    }
+
     /* tooltip based on http://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/ */
     .has-tooltip{
       position: relative;
@@ -65,21 +89,43 @@
 </script>
 <script type="text/python" src="/static/render_content.py"></script>
 <script type="text/python" src="/static/app.py"></script>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-      <div class="alert alert-info">
+<div style="background: #3fa9f5;">
+  <div class="container" style="color: white; text-align: center; height: 80px; line-height: 80px;">
+    <div style="float: left; font-size: 24px;">
+      <a target="_blank" href="https://github.com/yairchu/vote_tool/wiki" style="color: #fff; text-decoration: underline;">
+        (טיוטא די ראשונית בהחלט!)
+      </a>
+    </div>
+    <div style="float: right; font-size: 30px;">
+      <img src="static/box.svg" height=35 style="padding-left: 12px;" />
+      אז למי להצביע?
+    </div>
+  </div>
+</div>
+<div class="intro">
+  <div style="z-index: 1; background: rgba(27, 63, 95, 0.6);">
+    <div class="container" style="color: white; font-size: 20px;">
+      <div class="logo-left">
+      </div>
+      <div style="padding-top: 50px; padding-bottom: 50px;">
         <p>
-          אתר זה הוקם במטרה לעזור לך למצוא את המפלגה המייצגת יותר מכולן את עמדתך
-          בנושאים פוליטיים, מדיניים, כלכליים וחברתיים.
+          לקראת הבחירות המתקרבות,
+          הכנו (אנחנו עוד מכינים אותו) אתר
+          ששואל אתכם לדעתכם על הצבעות בכנסת,
+          ומראה לכם איזה מפלגות הצביעו כמוכם
+          ומדרג אותן לפי ההתאמה אליכם.
         </p>
         <p>
-          זוהי גרסת טיוטא ראשונית ביותר!
-          <a target="_blank" href="https://github.com/yairchu/vote_tool/wiki">ואשמח לקבל את עזרתכם לשפר אותו</a>, תודה! יאיר
+          הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים
+          לגבש דעה מודעת על המפלגות השונות,
+          שלא על סמך פרשנויות על מצא או הוייב,
+          אלא תכלס על סמך הצבעות בפועל.
         </p>
       </div>
     </div>
   </div>
+</div>
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-8 col-md-offset-2" role="main">
       <p>
@@ -126,8 +172,10 @@
   <div class="container" style="text-align: center;">
     <p>
       אתר עוד לא גמור מאת
-      <a target="_blank" href="https://www.facebook.com/yairchu">יאיר</a>
-      ומי ש<a href="https://github.com/yairchu/vote_tool/wiki#משימות">יעזור לו</a>
+      <a target="_blank" href="https://www.facebook.com/yairchu">יאיר</a>,
+      <a target="_blank" href="https://www.facebook.com/tamar.akavia">תמר</a>,
+      ומי שעוד
+      <a href="https://github.com/yairchu/vote_tool/wiki#משימות">יעזור להם</a>
     </p>
     <p>
       מבוסס על מאגר המידע של
