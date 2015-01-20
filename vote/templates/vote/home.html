@@ -54,6 +54,11 @@
   </style>
 </head>
 <body onload="brython(debug=1)">
+<script type="text/javascript">
+  // Work around https://github.com/yairchu/vote_tool/issues/1
+  // Looks like brython sometimes confuses its brython_path..
+  __BRYTHON__.brython_path = "/static/brython/src/"
+</script>
 <script type="text/python">
   prev_questions = {{prev_questions|safe}}
   questions = {{questions|safe}}
