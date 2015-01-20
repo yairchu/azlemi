@@ -136,7 +136,11 @@ def render_results(results_dest, results_small, progress_dest, res):
     progress_dest <= html.DIV(
         html.DIV(progress_text,
             Class='progress-bar progress-bar-success', role='progressbar',
-            style={'min-width': '10em', 'width': '%d%%' % progress_width}),
+            style={
+                'min-width': '10em',
+                'width': '%d%%' % progress_width,
+                'float': 'right',
+                }),
         Class='progress')
 
     if not results:
