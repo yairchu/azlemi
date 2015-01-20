@@ -9,6 +9,11 @@ short_name_of_long_name = {
   'ברית לאומית דמוקרטית': 'בל”ד',
   }
 
+no_result_text = '''
+    ענו על שאלות כדי לצפות בתוצאות.
+    ככל שתענו על מספר רב יותר של שאלות, תקבלו תוצאה מדוייקת יותר.
+    '''
+
 def question_panel(data):
     panel = html.DIV(id='q%d'%data['id'], Class='panel panel-primary')
     title = data.get('vt_title')
@@ -144,7 +149,7 @@ def render_results(results_dest, results_small, progress_dest, res):
         Class='progress')
 
     if not results:
-        results_dest <= html.TR(html.TD('תענה על שאלות כדי לקבל תוצאות..', colspan=5))
+        results_dest <= html.TR(html.TD(no_result_text, colspan=5))
         return
 
     results_small <= html.B('תוצאות:')
