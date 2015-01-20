@@ -126,7 +126,7 @@ def render_results(results_dest, results_small, progress_dest, res):
         progress_text = 'ענית על שאלה אחת'
     else:
         progress_text = 'ענית על %d שאלות' % num_answers
-    num_questions_to_answer = 20
+    num_questions_to_answer = 10
     progress_width = min(100, 100/num_questions_to_answer*num_answers)
     progress_dest <= html.DIV(
         html.DIV(progress_text,
