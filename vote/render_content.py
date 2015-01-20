@@ -33,11 +33,16 @@ def question_panel(data):
                 tooltip=description.replace('<br>', ' '),
                 Class='has-tooltip')
             description = description[:too_long-3]+'...'
+        first_block = True
         for block in description.split('<br>'):
             if not block.strip():
                 continue
+            if first_block:
+                first_block = False
+            else:
+                summary <= html.BR()
             summary <= block
-            summary <= html.BR()
+        summary <= ' '
     summary <= html.A(
         'מידע נוסף',
         target='_blank',
