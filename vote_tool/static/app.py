@@ -5,14 +5,12 @@ import json
 
 from browser import ajax, document, html, timer
 
-import render_content
-
 class Question:
     def __init__(self, data):
         self.data = data
 
     def render(self):
-        panel, _, _ = render_content.question_panel(self.data)
+        panel, _, _ = question_panel(self.data)
         document['questions'] <= panel
         self.bind_buttons()
 
@@ -35,7 +33,7 @@ class Question:
         party_votes_doc.clear()
         if self.answer is None:
             return
-        render_content.question_party_votes(party_votes_doc, self.data, self.answer)
+        question_party_votes(party_votes_doc, self.data, self.answer)
 
 def is_boring_question(question_data):
     for x in ['for_votes_count', 'against_votes_count']:
@@ -105,7 +103,7 @@ class Game:
         self.questions.append(question)
 
     def update_results(self):
-        results = render_content.calc_results(
+        results = calc_results(
             dict((q.data['id'], q.data) for q in self.questions),
             dict((q.data['id'], q.answer) for q in self.questions
                 if q.answer is not None),
@@ -113,7 +111,7 @@ class Game:
 
         document['results'].clear()
         document['results-small'].clear()
-        render_content.render_results(document['results'], document['results-small'], results)
+        render_results(document['results'], document['results-small'], results)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])
