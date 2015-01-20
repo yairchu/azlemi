@@ -30,14 +30,19 @@ def question_panel(data):
     content = html.DIV(Class='panel-body')
     panel <= content
     description = data.get('vt_description') or data['summary']
-    summary = html.P()
+    too_long = 300
+    if description and len(description) > too_long:
+        tooltip = description
+        description = description[:too_long-3]+'...'
+    else:
+        tooltip = None
+    if tooltip:
+        summary = html.P(
+            tooltip=tooltip.replace('<br>', ' '),
+            Class='has-tooltip')
+    else:
+        summary = html.P()
     if description:
-        too_long = 300
-        if len(description) > too_long:
-            summary = html.P(
-                tooltip=description.replace('<br>', ' '),
-                Class='has-tooltip')
-            description = description[:too_long-3]+'...'
         first_block = True
         for block in description.split('<br>'):
             if not block.strip():
@@ -48,6 +53,8 @@ def question_panel(data):
                 summary <= html.BR()
             summary <= block
         summary <= ' '
+    if tooltip:
+        summary <= html.BR()
     summary <= html.A(
         'מידע נוסף',
         target='_blank',
