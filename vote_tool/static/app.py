@@ -111,7 +111,11 @@ class Game:
 
         document['results'].clear()
         document['results-small'].clear()
-        render_results(document['results'], document['results-small'], results)
+        document['progress-bar'].clear()
+        render_results(
+            document['results'], document['results-small'],
+            document['progress-bar'],
+            results)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])

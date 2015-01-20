@@ -101,9 +101,10 @@ def home(request):
     results = render_content.calc_results(
         dict((q['id'], q) for q in prev_questions), user_answers)
     results_html = html.TBODY(id='results')
-    small_results_html = html.DIV(id="results-small", style={'color': 'gray'})
+    small_results_html = html.DIV(id='results-small', style={'color': 'gray'})
+    progress_html = html.DIV(id='progress-bar')
     render_content.render_results(
-        results_html, small_results_html, results)
+        results_html, small_results_html, progress_html, results)
 
     start_votes = [
         x for x in
@@ -125,6 +126,7 @@ def home(request):
         'questions': start_votes,
         'results_html': results_html,
         'small_results_html': small_results_html,
+        'progress_html': progress_html,
         }
     return render(request, 'vote/home.html', context)
 

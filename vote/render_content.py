@@ -97,9 +97,11 @@ def question_party_votes(party_votes_doc, data, user_answer):
 
 def calc_results(questions, user_answers):
     results = {}
+    num_answers = 0
     for qid, answer in user_answers.items():
         if not answer:
             continue
+        num_answers += 1
         question = questions[qid]
         for party_name, votes in question['party_votes'].items():
             vote_results = {-1: 0, 1: 0}
@@ -115,9 +117,23 @@ def calc_results(questions, user_answers):
             s[k] = sum(x[k] for x in t) / len(t)
         s['overall'] = s[1] - s[-1]
         results[party_name] = s
-    return results
+    return results, num_answers
 
-def render_results(results_dest, results_small, results):
+def render_results(results_dest, results_small, progress_dest, res):
+    (results, num_answers) = res
+
+    if num_answers == 1:
+        progress_text = 'ענית על שאלה אחת'
+    else:
+        progress_text = 'ענית על %d שאלות' % num_answers
+    num_questions_to_answer = 20
+    progress_width = min(100, 100/num_questions_to_answer*num_answers)
+    progress_dest <= html.DIV(
+        html.DIV(progress_text,
+            Class='progress-bar progress-bar-success', role='progressbar',
+            style={'min-width': '10em', 'width': '%d%%' % progress_width}),
+        Class='progress')
+
     if not results:
         results_dest <= html.TR(html.TD('תענה על שאלות כדי לקבל תוצאות..', colspan=5))
         return
