@@ -61,6 +61,7 @@ def question_panel(data):
         for prefix in [
             'להעביר את הצעת החוק לוועדה - ',
             'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
+            'הצבעה -',
             ]:
             if title.startswith(prefix):
                 title = title[len(prefix):]
