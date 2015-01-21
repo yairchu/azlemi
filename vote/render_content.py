@@ -15,7 +15,46 @@ no_result_text = '''
     '''
 
 def question_panel(data):
-    panel = html.DIV(id='q%d'%data['id'], Class='panel panel-primary')
+    outer_frame = html.DIV(id='q%d'%data['id'], Class='question-box')
+    panel = html.DIV()
+    outer_frame <= panel
+
+    against = html.DIV()
+    in_favor = html.DIV()
+    content = html.DIV()
+    skip = html.DIV()
+    party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'], Class='table-responsive')
+
+    panel <= html.LABEL(against, Class='answer-button answer-against')
+    panel <= html.LABEL(in_favor, Class='answer-button answer-for')
+    panel <= content
+    panel <= html.LABEL(skip, Class='answer-skip')
+    panel <= party_votes_doc
+
+    against_radio = html.INPUT(type='radio', name=str(data['id']), value='-1')
+    skip_radio = html.INPUT(type='radio', name=str(data['id']), value='0')
+    for_radio = html.INPUT(type='radio', name=str(data['id']), value='1')
+
+    against <= 'נגד'
+    against <= against_radio
+    against <= html.BR()
+    against <= html.DIV(
+        html.SPAN(Class='glyphicon glyphicon-arrow-left',
+            style={'float': 'right', 'padding-right': '2px'}))
+    against <= html.DIV(style={'clear': 'both', 'height': '5px'})
+
+    in_favor <= for_radio
+    in_favor <= 'בעד'
+    in_favor <= html.BR()
+    in_favor <= html.DIV(
+        html.SPAN(Class='glyphicon glyphicon-arrow-right',
+            style={'float': 'left', 'padding-left': '2px'}))
+    in_favor <= html.DIV(style={'clear': 'both', 'height': '5px'})
+
+    skip <= 'לא בטוח? '
+    skip <= html.SPAN('דלג לשאלה הבאה', style={'text-decoration': 'underline'})
+    skip <= skip_radio
+
     title = data.get('vt_title')
     if not title:
         title = data['title']
@@ -26,11 +65,10 @@ def question_panel(data):
             if title.startswith(prefix):
                 title = title[len(prefix):]
                 break
-    panel <= html.DIV(title, Class='panel-heading')
-    content = html.DIV(Class='panel-body')
-    panel <= content
+    content <= html.H3(title)
+
     description = data.get('vt_description') or data['summary']
-    too_long = 300
+    too_long = 500
     if description and len(description) > too_long:
         tooltip = description
         description = description[:too_long-3]+'...'
@@ -61,20 +99,7 @@ def question_panel(data):
         href='https://oknesset.org/vote/%d/' % data['id'],
         )
     content <= summary
-    radios = []
-    for val, name in answers:
-        label = html.LABEL()
-        content <= label
-        btn_div = html.DIV(Class='btn btn-default')
-        label <= btn_div
-        radio = html.INPUT(type='radio', name=str(data['id']), value=str(val))
-        radios.append(radio)
-        btn_div <= radio
-        btn_div <= ' '+name+' '
-        content <= ' '
-    party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'], Class='table-responsive')
-    content <= party_votes_doc
-    return panel, party_votes_doc, radios
+    return outer_frame, party_votes_doc, [against_radio, skip_radio, for_radio]
 
 def question_party_votes(party_votes_doc, data, user_answer):
     def key(x):

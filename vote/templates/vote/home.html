@@ -16,12 +16,8 @@
       font-size: 16px;
     }
     .table-packed {
-      font-size: 14px;
-    }
-    @media (max-width:991px) {
-      .table-packed {
-        font-size: 12px;
-      }
+      font-size: 12px;
+      min-width: 580px;
     }
     @media (max-width:767px) {
       .table-packed {
@@ -54,6 +50,84 @@
       width: 240px;
       height: 240px;
       float: left;
+    }
+
+    .question-box {
+      background-color: #eee;
+      padding: 5px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      box-shadow: -3px 3px 7px #aaa;
+      min-height: 170px;
+    }
+
+    .question-box>div {
+      background-color: white;
+      padding: 5px;
+    }
+
+    .question-box table {
+      background-color: white;
+      margin-bottom: 0; // bootstrap defaults to 20px..
+    }
+
+    .answer-button {
+      background-color: #eee;
+      margin-top: 50px;
+      font-size: 24px;
+      margin-top: 50px;
+      cursor: pointer;
+    }
+
+    .answer-button>div {
+      background-color: white;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .answer-button input {
+      visibility: hidden;
+    }
+
+    .answer-button span {
+      font-size: 1.5em;
+    }
+
+    .answer-against {
+      float: left;
+      color: #fb001d;
+      padding-right: 12px;
+      margin-right: 60px;
+    }
+
+    .answer-against>div {
+      padding-right: 20px;
+      padding-left: 10px;
+    }
+
+    .answer-for {
+      float: right;
+      color: #69c134;
+      padding-left: 12px;
+      margin-left: 60px;
+    }
+
+    .answer-for>div {
+      padding-left: 20px;
+      padding-right: 10px;
+    }
+
+    .answer-skip {
+      text-align: center;
+      width: 100%;
+      background: white;
+      margin-bottom: 0;
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    .answer-skip input {
+      visibility: hidden;
     }
 
     /* tooltip based on http://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/ */
@@ -128,13 +202,14 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 col-md-offset-2" role="main">
-      <p>
-        כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009.
-        <br>
-        לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם.
-        <b> ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר. </b>
-      </p>
       <div class="bigger-font" id="questions">
+        <p>
+          כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009.
+        </p>
+        <p>
+          לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם.
+          <b> ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר. </b>
+        </p>
         {{prev_questions_html|safe}}
       </div>
       {{progress_html|safe}}
