@@ -35,25 +35,23 @@ def question_panel(data):
     skip_radio = html.INPUT(type='radio', name=str(data['id']), value='0')
     for_radio = html.INPUT(type='radio', name=str(data['id']), value='1')
 
-    against <= 'נגד'
     against <= against_radio
-    against <= html.BR()
+    against <= html.DIV('נגד')
     against <= html.DIV(
         html.SPAN(Class='glyphicon glyphicon-arrow-left',
             style={'float': 'right', 'padding-right': '2px'}))
     against <= html.DIV(style={'clear': 'both', 'height': '5px'})
 
     in_favor <= for_radio
-    in_favor <= 'בעד'
-    in_favor <= html.BR()
+    in_favor <= html.DIV('בעד')
     in_favor <= html.DIV(
         html.SPAN(Class='glyphicon glyphicon-arrow-right',
             style={'float': 'left', 'padding-left': '2px'}))
     in_favor <= html.DIV(style={'clear': 'both', 'height': '5px'})
 
-    skip <= 'לא בטוח? '
-    skip <= html.SPAN('דלג לשאלה הבאה', style={'text-decoration': 'underline'})
     skip <= skip_radio
+    skip <= html.SPAN('לא בטוח? ')
+    skip <= html.SPAN('דלג לשאלה הבאה', style={'text-decoration': 'underline'})
 
     title = data.get('vt_title')
     if not title:
