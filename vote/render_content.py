@@ -69,10 +69,12 @@ def question_panel(data):
     content <= html.H3(title)
 
     description = data.get('vt_description') or data['summary']
-    too_long = 600
+    too_long = 700
     if description and len(description) > too_long:
         tooltip = description
-        description = description[:too_long-3]+'...'
+        # it is silly to open the tooltip for one extra word..
+        cut_at = too_long - 200
+        description = description[:cut_at]+'...'
     else:
         tooltip = None
     if tooltip:
