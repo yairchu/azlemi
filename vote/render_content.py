@@ -219,3 +219,8 @@ def render_results(results_dest, results_small, progress_dest, res):
             cell = '%.0f%%'%(100*score[k])
             row <= html.TD(cell, dir='ltr')
         table_body <= row
+
+    if num_answers > 0:
+        results_dest <= html.A('התחל מההתחלה', href='/restart/')
+
+    results_dest <= html.BR()
