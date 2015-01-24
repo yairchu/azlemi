@@ -274,7 +274,8 @@ def get_question(request):
 
     question_set = choose_question_set(already_asked)
     question_id = random.choice(list(question_set))
-    return HttpResponse(json.dumps(export_vote(fetch_vote(question_id))))
+    return HttpResponse(
+        json.dumps(export_vote(fetch_vote(question_id)), ensure_ascii=False))
 
 def save_vote(request):
     track_changes(request)
