@@ -181,8 +181,20 @@ def render_results(results_dest, results_small, progress_dest, res):
                 }),
         Class='progress')
 
+    results_table = html.TABLE(Class='table table-striped')
+    results_dest <= results_table
+    header_row = html.TR()
+    header_row <= html.TH('מקום', style={'text-align': 'right'})
+    header_row <= html.TH('מפלגה', style={'text-align': 'right'})
+    header_row <= html.TH('איתך')
+    header_row <= html.TH('נגדך')
+    header_row <= html.TH('סה״כ')
+    results_table <= html.THEAD(header_row)
+    table_body = html.TBODY()
+    results_table <= table_body
+
     if not results:
-        results_dest <= html.TR(html.TD(no_result_text, colspan=5))
+        table_body <= html.TR(html.TD(no_result_text, colspan=5))
         return
 
     results_small <= html.B('תוצאות:')
@@ -206,4 +218,4 @@ def render_results(results_dest, results_small, progress_dest, res):
         for k in [1, -1, 'overall']:
             cell = '%.0f%%'%(100*score[k])
             row <= html.TD(cell, dir='ltr')
-        results_dest <= row
+        table_body <= row
