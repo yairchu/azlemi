@@ -1,0 +1,167 @@
+<!doctype html>
+<html dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>אתר כזה לקראת הבחירות</title>
+  <script type="text/javascript" src="/static/brython/src/brython.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
+  <style type="text/css">
+    .table-packed>thead>tr>td, .table-packed>tbody>tr>td,
+    .table-packed>thead>tr>th, .table-packed>tbody>tr>th {
+      padding-left: 1px;
+      padding-right: 1px;
+    }
+    .bigger-font {
+      font-size: 16px;
+    }
+    .table-packed {
+      font-size: 12px;
+      min-width: 580px;
+    }
+    @media (max-width:767px) {
+      .table-packed {
+        font-size: 10px;
+      }
+    }
+    a:hover {
+      text-decoration: none;
+    }
+
+    .intro {
+      background-image: url("/static/crossing-by-steven-lewis-cropped-light.jpg");
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin-bottom: 40px;
+      color: white;
+      font-size: 20px;
+      text-shadow: -0.5px 0.5px 2px black;
+    }
+
+    @media (max-width:1050px) {
+      .intro {
+        background-size: auto 100%;
+      }
+    }
+
+    .logo-left {
+      background-image: url("/static/logo-left.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: auto 66%;
+      width: 240px;
+      height: 240px;
+      float: left;
+    }
+
+    .question-box {
+      background-color: #eee;
+      padding: 5px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      box-shadow: -3px 3px 7px #aaa;
+      min-height: 170px;
+    }
+
+    .question-box>div {
+      background-color: white;
+      padding: 5px;
+    }
+
+    .question-box table {
+      background-color: white;
+      margin-bottom: 0; // bootstrap defaults to 20px..
+    }
+
+    /* tooltip based on http://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/ */
+    .has-tooltip{
+      position: relative;
+    }
+
+    .has-tooltip:hover:after{
+      background: #333;
+      background: rgba(0,0,0,.8);
+      border-radius: 5px;
+      top: 70px;
+      color: #fff;
+      content: attr(tooltip);
+      right: 15%;
+      padding: 5px 15px;
+      position: absolute;
+      z-index: 98;
+      width: 650px;
+      font-size: 12px;
+    }
+  </style>
+  {% block head-extra %} {% endblock %}
+</head>
+<body onload="brython(debug=1)">
+  <script type="text/javascript">
+    // Work around https://github.com/yairchu/vote_tool/issues/1
+    // Looks like brython sometimes confuses its brython_path..
+    __BRYTHON__.brython_path = "/static/brython/src/"
+  </script>
+  {% block body-scripts %} {% endblock %}
+  <div style="background: #3fa9f5;">
+    <div class="container" style="color: white; text-align: center; height: 80px; line-height: 80px;">
+      <div style="float: left; font-size: 24px;">
+        <a target="_blank" href="https://github.com/yairchu/vote_tool/wiki" style="color: #fff; text-decoration: underline;">
+          (טיוטא די ראשונית בהחלט!)
+        </a>
+      </div>
+      <div style="float: right; font-size: 30px;">
+        <img src="/static/box.svg" height=35 style="padding-left: 12px;" />
+        אז למי להצביע?
+      </div>
+    </div>
+  </div>
+  <div class="intro">
+    <div style="z-index: 1; background: rgba(40, 95, 143, 0.5);">
+      <div class="container">
+        <div class="logo-left">
+        </div>
+        <div style="padding-top: 50px; padding-bottom: 50px;">
+          <p>
+            לקראת הבחירות המתקרבות,
+            הכנו (אנחנו עוד מכינים אותו) אתר
+            ששואל אתכם לדעתכם על הצבעות בכנסת,
+            ומראה לכם איזה מפלגות הצביעו כמוכם
+            ומדרג אותן לפי ההתאמה אליכם.
+          </p>
+          <p>
+            הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים
+            לגבש דעה מודעת על המפלגות השונות,
+            שלא על סמך פרשנויות על מצע או הוייב,
+            אלא תכלס על סמך הצבעות בפועל.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% block content %} {% endblock %}
+  <div id="debug" dir="ltr" class="row"></div>
+  <footer>
+    <div class="container" style="text-align: center;">
+      <p>
+        אתר עוד לא גמור מאת
+        <a target="_blank" href="https://www.facebook.com/yairchu">יאיר</a>,
+        <a target="_blank" href="https://www.facebook.com/tamar.akavia">תמר</a>,
+        ומי שעוד
+        <a href="https://github.com/yairchu/vote_tool/wiki#משימות">יעזור להם</a>
+      </p>
+      <p>
+        מבוסס על מאגר המידע של
+        <a target="_blank" href="https://oknesset.org">
+          ״כנסת פתוחה״
+          <img src="/static/oknesset_icon_black.png" />
+        </a>
+      </p>
+      <p>
+        <a target="_blank" href="https://github.com/yairchu/vote_tool/wiki">על האתר</a>
+        <a href="/restart/">אפס מצב</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
