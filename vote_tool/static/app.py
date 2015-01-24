@@ -103,11 +103,11 @@ class Game:
         self.questions.append(question)
 
     def update_results(self):
+        user_answers = dict(
+            (q.data['id'], q.answer) for q in self.questions
+            if q.answer is not None)
         results = calc_results(
-            dict((q.data['id'], q.data) for q in self.questions),
-            dict((q.data['id'], q.answer) for q in self.questions
-                if q.answer is not None),
-            )
+            dict((q.data['id'], q.data) for q in self.questions), user_answers)
 
         document['results'].clear()
         document['results-small'].clear()
@@ -115,7 +115,7 @@ class Game:
         render_results(
             document['results'], document['results-small'],
             document['progress-bar'],
-            results)
+            results, user_answers)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])

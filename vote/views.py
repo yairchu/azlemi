@@ -103,7 +103,7 @@ def home(request):
     small_results_html = html.DIV(id='results-small', style={'color': 'gray'})
     progress_html = html.DIV(id='progress-bar')
     render_content.render_results(
-        results_html, small_results_html, progress_html, results)
+        results_html, small_results_html, progress_html, results, user_answers)
 
     start_votes = [
         x for x in
@@ -128,6 +128,34 @@ def home(request):
         'progress_html': progress_html,
         }
     return render(request, 'vote/home.html', context)
+
+def publish(request):
+    vote_ids = [
+        int(x[1:])
+        for x in request.GET.keys()
+        if x.startswith('q')]
+    votes = [
+        export_vote(v) for v in
+        models.Vote.objects.filter(id__in=tuple(vote_ids)).order_by('id')]
+
+    context = {
+        'questions': []
+        }
+    for vote in votes:
+        vote['answer'] = int(request.GET['q%d' % vote['id']])
+        party_votes = html.DIV(Class='table-responsive')
+        render_content.question_party_votes(party_votes, vote, vote['answer'])
+        vote['party_votes_html'] = party_votes
+        context['questions'].append(vote)
+
+    user_answers = dict((q['id'], q['answer']) for q in votes)
+    (results, _) = render_content.calc_results(
+        dict((q['id'], q) for q in votes),
+        user_answers)
+    results_html = render_content.render_results_table(results)
+    context['results_html'] = results_html
+
+    return render(request, 'vote/publish.html', context)
 
 def track_changes(request):
     prev_state = request.session.get('state', {})

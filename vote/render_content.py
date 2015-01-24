@@ -25,10 +25,10 @@ def question_panel(data):
     skip = html.DIV()
     party_votes_doc = html.DIV(id='q%d_party_votes'%data['id'], Class='table-responsive')
 
-    panel <= html.LABEL(against, Class='answer-button answer-against')
-    panel <= html.LABEL(in_favor, Class='answer-button answer-for')
+    panel <= html.LABEL(against, Class='answer answer-button answer-against')
+    panel <= html.LABEL(in_favor, Class='answer answer-button answer-for')
     panel <= content
-    panel <= html.LABEL(skip, Class='answer-skip')
+    panel <= html.LABEL(skip, Class='answer answer-skip')
     panel <= party_votes_doc
 
     against_radio = html.INPUT(type='radio', name=str(data['id']), value='-1')
@@ -151,7 +151,41 @@ def calc_results(questions, user_answers):
         results[party_name] = s
     return results, num_answers
 
-def render_results(results_dest, results_small, progress_dest, res):
+def sorted_results(results):
+    def key(x):
+        return (-x[1]['overall'], x[0])
+    prev_score = None
+    for idx, (party_name, score) in enumerate(sorted(list(results.items()), key=key)):
+        if idx == 0 or score['overall'] < prev_score['overall']:
+            pos = idx+1
+        prev_score = score
+        yield pos, party_name, score
+
+def render_results_table(results):
+    results_table = html.TABLE(Class='table table-striped')
+    header_row = html.TR()
+    header_row <= html.TH('מקום', style={'text-align': 'right'})
+    header_row <= html.TH('מפלגה', style={'text-align': 'right'})
+    header_row <= html.TH('איתך')
+    header_row <= html.TH('נגדך')
+    header_row <= html.TH('סה״כ')
+    results_table <= html.THEAD(header_row)
+    table_body = html.TBODY()
+    results_table <= table_body
+    if not results:
+        table_body <= html.TR(html.TD(no_result_text, colspan=5))
+        return
+    for pos, party_name, score in sorted_results(results):
+        row = html.TR()
+        row <= html.TD(str(pos))
+        row <= html.TD(party_name)
+        for k in [1, -1, 'overall']:
+            cell = '%.0f%%'%(100*score[k])
+            row <= html.TD(cell, dir='ltr')
+        table_body <= row
+    return results_table
+
+def render_results(results_dest, results_small, progress_dest, res, user_answers):
     (results, num_answers) = res
 
     if num_answers == 1:
@@ -170,44 +204,27 @@ def render_results(results_dest, results_small, progress_dest, res):
                 }),
         Class='progress')
 
-    results_table = html.TABLE(Class='table table-striped')
-    results_dest <= results_table
-    header_row = html.TR()
-    header_row <= html.TH('מקום', style={'text-align': 'right'})
-    header_row <= html.TH('מפלגה', style={'text-align': 'right'})
-    header_row <= html.TH('איתך')
-    header_row <= html.TH('נגדך')
-    header_row <= html.TH('סה״כ')
-    results_table <= html.THEAD(header_row)
-    table_body = html.TBODY()
-    results_table <= table_body
+    results_dest <= render_results_table(results)
 
     if not results:
-        table_body <= html.TR(html.TD(no_result_text, colspan=5))
         return
 
     results_small <= html.B('תוצאות:')
 
-    def key(x):
-        return (-x[1]['overall'], x[0])
-    prev_score = None
-    for idx, (party_name, score) in enumerate(sorted(list(results.items()), key=key)):
-        if idx == 0 or score['overall'] < prev_score['overall']:
-            pos = idx+1
-        prev_score = score
-
-        row = html.TR()
+    for pos, party_name, score in sorted_results(results):
         short_name = '%d. %s' % (
             pos, short_name_of_long_name.get(party_name, party_name))
-        pos_txt = str(pos)
         results_small <= html.BR()
         results_small <= short_name
-        row <= html.TD(pos_txt)
-        row <= html.TD(party_name)
-        for k in [1, -1, 'overall']:
-            cell = '%.0f%%'%(100*score[k])
-            row <= html.TD(cell, dir='ltr')
-        table_body <= row
+
+    if num_answers >= num_questions_to_answer:
+        query = '&'.join(
+            'q%d=%d'%(k, v) for k, v in sorted(user_answers.items()) if v)
+        results_dest <= html.DIV(
+            html.A(
+                'שתף את התוצאות שלי!', href='/publish/?'+query,
+                Class='btn btn-lg btn-success'),
+            style={'text-align': 'center', 'margin': '5px'})
 
     if num_answers > 0:
         results_dest <= html.A('התחל מההתחלה', href='/restart/')

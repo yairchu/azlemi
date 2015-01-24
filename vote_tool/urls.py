@@ -3,6 +3,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     url(r'^$', 'vote.views.home'),
+    url(r'^publish/$', 'vote.views.publish'),
     url(r'^get_question/$', 'vote.views.get_question'),
     url(r'^save_vote/$', 'vote.views.save_vote'),
     url(r'^restart/$', 'vote.views.restart'),

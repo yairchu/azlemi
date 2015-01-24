@@ -1,0 +1,51 @@
+{% extends "vote/base.html" %}
+
+{% block content %}
+
+  <div class="container-fluid">
+    <div class="row bigger-font">
+      <div class="col-md-8 col-md-offset-2" role="main">
+        <h2> ההצבעות שלי: </h2>
+
+        {% for question in questions %}
+
+          <div class='question-box'>
+            <div>
+              {{question.title}}:
+              {% if question.answer == 1 %}
+                <span class='answer answer-for'>
+                  בעד.
+                </span>
+              {% else %}
+                <span class='answer answer-against'>
+                  נגד.
+                </span>
+              {% endif %}
+              <br>
+              <a href="https://oknesset.org/vote/{{question.id}}">
+                מידע נוסף
+              </a>
+              <br>
+              {{question.party_votes_html|safe}}
+            </div>
+          </div>
+
+        {% endfor %}
+
+      </div>
+    </div>
+    <div class="row bigger-font">
+      <div class="col-md-6 col-md-offset-4">
+        <h2> התוצאות שלי: </h2>
+
+        {{results_html|safe}}
+
+        <div style='text-align: center;'>
+          <a href='/' class='btn btn-lg btn-success'>שחק גם!</a>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
