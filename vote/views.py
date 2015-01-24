@@ -78,7 +78,6 @@ def home(request):
         int(x[1:])
         for x in request.session.get('questions_order', [])
         if x.startswith('q')]
-    print(prev_question_ids)
     prev_questions = [
         export_vote(v) for v in
         models.Vote.objects.filter(id__in=tuple(prev_question_ids))]
@@ -241,10 +240,20 @@ def calc_party_votes(vote):
 def export_vote(vote):
     vote_raw_json = bytes(vote.oknesset_data).decode('utf8')
     vote_json = json.loads(vote_raw_json)
-    for key in ['vt_title', 'vt_description']:
-        val = getattr(vote, key, None)
-        if val:
-            vote_json[key] = val
+    if vote.vt_title:
+        vote_json['title'] = vote.vt_title
+    else:
+        title = vote_json['title']
+        for prefix in [
+            'להעביר את הצעת החוק לוועדה - ',
+            'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
+            'הצבעה -',
+            ]:
+            if title.startswith(prefix):
+                vote_json['title'] = vote_json['title'][len(prefix):]
+                break
+    if vote.vt_description:
+        vote_json['summary'] = vote.vt_description
     vote_json['knesset_id'] = knesset_of_vote(vote_json)
     vote_json['party_votes'] = calc_party_votes(vote_json)
     return vote_json

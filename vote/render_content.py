@@ -53,20 +53,9 @@ def question_panel(data):
     skip <= html.SPAN('לא בטוח? ')
     skip <= html.SPAN('דלג לשאלה הבאה', style={'text-decoration': 'underline'})
 
-    title = data.get('vt_title')
-    if not title:
-        title = data['title']
-        for prefix in [
-            'להעביר את הצעת החוק לוועדה - ',
-            'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
-            'הצבעה -',
-            ]:
-            if title.startswith(prefix):
-                title = title[len(prefix):]
-                break
-    content <= html.H3(title)
+    content <= html.H3(data['title'])
 
-    description = data.get('vt_description') or data['summary']
+    description = data['summary']
     too_long = 700
     if description and len(description) > too_long:
         tooltip = description
