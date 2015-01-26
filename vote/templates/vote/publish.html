@@ -1,27 +1,46 @@
 {% extends "vote/base.html" %}
 
+{% block head-extra %}
+  <style type="text/css">
+    a.question-title {
+      color: black;
+    }
+    .question-expand {
+      color: #88f;
+      margin-left: 5px;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
 
   <div class="container-fluid">
     <div class="row bigger-font">
       <div class="col-md-8 col-md-offset-2" role="main">
+
         <h2> ההצבעות שלי: </h2>
 
         {% for question in questions %}
 
-          <div class='question-box'>
+          <a class='question-title' data-toggle="collapse" href='#q{{question.id}}-body' aria-expanded="false" aria-controls="q{{question.id}}-body">
+            <span class="glyphicon glyphicon-plus question-expand"></span>
+            {{question.title}}:
+            {% if question.answer == 1 %}
+              <span class='answer answer-for'>
+                בעד.
+              </span>
+            {% else %}
+              <span class='answer answer-against'>
+                נגד.
+              </span>
+            {% endif %}
+          </a>
+          <div class="collapse question-box" id="q{{question.id}}-body">
             <div>
-              {{question.title}}:
-              {% if question.answer == 1 %}
-                <span class='answer answer-for'>
-                  בעד.
-                </span>
-              {% else %}
-                <span class='answer answer-against'>
-                  נגד.
-                </span>
+              {% if question.summary %}
+                {{question.summary|safe}}
+                <br>
               {% endif %}
-              <br>
               <a href="https://oknesset.org/vote/{{question.id}}">
                 מידע נוסף
               </a>
@@ -29,6 +48,8 @@
               {{question.party_votes_html|safe}}
             </div>
           </div>
+
+          <br>
 
         {% endfor %}
 
@@ -47,5 +68,8 @@
       </div>
     </div>
   </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 {% endblock %}

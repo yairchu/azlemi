@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <title>אתר כזה לקראת הבחירות</title>
-  <script type="text/javascript" src="/static/brython/src/brython.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
   <style type="text/css">
@@ -58,8 +57,6 @@
     .question-box {
       background-color: #eee;
       padding: 5px;
-      margin-top: 20px;
-      margin-bottom: 20px;
       box-shadow: -3px 3px 7px #aaa;
     }
 
@@ -107,7 +104,9 @@
   </style>
   {% block head-extra %} {% endblock %}
 </head>
-<body onload="brython(1)">
+{% block body-tag %}
+  <body>
+{% endblock %}
   {% block body-scripts %} {% endblock %}
   <div style="background: #3fa9f5;">
     <div class="container" style="color: white; text-align: center; height: 80px; line-height: 80px;">

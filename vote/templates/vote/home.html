@@ -2,6 +2,11 @@
 
 {% block head-extra %}
   <style type="text/css">
+    .question-box {
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+
     .answer-button {
       background-color: #eee;
       margin-top: 50px;
@@ -62,7 +67,13 @@
       visibility: hidden;
     }
   </style>
+  <script type="text/javascript" src="/static/brython/src/brython.js"></script>
 {% endblock %}
+
+{% block body-tag %}
+  <body onload="brython(1)">
+{% endblock %}
+
 {% block body-scripts %}
   <script type="text/python">
     prev_questions = {{prev_questions|safe}}
