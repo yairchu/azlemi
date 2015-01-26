@@ -165,6 +165,7 @@ def publish(request, votes_str):
     context = {
         'questions': questions,
         'results_html': render_content.render_results_table(results),
+        'url': request.get_host()+request.path,
         }
     return render(request, 'vote/publish.html', context)
 

@@ -1,6 +1,8 @@
 {% extends "vote/base.html" %}
 
 {% block head-extra %}
+  <meta property="og:url" content="http://{{url|safe}}image.png" />
+
   <style type="text/css">
     a.question-title {
       color: black;
@@ -13,6 +15,14 @@
 {% endblock %}
 
 {% block content %}
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
 
   <div class="container-fluid">
     <div class="row bigger-font">
@@ -62,7 +72,9 @@
         {{results_html|safe}}
 
         <div style='text-align: center;'>
-          <a href='/' class='btn btn-lg btn-success'>שחק גם!</a>
+          <div class="fb-share-button" data-href="http://{{url|safe}}" data-layout="button_count"></div>
+          <br>
+          <a style="margin-top: 7px;" href='/' class='btn btn-lg btn-success'>שחק גם!</a>
         </div>
         <br>
       </div>
