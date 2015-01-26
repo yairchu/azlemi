@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import platform
 import random
 import urllib.request
 
@@ -191,6 +192,8 @@ def publish_image_svg(votes_str, process_text=identity, text_anchor_start='start
         'questions': questions,
         'results': ordered_results,
         'logo': logo,
+        'text_args':
+            'font-family="arial"' if platform.system() == 'Darwin' else '',
         }
     return loader.get_template('vote/publish_image.svg').render(Context(context))
 
