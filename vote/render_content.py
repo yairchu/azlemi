@@ -58,16 +58,19 @@ def question_panel(data):
     description = data['summary']
     too_long = 700
     if description and len(description) > too_long:
-        tooltip = description
         # it is silly to open the tooltip for one extra word..
-        cut_at = too_long - 200
+        cut_at = len(description[:too_long - 200].rsplit(' ', 1)[0])+1
+        tooltip = description[cut_at:]
         description = description[:cut_at]+'...'
     else:
         tooltip = None
     if tooltip:
-        summary = html.P(
-            tooltip=tooltip.replace('<br>', ' '),
-            Class='has-tooltip')
+        summary = html.P(**{
+            'data-original-title': tooltip,
+            'data-toggle': 'tooltip',
+            'data-placement': 'bottom',
+            'data-html': 'true',
+            })
     else:
         summary = html.P()
     if description:

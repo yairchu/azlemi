@@ -80,26 +80,6 @@
     .answer-for {
       color: #69c134;
     }
-
-    /* tooltip based on http://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/ */
-    .has-tooltip{
-      position: relative;
-    }
-
-    .has-tooltip:hover:after{
-      background: #333;
-      background: rgba(0,0,0,.8);
-      border-radius: 5px;
-      top: 70px;
-      color: #fff;
-      content: attr(tooltip);
-      right: 15%;
-      padding: 5px 15px;
-      position: absolute;
-      z-index: 98;
-      width: 650px;
-      font-size: 12px;
-    }
   </style>
   {% block head-extra %} {% endblock %}
 </head>
@@ -166,5 +146,12 @@
       </p>
     </div>
   </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  {% block body-end-scripts %}
+  {% endblock %}
+
 </body>
 </html>

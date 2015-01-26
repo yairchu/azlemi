@@ -70,6 +70,12 @@
     .answer-skip input {
       visibility: hidden;
     }
+
+    .tooltip-inner {
+      max-width: 600px;
+      font-size: 14px;
+      background-color: #444;
+    }
   </style>
   <script type="text/javascript" src="/static/brython/src/brython.js"></script>
 {% endblock %}
@@ -121,4 +127,13 @@
       </div>
     </div>
   </div>
+
+{% endblock %}
+
+{% block body-end-scripts %}
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
 {% endblock %}
