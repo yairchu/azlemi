@@ -5,8 +5,9 @@ import random
 import urllib.request
 
 from django.contrib.sessions.models import Session
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.template import Context, loader
 
 from browser import html
 
@@ -129,7 +130,7 @@ def home(request):
         }
     return render(request, 'vote/home.html', context)
 
-def publish(request, votes_str):
+def publish_data(votes_str):
     user_answers = {}
     vote_ids = []
     for part in votes_str.split('&'):
@@ -143,22 +144,56 @@ def publish(request, votes_str):
         vote = export_vote(vote)
         votes[vote['id']] = vote
 
-    context = {
-        'questions': []
-        }
+    questions = []
     for vote_id in vote_ids:
         vote = votes[vote_id]
         vote['answer'] = user_answers[vote_id]
         party_votes = html.DIV(Class='table-responsive')
         render_content.question_party_votes(party_votes, vote, vote['answer'])
         vote['party_votes_html'] = party_votes
-        context['questions'].append(vote)
+        questions.append(vote)
 
     (results, _) = render_content.calc_results(votes, user_answers)
-    results_html = render_content.render_results_table(results)
-    context['results_html'] = results_html
 
+    return questions, results
+
+def publish(request, votes_str):
+    questions, results = publish_data(votes_str)
+    context = {
+        'questions': questions,
+        'results_html': render_content.render_results_table(results),
+        }
     return render(request, 'vote/publish.html', context)
+
+def publish_image_svg(votes_str):
+    questions, results = publish_data(votes_str)
+    for i, q in enumerate(questions):
+        q['y'] = 55*i
+    ordered_results = []
+    for i, (pos, party_name, score) in enumerate(
+        render_content.sorted_results(results)):
+        ordered_results.append({
+            'y': 15 + 45*i,
+            'pos': pos,
+            'name': party_name,
+            })
+    logo = open(dirname+'/../vote_tool/static/logo.svg'
+        ).read().split('<svg', 1)[1].split('>', 1)[1].rsplit('</svg>',1)[0]
+    context = {
+        'questions': questions,
+        'results': ordered_results,
+        'logo': logo,
+        }
+    return loader.get_template('vote/publish_image.svg').render(Context(context))
+
+def publish_image(request, votes_str, extension):
+    svg = publish_image_svg(votes_str)
+    if extension == 'svg':
+        return HttpResponse(svg, content_type='image/svg+xml')
+    # TODO: add PNG support for facebook sharing
+    # elif extension == 'png':
+    #     return HttpResponse(cairosvg.svg2png(bytestring=svg), content_type='image/png')
+    raise Http404
 
 def track_changes(request):
     prev_state = request.session.get('state', {})
