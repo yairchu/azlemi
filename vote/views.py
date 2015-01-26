@@ -4,6 +4,7 @@ import os
 import random
 import urllib.request
 
+import bidi.algorithm
 import cairosvg
 from django.contrib.sessions.models import Session
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -166,21 +167,27 @@ def publish(request, votes_str):
         }
     return render(request, 'vote/publish.html', context)
 
-def publish_image_svg(votes_str):
+def identity(x):
+    return x
+
+def publish_image_svg(votes_str, process_text=identity, text_anchor_start='start'):
     questions, results = publish_data(votes_str)
     for i, q in enumerate(questions):
         q['y'] = 55*i
+        q['title'] = process_text(q['title'])
+        q['color'] = '#69c134' if q['answer'] == 1 else '#fb001d'
     ordered_results = []
     for i, (pos, party_name, score) in enumerate(
         render_content.sorted_results(results)):
         ordered_results.append({
             'y': 15 + 45*i,
-            'pos': pos,
-            'name': party_name,
+            'text': process_text('%d. %s' % (pos, party_name)),
             })
     logo = open(dirname+'/../vote_tool/static/logo.svg'
         ).read().split('<svg', 1)[1].split('>', 1)[1].rsplit('</svg>',1)[0]
     context = {
+        'text_anchor_start': text_anchor_start,
+        'my_results_text': process_text('התוצאות שלי:'),
         'questions': questions,
         'results': ordered_results,
         'logo': logo,
@@ -188,10 +195,15 @@ def publish_image_svg(votes_str):
     return loader.get_template('vote/publish_image.svg').render(Context(context))
 
 def publish_image(request, votes_str, extension):
-    svg = publish_image_svg(votes_str)
     if extension == 'svg':
+        svg = publish_image_svg(votes_str)
         return HttpResponse(svg, content_type='image/svg+xml')
     elif extension == 'png':
+        svg = publish_image_svg(
+            votes_str,
+            process_text=bidi.algorithm.get_display,
+            text_anchor_start='end',
+            )
         return HttpResponse(cairosvg.svg2png(bytestring=svg), content_type='image/png')
     raise Http404
 

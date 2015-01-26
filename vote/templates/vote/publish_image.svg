@@ -12,17 +12,8 @@
   <g clip-path="url(#clip-a)">
     <g transform="translate(0 -45) rotate(5)">
       {% for question in questions %}
-        <text text-anchor="middle" x="1200" y="{{question.y}}" font-size="30" font-family="arial">
-          {{ question.title }}:
-          {% if question.answer == 1 %}
-            <tspan fill="#69c134" font-size="40">
-              בעד.
-            </tspan>
-          {% else %}
-            <tspan fill="#fb001d" font-size="40">
-              נגד.
-            </tspan>
-          {% endif %}
+        <text text-anchor="middle" x="1200" y="{{question.y}}" font-size="30" font-family="arial" fill="{{question.color}}">
+          {{ question.title }}
         </text>
       {% endfor %}
     </g>
@@ -32,13 +23,12 @@
 
   <g clip-path="url(#clip-b)">
     <g transform="rotate(-30) translate(0 300)">
-      <text x="220" y="-40" font-size="40" font-family="arial">
-        התוצאות שלי:
+      <text text-anchor="{{text_anchor_start}}" x="220" y="-40" font-size="40" font-family="arial">
+        {{my_results_text}}
       </text>
       {% for result in results %}
-        <text x="220" y="{{result.y}}" font-size="30" font-family="arial">
-          {{result.pos}}.
-          {{result.name}}
+        <text text-anchor="{{text_anchor_start}}" x="220" y="{{result.y}}" font-size="30" font-family="arial">
+          {{result.text}}
         </text>
       {% endfor %}
     </g>
