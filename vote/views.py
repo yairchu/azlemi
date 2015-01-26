@@ -136,12 +136,16 @@ def home(request):
 def publish_data(votes_str):
     user_answers = {}
     vote_ids = []
-    for part in votes_str.split('&'):
-        key_str, val_str = part.split('=', 1)
-        assert key_str.startswith('q')
-        vote_id = int(key_str[1:])
+    assert votes_str.startswith('q')
+    for part in votes_str.split('q')[1:]:
+        if part.endswith('f'):
+            val = 1
+        else:
+            assert part.endswith('a')
+            val = -1
+        vote_id = int(part[:-1])
         vote_ids.append(vote_id)
-        user_answers[vote_id] = int(val_str)
+        user_answers[vote_id] = val
     votes = {}
     for vote in models.Vote.objects.filter(id__in=tuple(vote_ids)):
         vote = export_vote(vote)
