@@ -4,6 +4,7 @@ import os
 import random
 import urllib.request
 
+import cairosvg
 from django.contrib.sessions.models import Session
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -190,9 +191,8 @@ def publish_image(request, votes_str, extension):
     svg = publish_image_svg(votes_str)
     if extension == 'svg':
         return HttpResponse(svg, content_type='image/svg+xml')
-    # TODO: add PNG support for facebook sharing
-    # elif extension == 'png':
-    #     return HttpResponse(cairosvg.svg2png(bytestring=svg), content_type='image/png')
+    elif extension == 'png':
+        return HttpResponse(cairosvg.svg2png(bytestring=svg), content_type='image/png')
     raise Http404
 
 def track_changes(request):
