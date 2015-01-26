@@ -14,19 +14,43 @@
       color: #88f;
       margin-left: 5px;
     }
+    .fb-comments {
+      padding-top: 5px;
+    }
   </style>
 {% endblock %}
 
-{% block content %}
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
+{% block body-scripts %}
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '431006867066641',
+        xfbml      : true,
+        version    : 'v2.2'
+      });
+      {% if share %}
+        window.setTimeout(function() {
+          FB.ui({
+            method: 'share',
+            href: 'http://{{url|safe}}',
+          }, function(response){});
+        }, 5000);
+      {% endif %}
+    };
 
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+  <div id="fb-root"></div>
+{% endblock %}
+
+{% block content %}
   <div class="container-fluid">
     <div class="row bigger-font">
       <div class="col-md-8 col-md-offset-2" role="main">
@@ -35,7 +59,7 @@
 
         {% for question in questions %}
 
-          <a class='question-title' data-toggle="collapse" href='#q{{question.id}}-body' aria-expanded="false" aria-controls="q{{question.id}}-body">
+          <a class="question-title" id="q{{question.id}}" data-toggle="collapse" href="#q{{question.id}}-body" aria-expanded="false" aria-controls="q{{question.id}}-body">
             <span class="glyphicon glyphicon-plus question-expand"></span>
             {{question.title}}:
             {% if question.answer == 1 %}
@@ -73,6 +97,8 @@
         <h2> התוצאות שלי: </h2>
 
         {{results_html|safe}}
+
+        <div class="fb-comments" data-href="http://{{url}}" data-numposts="5" data-colorscheme="light"></div>
 
         <div style='text-align: center;'>
           <div class="fb-share-button" data-href="http://{{url|safe}}" data-layout="button_count"></div>

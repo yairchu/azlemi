@@ -170,6 +170,7 @@ def publish(request, votes_str):
         'questions': questions,
         'results_html': render_content.render_results_table(results),
         'url': request.get_host()+request.path,
+        'share': request.GET.get('share', False),
         }
     return render(request, 'vote/publish.html', context)
 
