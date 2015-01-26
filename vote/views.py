@@ -255,12 +255,12 @@ def fetch_vote(vote_id):
 
 def choose_question_set(already_asked):
     result = set()
-    if random.random() < 0.9:
+    if random.random() < 0.95:
         result = set(
             x.id for x in
             models.Vote.objects.filter(is_interesting = True)
             ) - already_asked
-    if not result and random.random() < 0.6:
+    if not result and random.random() < 0.9:
         result = set(
             x.id for x in
             models.Vote.objects.filter(
