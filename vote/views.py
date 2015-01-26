@@ -129,29 +129,32 @@ def home(request):
         }
     return render(request, 'vote/home.html', context)
 
-def publish(request):
-    vote_ids = [
-        int(x[1:])
-        for x in request.GET.keys()
-        if x.startswith('q')]
-    votes = [
-        export_vote(v) for v in
-        models.Vote.objects.filter(id__in=tuple(vote_ids)).order_by('id')]
+def publish(request, votes_str):
+    user_answers = {}
+    vote_ids = []
+    for part in votes_str.split('&'):
+        key_str, val_str = part.split('=', 1)
+        assert key_str.startswith('q')
+        vote_id = int(key_str[1:])
+        vote_ids.append(vote_id)
+        user_answers[vote_id] = int(val_str)
+    votes = {}
+    for vote in models.Vote.objects.filter(id__in=tuple(vote_ids)):
+        vote = export_vote(vote)
+        votes[vote['id']] = vote
 
     context = {
         'questions': []
         }
-    for vote in votes:
-        vote['answer'] = int(request.GET['q%d' % vote['id']])
+    for vote_id in vote_ids:
+        vote = votes[vote_id]
+        vote['answer'] = user_answers[vote_id]
         party_votes = html.DIV(Class='table-responsive')
         render_content.question_party_votes(party_votes, vote, vote['answer'])
         vote['party_votes_html'] = party_votes
         context['questions'].append(vote)
 
-    user_answers = dict((q['id'], q['answer']) for q in votes)
-    (results, _) = render_content.calc_results(
-        dict((q['id'], q) for q in votes),
-        user_answers)
+    (results, _) = render_content.calc_results(votes, user_answers)
     results_html = render_content.render_results_table(results)
     context['results_html'] = results_html
 

@@ -218,11 +218,11 @@ def render_results(results_dest, results_small, progress_dest, res, user_answers
         results_small <= short_name
 
     if num_answers >= num_questions_to_answer:
-        query = '&'.join(
+        votes_str = '&'.join(
             'q%d=%d'%(k, v) for k, v in sorted(user_answers.items()) if v)
         results_dest <= html.DIV(
             html.A(
-                'שתף את התוצאות שלי!', href='/publish/?'+query,
+                'שתף את התוצאות שלי!', href='/publish/%s/'%votes_str,
                 Class='btn btn-lg btn-success'),
             style={'text-align': 'center', 'margin': '5px'})
 
