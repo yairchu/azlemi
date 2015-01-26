@@ -107,12 +107,7 @@
   </style>
   {% block head-extra %} {% endblock %}
 </head>
-<body onload="brython(debug=1)">
-  <script type="text/javascript">
-    // Work around https://github.com/yairchu/vote_tool/issues/1
-    // Looks like brython sometimes confuses its brython_path..
-    __BRYTHON__.brython_path = "/static/brython/src/"
-  </script>
+<body onload="brython(1)">
   {% block body-scripts %} {% endblock %}
   <div style="background: #3fa9f5;">
     <div class="container" style="color: white; text-align: center; height: 80px; line-height: 80px;">
