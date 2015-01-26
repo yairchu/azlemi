@@ -1,7 +1,10 @@
 {% extends "vote/base.html" %}
 
 {% block head-extra %}
-  <meta property="og:url" content="http://{{url|safe}}image.png" />
+  <meta property="og:url" content="http://{{url|safe}}" />
+  <meta property="og:title" content="אילו מפלגות מצביעות כמוני?" />
+  <meta property="og:description" content="לפי הצבעתן בכנסת, לאילו מפלגות יש את ההתאמה הכי גדולה לדעותי?" />
+  <meta property="og:image" content="http://{{url|safe}}image.png" />
 
   <style type="text/css">
     a.question-title {
