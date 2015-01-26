@@ -12,7 +12,7 @@
   <g clip-path="url(#clip-a)">
     <g transform="translate(0 -45) rotate(5)">
       {% for question in questions %}
-        <text text-anchor="middle" x="1200" y="{{question.y}}" font-size="30">
+        <text text-anchor="middle" x="1200" y="{{question.y}}" font-size="30" font-family="arial">
           {{ question.title }}:
           {% if question.answer == 1 %}
             <tspan fill="#69c134" font-size="40">
@@ -32,11 +32,11 @@
 
   <g clip-path="url(#clip-b)">
     <g transform="rotate(-30) translate(0 300)">
-      <text x="220" y="-40" font-size="40">
+      <text x="220" y="-40" font-size="40" font-family="arial">
         התוצאות שלי:
       </text>
       {% for result in results %}
-        <text x="220" y="{{result.y}}" font-size="30">
+        <text x="220" y="{{result.y}}" font-size="30" font-family="arial">
           {{result.pos}}.
           {{result.name}}
         </text>
