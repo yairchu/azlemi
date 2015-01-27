@@ -81,16 +81,20 @@ ROOT_URLCONF = 'vote_tool.urls'
 
 WSGI_APPLICATION = 'vote_tool.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='postgres://%s@localhost/vote_tool' % os.getenv('USER')),
+    }
+    # Enable Connection Pooling (if desired)
+    DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -101,12 +105,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# Parse database configuration from $DATABASE_URL
-DATABASES['default'] =  dj_database_url.config(default='postgres://%s@localhost/vote_tool' % os.getenv('USER'))
-
-# Enable Connection Pooling (if desired)
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
