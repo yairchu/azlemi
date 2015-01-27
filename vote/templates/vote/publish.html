@@ -3,7 +3,7 @@
 {% block head-extra %}
   <title>אז למי להצביע - התוצאות שלי</title>
 
-  <meta property="og:title" content="המפלגה שהכי מצביעה כמוני: {{top_party}}" />
+  <meta property="og:title" content="{{summary|safe}}" />
   <meta property="og:site_name" content="אז למי?" />
   <meta property="og:url" content="http://{{url|safe}}" />
   <meta property="og:description" content="המפלגות שהצבעותיהן בכנסת הכי מתאימות לי הן: {{results_summary}}" />
@@ -30,7 +30,7 @@
 
 {% block body-scripts %}
   <script>
-    share = function() {
+    facebook_share = function() {
       FB.ui({
         method: 'share',
         href: 'http://{{url|safe}}',
@@ -80,7 +80,7 @@
           </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="share()">שתף!</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="facebook_share()">שתף!</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">רגע.. תן לראות קודם ואז אשתף!</button>
         </div>
       </div>
@@ -141,9 +141,10 @@
         <div class="fb-comments" data-href="http://{{url}}" data-numposts="5" data-colorscheme="light"></div>
 
         <div style='text-align: center;'>
-          <button style="margin-top: 7px;" class='btn btn-lg btn-primary' onclick="share()">שתף בפייסבוק!</button>
+
+          <button style="margin-top: 7px;" class="btn btn-lg btn-primary" onclick="facebook_share()">שתף בפייסבוק!</button>
           <br>
-          <a style="margin-top: 7px;" href='/' class='btn btn-lg btn-success'>שחק גם!</a>
+          <a style="margin-top: 7px;" href="/" class="btn btn-lg btn-success">שחק גם!</a>
         </div>
         <br>
       </div>

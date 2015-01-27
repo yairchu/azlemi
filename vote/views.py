@@ -180,7 +180,7 @@ def publish(request, votes_str):
         'url': request.get_host()+request.path,
         'share': request.GET.get('share', False),
         'results_summary': results_desc,
-        'top_party': top_party,
+        'summary': 'לפי ההצבעות הכי מתאים לי להצביע ל: ' + top_party,
         }
     return render(request, 'vote/publish.html', context)
 
