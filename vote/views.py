@@ -365,14 +365,14 @@ def export_vote(vote):
     if vote.vt_title:
         vote_json['title'] = vote.vt_title
     else:
-        title = vote_json['title']
+        title = vote_json['title'].strip()
         for prefix in [
-            'להעביר את הצעת החוק לוועדה - ',
-            'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת - ',
+            'להעביר את הצעת החוק לוועדה -',
+            'להעביר את הצעת החוק לוועדה שתקבע ועדת הכנסת -',
             'הצבעה -',
             ]:
             if title.startswith(prefix):
-                vote_json['title'] = vote_json['title'][len(prefix):]
+                vote_json['title'] = vote_json['title'][len(prefix):].strip()
                 break
     if vote.vt_description:
         vote_json['summary'] = vote.vt_description
