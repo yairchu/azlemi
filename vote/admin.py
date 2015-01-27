@@ -18,3 +18,4 @@ class VoteAdmin(admin.ModelAdmin):
 
 admin.site.register(models.UserAnswer)
 admin.site.register(models.Vote, VoteAdmin)
+admin.site.register(models.Publish)

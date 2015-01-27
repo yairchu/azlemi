@@ -3,6 +3,7 @@ import json
 import os
 import platform
 import random
+import string
 import urllib.request
 
 import bidi.algorithm
@@ -11,6 +12,7 @@ from django.contrib.sessions.models import Session
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import Context, loader
+from django.views.decorators.csrf import csrf_exempt
 
 from browser import html
 
@@ -164,7 +166,24 @@ def publish_data(votes_str):
 
     return questions, results
 
+# Using csrf exempt because creating form dynamically via Brython so it is hard
+# to use django's csrf tokens stuff there..
+@csrf_exempt
 def publish(request, votes_str):
+    if request.method == 'POST':
+        random_key = list(string.ascii_lowercase + string.digits)
+        random.shuffle(random_key)
+        random_key = ''.join(random_key[:10])
+
+        models.Publish(votes=votes_str, key=random_key).save()
+        return HttpResponseRedirect('/publish/%s/?share=1' % random_key)
+
+    try:
+        votes_str = models.Publish.objects.get(key=votes_str).votes
+    except models.Publish.DoesNotExist:
+        # legacy long link
+        pass
+
     questions, results = publish_data(votes_str)
 
     results_desc = []

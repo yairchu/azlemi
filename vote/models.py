@@ -43,3 +43,8 @@ class UserAnswer(models.Model):
         else:
             t = 'q%d=%d' % (self.vote.id, self.answer)
         return 'UserAnswer %s session=%s when=%s' % (t, self.session_key, self.when)
+
+class Publish(models.Model):
+    key = models.CharField(primary_key=True, max_length=50)
+    votes = models.CharField(max_length=2000)
+    when = models.DateTimeField(auto_now=True)

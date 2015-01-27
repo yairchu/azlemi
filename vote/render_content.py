@@ -223,10 +223,12 @@ def render_results(results_dest, results_small, progress_dest, res, user_answers
     if num_answers >= num_questions_to_answer:
         votes_str = ''.join(
             'q%d%s'%(k, 'f' if v == 1 else 'a') for k, v in sorted(user_answers.items()) if v)
-        results_dest <= html.DIV(
-            html.A(
-                'שתף את התוצאות שלי!', href='/publish/%s/?share=1'%votes_str,
-                Class='btn btn-lg btn-success'),
+        results_dest <= html.FORM(
+            html.INPUT(
+                value='שתף את התוצאות שלי!',
+                type="submit", Class='btn btn-lg btn-success'),
+            method='post',
+            action='/publish/%s/'%votes_str,
             style={'text-align': 'center', 'margin': '5px'})
 
     results_dest <= html.A('איך נקבע הניקוד?', target='_blank', href='/scoring')
