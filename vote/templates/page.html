@@ -18,7 +18,7 @@
     <div class="row" style="text-align: center;">
       <hr />
       {% for page in navitems %}
-        <a href="{{page.url}}"> {{page.title}} </a>
+        <a href="{{page.get_absolute_url}}"> {{page.title}} </a>
       {% endfor %}
       <br><br>
     </div>
