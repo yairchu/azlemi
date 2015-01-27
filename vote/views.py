@@ -373,9 +373,12 @@ def is_vote_ok(vote):
     if 'הצעת חוק תקציב המדינה לשנ' in vote['title']:
         return False
 
-    if vote['title'].startswith('הצעת אי-אמון בממשלה - '):
-        # Political pro/con government vote - not legislation.
+    # Political pro/con government vote - not legislation.
+    if vote['title'].startswith('הצעת אי-אמון '):
         return False
+    if vote['title'].startswith('הצעת אי אמון '):
+        return False
+
     if vote['title'].startswith('הודעת '):
         # Not even sure what these are..
         return False
