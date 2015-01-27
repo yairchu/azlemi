@@ -17,6 +17,10 @@
     .fb-comments {
       padding-top: 5px;
     }
+    .table {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
   </style>
 {% endblock %}
 
@@ -127,6 +131,8 @@
         <h2> התוצאות שלי: </h2>
 
         {{results_html|safe}}
+
+        <a target="_blank" href="/scoring" style="font-size: 14px;">(איך נקבע הניקוד?)</a>
 
         <div class="fb-comments" data-href="http://{{url}}" data-numposts="5" data-colorscheme="light"></div>
 
