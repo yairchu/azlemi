@@ -3,6 +3,18 @@ import json
 from django.contrib.sessions.models import Session
 from django.db import models
 
+from feincms.module.page.models import Page
+from feincms.content.richtext.models import RichTextContent
+
+Page.register_templates({
+    'title': 'Standard template',
+    'path': 'page.html',
+    'regions': (
+        ('main', 'Main content area'),
+    ),
+})
+Page.create_content_type(RichTextContent)
+
 class Vote(models.Model):
     id = models.IntegerField(primary_key=True) # consistent with oknesset's ids
     title = models.CharField(max_length=1000)

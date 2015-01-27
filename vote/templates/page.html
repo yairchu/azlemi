@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      {% for content in feincms_page.content.main %}
+        {{ content.render }}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
