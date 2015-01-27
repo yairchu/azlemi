@@ -168,7 +168,7 @@ def publish(request, votes_str):
     questions, results = publish_data(votes_str)
 
     results_desc = []
-    for pos, party_name, score in list(render_content.sorted_results(results))[:3]:
+    for pos, party_name, score in render_content.sorted_results(results):
         results_desc.append('%d. %s' % (pos, party_name))
     results_desc = ' '.join(results_desc)
 
