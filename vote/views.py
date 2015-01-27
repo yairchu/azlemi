@@ -441,7 +441,3 @@ def restart(request):
     request.session['state'] = {}
     request.session['questions_order'] = []
     return HttpResponseRedirect('/')
-
-def google_webmaster_tools_verification(request):
-    # couldn't put this as static file because google required this url for it..
-    return HttpResponse('google-site-verification: googlec8560e89bf08df0f.html')
