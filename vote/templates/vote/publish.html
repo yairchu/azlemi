@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block head-extra %}
-  <meta property="og:url" content="http://{{url|safe}}" />
   <meta property="og:title" content="אילו מפלגות מצביעות כמוני?" />
-  <meta property="og:description" content="לפי הצבעתן בכנסת, לאילו מפלגות יש את ההתאמה הכי גדולה לדעותי?" />
+  <meta property="og:site_name" content="אז למי?" />
+  <meta property="og:url" content="http://{{url|safe}}" />
+  <meta property="og:description" content="המפלגות שהצבעותיהן בכנסת הכי מתאימות לי הן: {{results_summary}}" />
   <meta property="og:image" content="http://{{url|safe}}image.png" />
+  <meta property="fb:app_id" content="431006867066641" />
 
   <style type="text/css">
     a.question-title {

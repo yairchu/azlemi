@@ -166,11 +166,18 @@ def publish_data(votes_str):
 
 def publish(request, votes_str):
     questions, results = publish_data(votes_str)
+
+    results_desc = []
+    for pos, party_name, score in list(render_content.sorted_results(results))[:3]:
+        results_desc.append('%d. %s' % (pos, party_name))
+    results_desc = ' '.join(results_desc)
+
     context = {
         'questions': questions,
         'results_html': render_content.render_results_table(results),
         'url': request.get_host()+request.path,
         'share': request.GET.get('share', False),
+        'results_summary': results_desc,
         }
     return render(request, 'vote/publish.html', context)
 
