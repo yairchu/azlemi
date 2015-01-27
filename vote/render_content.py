@@ -229,7 +229,7 @@ def render_results(results_dest, results_small, progress_dest, res, user_answers
                 Class='btn btn-lg btn-success'),
             style={'text-align': 'center', 'margin': '5px'})
 
-    results_dest <= html.A('איך נקבע הניקוד?', href='/scoring')
+    results_dest <= html.A('איך נקבע הניקוד?', target='_blank', href='/scoring')
     results_dest <= html.BR()
     results_dest <= html.A('התחל מההתחלה (אפס מצב)', href='/restart/')
     results_dest <= html.BR()
