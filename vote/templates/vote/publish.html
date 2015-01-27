@@ -45,9 +45,9 @@
       });
 
       {% if share %}
-      setTimeout(function() {
-        $('#share-modal').modal();
-      }, 1000);
+        setTimeout(function() {
+          $('#share-modal').modal();
+        }, 1000);
       {% endif %}
     };
 
@@ -142,11 +142,12 @@
         <div class="fb-comments" data-href="http://{{url}}" data-numposts="5" data-colorscheme="light"></div>
 
         <div style='text-align: center;'>
-
-          <button style="margin-top: 7px;" class="btn btn-lg btn-primary" onclick="facebook_share()">שתף בפייסבוק!</button>
-          <a style="margin-top: 7px;" class="btn btn-lg btn-info" target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F{{url}}&text={{summary}}&hashtags=אזלמי,IsraelElex">שתף בטוויטר!</a>
-          <br>
-          <a style="margin-top: 7px;" href="/" class="btn btn-lg btn-success">שחק גם!</a>
+          {% if share %}
+            <button style="margin-top: 7px;" class="btn btn-lg btn-primary" onclick="facebook_share()">שתף בפייסבוק!</button>
+            <a style="margin-top: 7px;" class="btn btn-lg btn-info" target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F{{url}}&text={{summary}}&hashtags=אזלמי,IsraelElex">שתף בטוויטר!</a>
+          {% else %}
+            <a style="margin-top: 7px;" href="/" class="btn btn-lg btn-success">שחק גם!</a>
+          {% endif %}
         </div>
         <br>
       </div>
