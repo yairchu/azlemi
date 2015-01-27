@@ -1,15 +1,26 @@
 {% extends "base.html" %}
 
+{% load feincms_tags %}
+{% load feincms_page_tags %}
+
 {% block head-extra %}
   <title>אז למי להצביע - {{feincms_page.title}}</title>
 {% endblock %}
 
 {% block content %}
+  {% feincms_nav feincms_page level=1 depth=2 as navitems %}
+
   <div class="container">
     <div class="row">
-      {% for content in feincms_page.content.main %}
-        {{ content.render }}
+      {% feincms_render_region feincms_page "main" request %}
+    </div>
+
+    <div class="row" style="text-align: center;">
+      <hr />
+      {% for page in navitems %}
+        <a href="{{page.url}}"> {{page.title}} </a>
       {% endfor %}
+      <br><br>
     </div>
   </div>
 {% endblock %}
