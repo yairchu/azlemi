@@ -1,5 +1,6 @@
 CairoSVG==1.0.9
 Django==1.7.1
+FeinCMS==1.10.1
 SQLAlchemy==0.9.8
 cffi==0.8.6
 dj-database-url==0.3.0
