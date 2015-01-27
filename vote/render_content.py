@@ -177,7 +177,7 @@ def render_results_table(results):
     results_table <= table_body
     if not results:
         table_body <= html.TR(html.TD(no_result_text, colspan=5))
-        return
+        return results_table
     for pos, party_name, score in sorted_results(results):
         row = html.TR()
         row <= html.TD(str(pos))
@@ -229,7 +229,7 @@ def render_results(results_dest, results_small, progress_dest, res, user_answers
                 Class='btn btn-lg btn-success'),
             style={'text-align': 'center', 'margin': '5px'})
 
-    if num_answers > 0:
-        results_dest <= html.A('התחל מההתחלה', href='/restart/')
-
+    results_dest <= html.A('איך נקבע הניקוד?', href='/scoring')
+    results_dest <= html.BR()
+    results_dest <= html.A('התחל מההתחלה (אפס מצב)', href='/restart/')
     results_dest <= html.BR()
