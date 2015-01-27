@@ -357,6 +357,32 @@ def get_specific_question(request, question_id = None):
         export_vote(fetch_vote(int(question_id))),
         ensure_ascii=False))
 
+def is_vote_ok(vote):
+    if vote['against_votes_count'] == 0 or vote['for_votes_count'] == 0:
+        # No one voted an opinion.
+        # Must be an uninteresting or too obvious qiestion
+        return False
+
+    # Budget vote (see http://he.wikipedia.org/wiki/חוק_ההסדרים)
+    # We want to filter these votes because
+    # these are pro/con government votes, not legislation.
+    if 'הכלכלית לשנ' in vote['title'] and 'תיקוני חקיקה ל' in vote['title']:
+        return False
+    if 'הצעת חוק התקציב לשנ' in vote['title']:
+        return False
+    if 'הצעת חוק תקציב המדינה לשנ' in vote['title']:
+        return False
+
+    if vote['title'].startswith('הצעת אי-אמון בממשלה - '):
+        # Political pro/con government vote - not legislation.
+        return False
+
+    if vote['title'].startswith('הודעת '):
+        # Not even sure what these are..
+        return False
+
+    return True
+
 def get_question(request):
     track_changes(request)
 
@@ -366,10 +392,12 @@ def get_question(request):
         already_asked += queue.split(',')
     already_asked = set( int(x[1:]) for x in already_asked if x.startswith('q'))
 
-    question_set = choose_question_set(already_asked)
-    question_id = random.choice(list(question_set))
-    return HttpResponse(
-        json.dumps(export_vote(fetch_vote(question_id)), ensure_ascii=False))
+    while True:
+        question_set = choose_question_set(already_asked)
+        question_id = random.choice(list(question_set))
+        vote = export_vote(fetch_vote(question_id))
+        if is_vote_ok(vote):
+            return HttpResponse(json.dumps(vote, ensure_ascii=False))
 
 def save_vote(request):
     track_changes(request)
