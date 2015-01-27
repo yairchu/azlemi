@@ -233,6 +233,12 @@ def publish_image_svg(votes_str, process_text=identity, text_anchor_start='start
     return loader.get_template('vote/publish_image.svg').render(Context(context))
 
 def publish_image(request, votes_str, extension):
+    try:
+        votes_str = models.Publish.objects.get(key=votes_str).votes
+    except models.Publish.DoesNotExist:
+        # legacy long link
+        pass
+
     if extension == 'svg':
         svg = publish_image_svg(votes_str)
         return HttpResponse(svg, content_type='image/svg+xml')
