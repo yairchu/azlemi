@@ -376,9 +376,12 @@ def is_vote_ok(vote):
     if vote['title'].startswith('הצעת אי-אמון בממשלה - '):
         # Political pro/con government vote - not legislation.
         return False
-
     if vote['title'].startswith('הודעת '):
         # Not even sure what these are..
+        return False
+    if vote['title'].startswith('הצעת סיכום - '):
+        # These don't seem to be meaningful?
+        # Not entirely sure what these are..
         return False
 
     return True
