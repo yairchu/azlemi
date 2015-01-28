@@ -78,6 +78,45 @@
       font-size: 14px;
       background-color: #444;
     }
+
+    /* radial progress bar loosely based on
+     * https://medium.com/@andsens/radial-progress-indicator-using-css-a917b80c43f9
+     */
+    .radial-progress, .radial-progress .circle .fill, .radial-progress .circle .mask {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+    .radial-progress {
+      background-color: #eee;
+    }
+    .radial-progress .circle .fill, .radial-progress .circle .mask {
+      position: absolute;
+    }
+    .radial-progress .circle .fill {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+    .radial-progress .inset {
+      width: 120px;
+      height: 120px;
+      position: absolute;
+      margin: 15px;
+      border-radius: 50%;
+      background-color: white;
+      text-align: center;
+      padding-top: 30px;
+    }
+
+    .fix-bottom {
+      position: fixed;
+      bottom: 22px
+    }
+
+    .fix-left {
+      position: fixed;
+      left: 22px
+    }
   </style>
   <script type="text/javascript" src="/static/brython/src/brython.js"></script>
 {% endblock %}
@@ -97,7 +136,12 @@
 {% block content %}
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8 col-md-offset-2" role="main">
+      <div class="col-md-2" role="complementary">
+        <div class="hidden-print hidden-xs hidden-sm fix-bottom fix-left">
+          {{radial_progress_html|safe}}
+        </div>
+      </div>
+      <div class="col-md-8" role="main">
         <div class="bigger-font" id="questions">
           <p>
             כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009.
@@ -111,7 +155,7 @@
         {{progress_html|safe}}
       </div>
       <div class="col-md-2" role="complementary">
-        <nav class="nav hidden-print hidden-xs hidden-sm affix" style='font-size: 14px;'>
+        <nav class="nav hidden-print hidden-xs hidden-sm fix-bottom">
           <a href="#results-section">
             {{small_results_html|safe}}
           </a>

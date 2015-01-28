@@ -112,9 +112,10 @@ class Game:
         document['results'].clear()
         document['results-small'].clear()
         document['progress-bar'].clear()
+        document['radial-progress-bar'].clear()
         render_results(
             document['results'], document['results-small'],
-            document['progress-bar'],
+            document['progress-bar'], document['radial-progress-bar'],
             results, user_answers)
 
 def id_from_uri(uri):

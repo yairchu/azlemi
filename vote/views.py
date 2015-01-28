@@ -108,8 +108,9 @@ def home(request):
     results_html = html.TBODY(id='results')
     small_results_html = html.DIV(id='results-small', style={'color': 'gray'})
     progress_html = html.DIV(id='progress-bar')
+    radial_progress_html = html.DIV(id='radial-progress-bar')
     render_content.render_results(
-        results_html, small_results_html, progress_html, results, user_answers)
+        results_html, small_results_html, progress_html, radial_progress_html, results, user_answers)
 
     start_votes = [
         x for x in
@@ -132,6 +133,7 @@ def home(request):
         'results_html': results_html,
         'small_results_html': small_results_html,
         'progress_html': progress_html,
+        'radial_progress_html': radial_progress_html,
         }
     return render(request, 'vote/home.html', context)
 

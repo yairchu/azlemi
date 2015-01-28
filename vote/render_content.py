@@ -188,26 +188,55 @@ def render_results_table(results):
         table_body <= row
     return results_table
 
-def render_results(results_dest, results_small, progress_dest, res, user_answers):
+def render_results(results_dest, results_small, progress_dest, progress_circle_dest, res, user_answers):
     (results, num_answers) = res
 
     if num_answers == 1:
-        progress_text = 'ענית על שאלה אחת'
+        progress_text_lines = ['ענית על', 'שאלה', 'אחת']
     else:
-        progress_text = 'ענית על %d שאלות' % num_answers
+        progress_text_lines = ['ענית על', str(num_answers), 'שאלות']
     num_questions_to_answer = 10
-    progress_width = min(100, 100/num_questions_to_answer*num_answers)
+    progress = min(1, num_answers/num_questions_to_answer)
     progress_dest <= html.DIV(
-        html.DIV(progress_text,
+        html.DIV(' '.join(progress_text_lines),
             Class='progress-bar progress-bar-success', role='progressbar',
             style={
                 'min-width': '10em',
-                'width': '%d%%' % progress_width,
+                'width': '%d%%' % (100*progress),
                 'float': 'right',
                 }),
         Class='progress')
 
     results_dest <= render_results_table(results)
+
+    progress_rotate = 'rotate(%ddeg)' % (180+360*progress)
+    circle_fill_style = {
+        'transform': progress_rotate,
+        '-webkit-transform': progress_rotate,
+        '-ms-transform': progress_rotate,
+        'background-color': '#eee',
+        }
+    radial_progress_style = {}
+    progress_color = '#fd7f19'
+    if progress <= 0.5:
+        circle_fill_style['background-color'] = progress_color
+        progress_clip = 'rect(0px, 150px, 150px, 75px)'
+    else:
+        radial_progress_style['background-color'] = progress_color
+        progress_clip = 'rect(0px, 75px, 150px, 0px)'
+    circle_fill_style['clip'] = progress_clip
+    radial_progress = html.DIV(Class='radial-progress', style=radial_progress_style)
+    progress_circle_dest <= radial_progress
+    circle_fill = html.DIV(Class='fill', style=circle_fill_style)
+    radial_progress <= html.DIV(
+        html.DIV(circle_fill, Class='mask', style={'clip': progress_clip}),
+        Class='circle')
+    radial_progress_inset = html.DIV(Class='inset', style={'color': progress_color})
+    for i, t in enumerate(progress_text_lines):
+        if i > 0:
+            radial_progress_inset <= html.BR()
+        radial_progress_inset <= html.B(t)
+    radial_progress <= radial_progress_inset
 
     if not results:
         return
