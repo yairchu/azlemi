@@ -17,4 +17,9 @@ for party_per_knesset in parties_of_member.values():
             party_res = result.setdefault(party, {})
             party_res[knesset_id] = 1 + party_res.get(knesset_id, 0)
 
+# Open-Knesset's data includes reps which served only part of the time,
+# and so seems to make parties appear larger than they were.
+kadima = 'קדימה'
+result[kadima][18] = 28
+
 print(json.dumps(result, ensure_ascii=False))
