@@ -188,7 +188,7 @@ def render_results_table(results):
         table_body <= row
     return results_table
 
-def render_results(results_dest, results_small, progress_dest, progress_circle_dest, res, user_answers):
+def render_results(results_dest, results_small_dest, progress_dest, progress_circle_dest, res, user_answers):
     (results, num_answers) = res
 
     if num_answers == 1:
@@ -241,6 +241,17 @@ def render_results(results_dest, results_small, progress_dest, progress_circle_d
     if not results:
         return
 
+    if progress >= 1:
+        results_small_style = {'color': 'black'}
+    else:
+        x = 128 * (1-progress)
+        results_small_style={
+            'color': 'rgba(0,0,0,0.0)',
+            'text-shadow': '0 0 %fpx rgb(%d,%d,%d)' %
+                (1 + 3 * (1-progress), x, x, x),
+            }
+    results_small = html.DIV(style=results_small_style)
+    results_small_dest <= results_small
     results_small <= html.B('תוצאות:')
 
     for pos, party_name, score in sorted_results(results):
@@ -248,6 +259,12 @@ def render_results(results_dest, results_small, progress_dest, progress_circle_d
             pos, short_name_of_long_name.get(party_name, party_name))
         results_small <= html.BR()
         results_small <= short_name
+
+    results_small <= html.BR()
+    if progress < 1:
+        results_small <= 'ראה פירוט ←'
+    else:
+        results_small <= 'ראה פירוט ושתף! ←'
 
     if num_answers >= num_questions_to_answer:
         votes_str = ''.join(

@@ -106,7 +106,7 @@ def home(request):
     results = render_content.calc_results(
         dict((q['id'], q) for q in prev_questions), user_answers)
     results_html = html.TBODY(id='results')
-    small_results_html = html.DIV(id='results-small', style={'color': 'gray'})
+    small_results_html = html.DIV(id='results-small')
     progress_html = html.DIV(id='progress-bar')
     radial_progress_html = html.DIV(id='radial-progress-bar')
     render_content.render_results(
