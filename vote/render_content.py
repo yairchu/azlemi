@@ -111,10 +111,13 @@ def question_party_votes(party_votes_doc, data, user_answer):
         if not v:
             continue
         style = {}
-        if user_answer:
-            style['background'] = ['#ffdddd', '#ccfacc'][v == user_answer]
-        elif not rows:
+        if user_answer or not rows:
             style['background'] = 'white'
+        if v == user_answer:
+            style['color'] = '#07f'
+            style['font-weight'] = 'bold'
+        elif user_answer:
+            style['color'] = '#666'
         row = html.TR(html.TH(name), style=style)
         tbody <= row
         rows[v] = row
