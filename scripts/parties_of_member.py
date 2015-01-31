@@ -66,4 +66,4 @@ for party_name, member_names in knesset_20.items():
             continue
         party_of_member[name][20] = party_name
 
-print(json.dumps(party_of_member, ensure_ascii=False))
+print(json.dumps(party_of_member, ensure_ascii=False, sort_keys=True))

@@ -16,6 +16,6 @@ for member_parties in parties_of_member.values():
         if '20' in member_parties:
             result[k].add(member_parties['20'])
 for k in result:
-    result[k] = list(result[k])
+    result[k] = sorted(list(result[k]))
 
-print(json.dumps(result, ensure_ascii=False))
+print(json.dumps(result, ensure_ascii=False, sort_keys=True))

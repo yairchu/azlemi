@@ -22,4 +22,4 @@ for party_per_knesset in parties_of_member.values():
 kadima = 'קדימה'
 result[kadima][18] = 28
 
-print(json.dumps(result, ensure_ascii=False))
+print(json.dumps(result, ensure_ascii=False, sort_keys=True))
