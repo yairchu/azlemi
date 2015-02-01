@@ -272,6 +272,8 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
     else:
         results_small <= 'ראה פירוט ושתף! ←'
 
+    results_dest <= '* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה'
+
     if num_answers >= num_questions_to_answer:
         votes_str = ''.join(
             'q%d%s'%(k, 'f' if v == 1 else 'a') for k, v in sorted(user_answers.items()) if v)
