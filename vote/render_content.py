@@ -150,9 +150,12 @@ def calc_results(questions, user_answers):
                 vote_results[vote_vals[k] * answer] += v
             results.setdefault(party_name, []).append(vote_results)
     for party_name, t in results.items():
+        num_answers_where_party_exists = len(t)
+        num_answers_without_party = num_answers - num_answers_where_party_exists
+        divisor = num_answers_where_party_exists + num_answers_without_party/2
         s = {}
         for k in [-1, 1]:
-            s[k] = sum(x[k] for x in t) / len(t)
+            s[k] = sum(x[k] for x in t) / divisor
         s['overall'] = s[1] - s[-1]
         results[party_name] = s
     return results, num_answers
