@@ -4,3 +4,6 @@
 [submodule "submodules/python-bidi"]
 	path = submodules/python-bidi
 	url = https://github.com/yairchu/python-bidi.git
+[submodule "submodules/jTinder"]
+	path = submodules/jTinder
+	url = git@github.com:do-web/jTinder.git
