@@ -273,6 +273,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
         results_small <= 'ראה פירוט ושתף! ←'
 
     results_dest <= '* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה'
+    results_dest <= html.BR()
 
     if num_answers >= num_questions_to_answer:
         votes_str = ''.join(
