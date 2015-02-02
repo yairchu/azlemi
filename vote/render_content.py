@@ -170,6 +170,21 @@ def sorted_results(results):
         prev_score = score
         yield pos, party_name, score
 
+party_links = {
+    'הליכוד': 'https://www.likud.org.il/',
+    'המחנה הציוני': 'http://www.hamahanehazioni.co.il/',
+    'יש עתיד': 'http://yeshatid.org.il/',
+    'ישראל ביתנו': 'http://www.beytenu.org.il/',
+    'הבית היהודי': 'http://www.baityehudi.org.il',
+    'ש”ס': 'http://shas.org.il/',
+    'יהדות התורה': 'http://he.wikipedia.org/wiki/יהדות_התורה',
+    'מרצ': 'http://meretz.org.il/',
+    'הרשימה המשותפת': 'http://he.wikipedia.org/wiki/הרשימה_המשותפת',
+    'כולנו': 'https://www.kulanu-party.co.il/',
+    'יחד': 'http://he.wikipedia.org/wiki/יחד_בראשות_אלי_ישי',
+    'הרשימה הערבית': 'http://bechirot.gov.il/election/Candidates/Pages/OneListCandidates.aspx?LPF=Search&WebId=6adadc15-e476-480b-9746-04490aedeb0f&ListID=ba72a662-765c-45af-9d48-fb68080956af&ItemID=55&FieldID=ListNickname_GxS_Text',
+    }
+
 def render_results_table(results):
     results_table = html.TABLE(Class='table table-striped')
     header_row = html.TR()
@@ -187,6 +202,9 @@ def render_results_table(results):
     for pos, party_name, score in sorted_results(results):
         row = html.TR()
         row <= html.TD(str(pos))
+        link = party_links.get(party_name.strip('*'))
+        if link:
+            party_name = html.A(party_name, target='_blank', href=link)
         row <= html.TD(party_name)
         for k in [1, -1, 'overall']:
             cell = '%.0f%%'%(100*score[k])
