@@ -201,7 +201,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
         progress_text_lines = ['ענית על', 'שאלה', 'אחת']
     else:
         progress_text_lines = ['ענית על', str(num_answers), 'שאלות']
-    num_questions_to_answer = 10
+    num_questions_to_answer = 12
     progress = min(1, num_answers/num_questions_to_answer)
     progress_dest <= html.DIV(
         html.DIV(' '.join(progress_text_lines),
@@ -250,11 +250,11 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
     if progress >= 1:
         results_small_style = {'color': 'black'}
     else:
-        x = 128 * (1-progress)
+        x = 255 * (1-progress)
         results_small_style={
             'color': 'rgba(0,0,0,0.0)',
             'text-shadow': '0 0 %fpx rgb(%d,%d,%d)' %
-                (1 + 3 * (1-progress), x, x, x),
+                (4 * (1-progress), x, x, x),
             }
     results_small = html.DIV(style=results_small_style)
     results_small_dest <= results_small
