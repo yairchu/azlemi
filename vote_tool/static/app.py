@@ -3,7 +3,7 @@
 
 import json
 
-from browser import ajax, document, html, timer
+from browser import ajax, document, html, timer, window
 
 class Question:
     def __init__(self, data):
@@ -12,6 +12,12 @@ class Question:
     def render(self):
         panel, _, _ = question_panel(self.data)
         document['questions'] <= panel
+
+        desc_id = 'q%d-desc' % self.data['id']
+        for desc in panel.get(selector='p[data-toggle]'):
+            desc.id = desc_id
+        getattr(window, '$')('#'+desc_id).tooltip()
+
         self.bind_buttons()
 
     def bind_buttons(self):
