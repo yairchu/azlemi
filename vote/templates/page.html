@@ -21,7 +21,8 @@
         {% if not forloop.first %}
           -
         {% endif %}
-        <a href="{{page.get_absolute_url}}"> {{page.title}} </a>
+        {% feincms_translatedpage_or_base for page as translatedpage language=feincms_page.language %}
+        <a href="{{translatedpage.get_absolute_url}}"> {{translatedpage.title}} </a>
       {% endfor %}
       <br><br>
     </div>

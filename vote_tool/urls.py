@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^publish/(?P<votes_str>[^/]+)/image.(?P<extension>[a-z]+)$', 'vote.views.publish_image'),
     url(r'^admin/', include('smuggler.urls')),
     url(r'^admin/', include(admin.site.urls)),
+) + patterns('',
     url(r'', include('feincms.urls'))
 )

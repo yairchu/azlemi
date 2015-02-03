@@ -14,6 +14,7 @@ Page.register_templates({
     ),
 })
 Page.create_content_type(RichTextContent)
+Page.register_extensions('feincms.module.extensions.translations')
 
 class Vote(models.Model):
     id = models.IntegerField(primary_key=True) # consistent with oknesset's ids
