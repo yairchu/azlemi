@@ -82,7 +82,7 @@ class Game:
         params = self.save_vote_query()
         params['queue'] = ','.join('q%d'%x for x in queue)
         req.open('GET',
-            '/get_question/?'+
+            translate('/') + 'get_question/?' +
             '&'.join('%s=%s'%(k, v) for k, v in params.items()))
         req.send()
     def ajax_response_add_question(self, req):

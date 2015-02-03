@@ -35,6 +35,7 @@ def make_texts():
         'bad': _('נגדך'),
         'total': _('סה״כ'),
         'align_right': _('right'),
+        'lang_prefix': _('/'),
         }
 texts = make_texts()
 
@@ -332,5 +333,5 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
 
     results_dest <= html.A(_(texts['scoring']), target='_blank', href='/scoring')
     results_dest <= html.BR()
-    results_dest <= html.A(_(texts['restart']), href='/restart/')
+    results_dest <= html.A(_(texts['restart']), href=_(texts['lang_prefix'])+'restart/')
     results_dest <= html.BR()

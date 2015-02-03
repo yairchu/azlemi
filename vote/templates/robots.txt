@@ -1,5 +1,5 @@
 User-agent: *
-Disallow: /admin/*
-Disallow: /get_question/*
-Disallow: /restart/
+Disallow: */get_question/*
+Disallow: */restart/
+Disallow: */admin/*
 Disallow: /save_vote/

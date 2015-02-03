@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 22:34+0000\n"
+"POT-Creation-Date: 2015-02-03 23:48+0000\n"
 "Last-Translator: Yair Chuchem\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -160,6 +160,10 @@ msgstr ""
 "vibes,\n"
 "but actually based on the votes in practice."
 
+#: vote/templates/base.html:168 vote/views.py:472
+msgid "/"
+msgstr "/en/"
+
 #: vote/templates/base.html:168
 msgid "על האתר"
 msgstr "About"
@@ -236,10 +240,10 @@ msgstr "Together*"
 msgid "כולנו*"
 msgstr "All of us*"
 
-#: vote_tool/settings.py:119
-msgid "עברית"
+#: vote_tool/settings.py:120
+msgid "Hebrew"
 msgstr "Hebrew"
 
-#: vote_tool/settings.py:120
-msgid "אנגלית"
+#: vote_tool/settings.py:121
+msgid "English"
 msgstr "English"

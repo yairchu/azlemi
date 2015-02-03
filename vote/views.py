@@ -469,4 +469,4 @@ def save_vote(request):
 def restart(request):
     request.session['state'] = {}
     request.session['questions_order'] = []
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(_('/'))
