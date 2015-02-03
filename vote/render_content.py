@@ -4,11 +4,6 @@ from browser import html
 
 answers = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
-short_name_of_long_name = {
-  'חזית דמוקרטית לשלום ושוויון': 'חד”ש',
-  'ברית לאומית דמוקרטית': 'בל”ד',
-  }
-
 no_result_text = '''
     ענו על שאלות כדי לצפות בתוצאות.
     ככל שתענו על מספר רב יותר של שאלות, תקבלו תוצאה מדוייקת יותר.
@@ -125,9 +120,8 @@ def question_party_votes(party_votes_doc, data, user_answer):
         [for_txt, vs_txt] = [
             '%.0f%%'%(100*r) if r else '-'
             for r in [results.get('for'), results.get('against')]]
-        short_name = short_name_of_long_name.get(party_name, party_name)
         for row, val in [
-            (parties_row, short_name),
+            (parties_row, party_name),
             (rows[1], for_txt),
             (rows[-1], vs_txt),
             ]:
@@ -279,8 +273,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
     results_small <= html.B('תוצאות:')
 
     for pos, party_name, score in sorted_results(results):
-        short_name = '%d. %s' % (
-            pos, short_name_of_long_name.get(party_name, party_name))
+        short_name = '%d. %s' % (pos, party_name)
         results_small <= html.BR()
         results_small <= short_name
 
