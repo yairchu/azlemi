@@ -116,8 +116,8 @@ USE_L10N = True
 USE_TZ = True
 gettext = lambda s: s
 LANGUAGES = (
-    ('he', gettext('עברית')),
-    ('en', gettext('אנגלית')),
+    ('he', gettext('Hebrew')),
+    ('en', gettext('English')),
 )
 SOLID_I18N_USE_REDIRECTS = False
 
