@@ -61,6 +61,10 @@ INSTALLED_APPS = (
     'feincms',
     'feincms.module.page',
 )
+MIGRATION_MODULES = {}
+for app in INSTALLED_APPS:
+    app_name = app.rsplit('.', 1)[-1]
+    MIGRATION_MODULES[app_name] = 'migrations.' + app_name
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
