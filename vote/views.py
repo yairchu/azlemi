@@ -292,7 +292,7 @@ def fetch_vote(vote_id):
 
 def choose_question_set(already_asked):
     result = set()
-    if random.random() < 0.95:
+    if random.random() < 0.9:
         result = set(
             x.id for x in
             models.Vote.objects.filter(is_interesting = True)
