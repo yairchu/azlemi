@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
@@ -15,6 +16,14 @@ urlpatterns = patterns('',
     url(r'^publish/(?P<votes_str>[^/]+)/image.(?P<extension>[a-z]+)$', 'vote.views.publish_image'),
     url(r'^admin/', include('smuggler.urls')),
     url(r'^admin/', include(admin.site.urls)),
-) + patterns('',
+)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )
+
+urlpatterns += patterns('',
     url(r'', include('feincms.urls'))
 )
