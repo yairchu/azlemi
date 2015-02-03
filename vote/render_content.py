@@ -177,12 +177,12 @@ party_links = {
     'ישראל ביתנו': 'http://www.beytenu.org.il/',
     'הבית היהודי': 'http://www.baityehudi.org.il',
     'ש”ס': 'http://shas.org.il/',
-    'יהדות התורה': 'http://he.wikipedia.org/wiki/יהדות_התורה',
+    'יהדות התורה': 'https://he.wikipedia.org/wiki/יהדות_התורה',
     'מרצ': 'http://meretz.org.il/',
-    'הרשימה המשותפת': 'http://he.wikipedia.org/wiki/הרשימה_המשותפת',
+    'הרשימה המשותפת': 'https://he.wikipedia.org/wiki/הרשימה_המשותפת',
     'כולנו': 'https://www.kulanu-party.co.il/',
-    'יחד': 'http://he.wikipedia.org/wiki/יחד_בראשות_אלי_ישי',
-    'הרשימה הערבית': 'http://bechirot.gov.il/election/Candidates/Pages/OneListCandidates.aspx?LPF=Search&WebId=6adadc15-e476-480b-9746-04490aedeb0f&ListID=ba72a662-765c-45af-9d48-fb68080956af&ItemID=55&FieldID=ListNickname_GxS_Text',
+    'יחד': 'https://he.wikipedia.org/wiki/יחד_בראשות_אלי_ישי',
+    'הרשימה הערבית': 'https://he.wikipedia.org/wiki/הרשימה_הערבית',
     }
 
 def render_results_table(results):
