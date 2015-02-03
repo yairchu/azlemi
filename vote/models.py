@@ -29,7 +29,7 @@ class Vote(models.Model):
     def __str__(self):
         return '%s %d: %s' % (
             'INTERESTING VOTE' if self.is_interesting else 'vote',
-            self.id, self.title
+            self.id, self.vt_title or self.title
             )
 
 class UserAnswer(models.Model):
@@ -49,3 +49,5 @@ class Publish(models.Model):
     key = models.CharField(primary_key=True, max_length=50)
     votes = models.CharField(max_length=2000)
     when = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return 'Publish %s when=%s' % (self.key, self.when)
