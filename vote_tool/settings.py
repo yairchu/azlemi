@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 import sys
 
-from django.utils.translation import ugettext_lazy as _
-
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -116,9 +114,10 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+gettext = lambda s: s
 LANGUAGES = (
-    ('he', _('עברית')),
-    ('en', _('אנגלית')),
+    ('he', gettext('עברית')),
+    ('en', gettext('אנגלית')),
 )
 SOLID_I18N_USE_REDIRECTS = False
 
