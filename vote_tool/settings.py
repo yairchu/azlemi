@@ -47,6 +47,8 @@ LOGGING = {
 }
 
 INSTALLED_APPS = (
+    'modeltranslation',
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +56,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'smuggler',
-    'debug_toolbar',
     'vote',
     'feincms',
     'feincms.module.page',
