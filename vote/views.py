@@ -407,6 +407,8 @@ def export_vote(vote):
         vote_json['summary'] = vote.vt_description
     vote_json['knesset_id'] = knesset_of_vote(vote_json)
     vote_json['party_votes'] = calc_party_votes(vote_json)
+    # Delete unnecessary stuff for faster page load
+    del vote_json['votes']
     return vote_json
 
 def get_specific_question(request, question_id = None):
