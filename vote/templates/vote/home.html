@@ -131,6 +131,7 @@
   <script type="text/python">
     prev_questions = {{prev_questions|safe}}
     questions = {{questions|safe}}
+    client_side_translations = {{client_side_translations|safe}}
   </script>
   <script type="text/python" src="/static/render_content.py"></script>
   <script type="text/python" src="/static/app.py"></script>
@@ -177,7 +178,7 @@
     <div class="row bigger-font">
       <div class="col-md-6 {{LANGUAGE_BIDI|yesno:"col-md-offset-4,col-md-offset-2"}} col-sm-10 col-sm-offset-2">
         <a name="results-section">
-          <h2> תוצאות </h2>
+          <h2> {% trans "תוצאות" %} </h2>
         </a>
         <div id="results">
           {{results_html|safe}}

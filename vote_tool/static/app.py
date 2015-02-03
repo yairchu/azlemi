@@ -6,8 +6,7 @@ import json
 from browser import ajax, document, html, timer, window
 
 def translate(text):
-    # TODO
-    return text
+    return client_side_translations.get(text, text)
 
 class Question:
     def __init__(self, data):

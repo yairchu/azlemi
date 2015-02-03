@@ -4,10 +4,39 @@ from browser import html
 
 answers = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
-no_result_text = '''
-    ענו על שאלות כדי לצפות בתוצאות.
-    ככל שתענו על מספר רב יותר של שאלות, תקבלו תוצאה מדוייקת יותר.
-    '''
+def make_texts():
+    def _(x):
+        return x
+    return {
+        'no_result': _('''
+            ענו על שאלות כדי לצפות בתוצאות.
+            ככל שתענו על מספר רב יותר של שאלות, תקבלו תוצאה מדוייקת יותר.
+            '''),
+        'against': _('נגד'),
+        'for': _('בעד'),
+        'unsure': _('לא בטוח'),
+        'skip': _('דלג לשאלה הבאה'),
+        'more_info': _('מידע נוסף'),
+        'party': _('מפלגה'),
+        'pos': _('מקום'),
+        'answered': _('ענית על'),
+        'question': _('שאלה'),
+        'questions': _('שאלות'),
+        'one': _('אחת'),
+        'results': _('תוצאות'),
+        'details': _('ראה פירוט ←'),
+        'details_share': _('ראה פירוט ושתף! ←'),
+        'new_parties_footnote': _('* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה'),
+        'share': _('שתף את התוצאות שלי!'),
+        'scoring': _('איך נקבע הניקוד?'),
+        'restart': _('התחל מההתחלה (אפס מצב)'),
+        'party': _('מפלגה'),
+        'good': _('איתך'),
+        'bad': _('נגדך'),
+        'total': _('סה״כ'),
+        'align_right': _('right'),
+        }
+texts = make_texts()
 
 def question_panel(data, _):
     outer_frame = html.DIV(id='q%d'%data['id'], Class='question-box')
@@ -31,24 +60,22 @@ def question_panel(data, _):
     for_radio = html.INPUT(type='radio', name=str(data['id']), value='1')
 
     against <= against_radio
-    against <= html.DIV(_('נגד'))
+    against <= html.DIV(_(texts['against']))
     against <= html.DIV(
         html.SPAN(Class='glyphicon glyphicon-arrow-left',
             style={'float': 'right', 'padding-right': '2px'}))
     against <= html.DIV(style={'clear': 'both', 'height': '5px'})
 
     in_favor <= for_radio
-    in_favor <= html.DIV(_('בעד'))
+    in_favor <= html.DIV(_(texts['for']))
     in_favor <= html.DIV(
         html.SPAN(Class='glyphicon glyphicon-arrow-right',
             style={'float': 'left', 'padding-left': '2px'}))
     in_favor <= html.DIV(style={'clear': 'both', 'height': '5px'})
 
     skip <= skip_radio
-    skip <= html.SPAN(_('לא בטוח? '))
-    skip <= html.SPAN(
-        _('דלג לשאלה הבאה'),
-        style={'text-decoration': 'underline'})
+    skip <= html.SPAN(_(texts['unsure'])+'? ')
+    skip <= html.SPAN(_(texts['skip']), style={'text-decoration': 'underline'})
 
     content <= html.H3(data['title'])
 
@@ -84,7 +111,7 @@ def question_panel(data, _):
     if tooltip:
         summary <= html.BR()
     summary <= html.A(
-        _('מידע נוסף'),
+        _(texts['more_info']),
         target='_blank',
         href='https://oknesset.org/vote/%d/' % data['id'],
         )
@@ -99,7 +126,8 @@ def question_party_votes(party_votes_doc, data, user_answer, _):
         style={'text-align': 'center', 'background': '#f9f9f9'},
         Class='table table-packed')
     party_votes_doc <= table
-    parties_row = html.TR(html.TH(_('מפלגה'), style={'vertical-align': 'top'}))
+    parties_row = html.TR(
+        html.TH(_(texts['party']), style={'vertical-align': 'top'}))
     table <= html.THEAD(parties_row)
     tbody = html.TBODY()
     table <= tbody
@@ -184,16 +212,16 @@ party_links = {
 def render_results_table(results, _):
     results_table = html.TABLE(Class='table table-striped')
     header_row = html.TR()
-    header_row <= html.TH(_('מקום'), style={'text-align': 'right'})
-    header_row <= html.TH(_('מפלגה'), style={'text-align': 'right'})
-    header_row <= html.TH(_('איתך'))
-    header_row <= html.TH(_('נגדך'))
-    header_row <= html.TH(_('סה״כ'))
+    header_row <= html.TH(_(texts['pos']), style={'text-align': _(texts['align_right'])})
+    header_row <= html.TH(_(texts['party']), style={'text-align': _(texts['align_right'])})
+    header_row <= html.TH(_(texts['good']))
+    header_row <= html.TH(_(texts['bad']))
+    header_row <= html.TH(_(texts['total']))
     results_table <= html.THEAD(header_row)
     table_body = html.TBODY()
     results_table <= table_body
     if not results:
-        table_body <= html.TR(html.TD(no_result_text, colspan=5))
+        table_body <= html.TR(html.TD(_(texts['no_result']), colspan=5))
         return results_table
     for pos, party_name, score in sorted_results(results):
         row = html.TR()
@@ -213,12 +241,12 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
 
     if num_answers == 1:
         progress_text_lines = [
-            _('ענית על'),
-            _('שאלה'),
-            _('אחת'),
+            _(texts['answered']),
+            _(texts['question']),
+            _(texts['one']),
             ]
     else:
-        progress_text_lines = [_('ענית על'), str(num_answers), _('שאלות')]
+        progress_text_lines = [_(texts['answered']), str(num_answers), _(texts['questions'])]
     num_questions_to_answer = 12
     progress = min(1, num_answers/num_questions_to_answer)
     progress_dest <= html.DIV(
@@ -227,7 +255,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
             style={
                 'min-width': '10em',
                 'width': '%d%%' % (100*progress),
-                'float': 'right',
+                'float': _(texts['align_right']),
                 }),
         Class='progress')
 
@@ -276,7 +304,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
             }
     results_small = html.DIV(style=results_small_style)
     results_small_dest <= results_small
-    results_small <= html.B(_('תוצאות:'))
+    results_small <= html.B(_(texts['results'])+':')
 
     for pos, party_name, score in sorted_results(results):
         results_small <= html.BR()
@@ -284,11 +312,11 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
 
     results_small <= html.BR()
     if progress < 1:
-        results_small <= _('ראה פירוט ←')
+        results_small <= _(texts['details'])
     else:
-        results_small <= _('ראה פירוט ושתף! ←')
+        results_small <= _(texts['details_share'])
 
-    results_dest <= _('* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה')
+    results_dest <= _(texts['new_parties_footnote'])
     results_dest <= html.BR()
 
     if num_answers >= num_questions_to_answer:
@@ -296,13 +324,13 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
             'q%d%s'%(k, 'f' if v == 1 else 'a') for k, v in sorted(user_answers.items()) if v)
         results_dest <= html.FORM(
             html.INPUT(
-                value=_('שתף את התוצאות שלי!'),
+                value=_(texts['share']),
                 type="submit", Class='btn btn-lg btn-success'),
             method='post',
             action='/publish/%s/'%votes_str,
             style={'text-align': 'center', 'margin': '5px'})
 
-    results_dest <= html.A(_('איך נקבע הניקוד?'), target='_blank', href='/scoring')
+    results_dest <= html.A(_(texts['scoring']), target='_blank', href='/scoring')
     results_dest <= html.BR()
-    results_dest <= html.A(_('התחל מההתחלה (אפס מצב)'), href='/restart/')
+    results_dest <= html.A(_(texts['restart']), href='/restart/')
     results_dest <= html.BR()

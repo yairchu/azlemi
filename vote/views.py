@@ -79,6 +79,27 @@ class CommonData:
 
 common_data = CommonData()
 
+def client_side_translations():
+    # Without the code below,
+    # "python manage.py makemessages" comments out the translations for these
+    result = {
+        'הבית היהודי': _('הבית היהודי'),
+        'ישראל ביתנו': _('ישראל ביתנו'),
+        'יש עתיד': _('יש עתיד'),
+        'הליכוד': _('הליכוד'),
+        'מרצ': _('מרצ'),
+        'המחנה הציוני': _('המחנה הציוני'),
+        'הרשימה המשותפת': _('הרשימה המשותפת'),
+        'יהדות התורה': _('יהדות התורה'),
+        'ש”ס': _('ש”ס'),
+        'הרשימה הערבית*': _('הרשימה הערבית*'),
+        'יחד*': _('יחד*'),
+        'כולנו*': _('כולנו*'),
+        }
+    for text in render_content.texts.values():
+        result[text] = _(text)
+    return result
+
 def home(request):
     state = request.session.get('state', {})
     prev_question_ids = [
@@ -138,6 +159,7 @@ def home(request):
         'small_results_html': small_results_html,
         'progress_html': progress_html,
         'radial_progress_html': radial_progress_html,
+        'client_side_translations': client_side_translations(),
         }
     return render(request, 'vote/home.html', context)
 
