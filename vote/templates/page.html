@@ -18,6 +18,9 @@
     <div class="row" style="text-align: center;">
       <hr />
       {% for page in navitems %}
+        {% if not forloop.first %}
+          -
+        {% endif %}
         <a href="{{page.get_absolute_url}}"> {{page.title}} </a>
       {% endfor %}
       <br><br>
