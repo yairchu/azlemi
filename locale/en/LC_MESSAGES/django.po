@@ -1,0 +1,109 @@
+# azlemi.org.il English translations
+# Yair Chuchem, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-03 19:42+0000\n"
+"Last-Translator: Yair Chuchem\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: vote/render_content.py:34 vote_tool/static/render_content.py:34
+msgid "נגד"
+msgstr "Against"
+
+#: vote/render_content.py:41 vote_tool/static/render_content.py:41
+msgid "בעד"
+msgstr "For"
+
+#: vote/render_content.py:48 vote_tool/static/render_content.py:48
+msgid "לא בטוח? "
+msgstr "Not sure? "
+
+#: vote/render_content.py:50 vote_tool/static/render_content.py:50
+msgid "דלג לשאלה הבאה"
+msgstr "Skip to the next question"
+
+#: vote/render_content.py:87 vote_tool/static/render_content.py:87
+msgid "מידע נוסף"
+msgstr "More information"
+
+#: vote/templates/base.html:118
+msgid "(טיוטא די ראשונית בהחלט!)"
+msgstr "(Beta / work in progress!)"
+
+#: vote/templates/base.html:128 vote/templates/base.html.py:167
+msgid "אז למי להצביע?"
+msgstr "So, what to vote?"
+
+#: vote/templates/base.html:140
+msgid ""
+"\n"
+"              לקראת הבחירות המתקרבות,\n"
+"              אנחנו מכינים אתר\n"
+"              ששואל אתכם לדעתכם על הצבעות בכנסת,\n"
+"              ומראה לכם איזה מפלגות הצביעו כמוכם\n"
+"              ומדרג אותן לפי ההתאמה אליכם.\n"
+"            "
+msgstr ""
+"\n"
+"Towards the upcoming Israeli elections,\n"
+"we're making a website\n"
+"that asks you for your opinion on votes from the Knesset,\n"
+"and shows you which parties voted like you\n"
+"and orders them by their opinion's similarity to yours."
+
+#: vote/templates/base.html:149
+msgid ""
+"\n"
+"              הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים\n"
+"              לגבש דעה מודעת על המפלגות השונות,\n"
+"              שלא על סמך פרשנויות על מצע או הוייב,\n"
+"              אלא תכלס על סמך הצבעות בפועל.\n"
+"            "
+msgstr ""
+"\n"
+"The idea is to create an objective tool that will help people\n"
+"form an informed opinion on the different parties,\n"
+"which isn't based on subjective interpretations about parties' platforms or "
+"vibes,\n"
+"but actually based on the votes in practice."
+
+#: vote/templates/base.html:168
+msgid "על האתר"
+msgstr "About"
+
+#: vote/templates/base.html:171
+msgid "מבוסס על מאגר המידע של"
+msgstr "Based on the database of"
+
+#: vote/templates/base.html:173
+msgid "כנסת פתוחה"
+msgstr "Open Knesset"
+
+#: vote/templates/vote/home.html:155
+msgid "כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009."
+msgstr ""
+"Here you will get questions about various topics from the actual votes of "
+"the Knesset since 2009"
+
+#: vote/templates/vote/home.html:158
+msgid "לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם."
+msgstr ""
+"According to your answers, we'll present the party that best suits your "
+"opinions."
+
+#: vote/templates/vote/home.html:159
+msgid "ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר."
+msgstr "The more questions you answer - the more exact your match will be."
+
+#: vote_tool/settings.py:115
+msgid "עברית"
+msgstr "Hebrew"
+
+#: vote_tool/settings.py:116
+msgid "אנגלית"
+msgstr "English"

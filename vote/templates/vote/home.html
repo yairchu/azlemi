@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block head-extra %}
   <title>אז למי להצביע?</title>
 
@@ -138,32 +140,42 @@
     <div class="row">
       <div class="col-md-2" role="complementary">
         <div class="hidden-print hidden-xs hidden-sm fix-bottom fix-left">
-          {{radial_progress_html|safe}}
+          {% if LANGUAGE_BIDI %}
+            {{radial_progress_html|safe}}
+          {% else %}
+            <a href="#results-section">
+              {{small_results_html|safe}}
+            </a>
+          {% endif %}
         </div>
       </div>
       <div class="col-md-8" role="main">
         <div class="bigger-font" id="questions">
           <p>
-            כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009.
+            {% trans "כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009." %}
           </p>
           <p>
-            לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם.
-            <b> ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר. </b>
+            {% trans "לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם." %}
+            <b> {% trans "ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר." %} </b>
           </p>
           {{prev_questions_html|safe}}
         </div>
         {{progress_html|safe}}
       </div>
       <div class="col-md-2" role="complementary">
-        <nav class="nav hidden-print hidden-xs hidden-sm fix-bottom">
-          <a href="#results-section">
-            {{small_results_html|safe}}
-          </a>
-        </nav>
+        <div class="hidden-print hidden-xs hidden-sm fix-bottom">
+          {% if LANGUAGE_BIDI %}
+            <a href="#results-section">
+              {{small_results_html|safe}}
+            </a>
+          {% else %}
+            {{radial_progress_html|safe}}
+          {% endif %}
+        </div>
       </div>
     </div>
     <div class="row bigger-font">
-      <div class="col-md-6 col-md-offset-4 col-sm-10 col-sm-offset-2">
+      <div class="col-md-6 {{LANGUAGE_BIDI|yesno:"col-md-offset-4,col-md-offset-2"}} col-sm-10 col-sm-offset-2">
         <a name="results-section">
           <h2> תוצאות </h2>
         </a>

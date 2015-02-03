@@ -5,12 +5,16 @@ import json
 
 from browser import ajax, document, html, timer, window
 
+def translate(text):
+    # TODO
+    return text
+
 class Question:
     def __init__(self, data):
         self.data = data
 
     def render(self):
-        panel, _, _ = question_panel(self.data)
+        panel, _, _ = question_panel(self.data, translate)
         document['questions'] <= panel
 
         desc_id = 'q%d-desc' % self.data['id']

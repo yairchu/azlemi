@@ -9,7 +9,7 @@ no_result_text = '''
     ככל שתענו על מספר רב יותר של שאלות, תקבלו תוצאה מדוייקת יותר.
     '''
 
-def question_panel(data):
+def question_panel(data, _):
     outer_frame = html.DIV(id='q%d'%data['id'], Class='question-box')
     panel = html.DIV()
     outer_frame <= panel
@@ -31,22 +31,24 @@ def question_panel(data):
     for_radio = html.INPUT(type='radio', name=str(data['id']), value='1')
 
     against <= against_radio
-    against <= html.DIV('נגד')
+    against <= html.DIV(_('נגד'))
     against <= html.DIV(
         html.SPAN(Class='glyphicon glyphicon-arrow-left',
             style={'float': 'right', 'padding-right': '2px'}))
     against <= html.DIV(style={'clear': 'both', 'height': '5px'})
 
     in_favor <= for_radio
-    in_favor <= html.DIV('בעד')
+    in_favor <= html.DIV(_('בעד'))
     in_favor <= html.DIV(
         html.SPAN(Class='glyphicon glyphicon-arrow-right',
             style={'float': 'left', 'padding-left': '2px'}))
     in_favor <= html.DIV(style={'clear': 'both', 'height': '5px'})
 
     skip <= skip_radio
-    skip <= html.SPAN('לא בטוח? ')
-    skip <= html.SPAN('דלג לשאלה הבאה', style={'text-decoration': 'underline'})
+    skip <= html.SPAN(_('לא בטוח? '))
+    skip <= html.SPAN(
+        _('דלג לשאלה הבאה'),
+        style={'text-decoration': 'underline'})
 
     content <= html.H3(data['title'])
 
@@ -82,7 +84,7 @@ def question_panel(data):
     if tooltip:
         summary <= html.BR()
     summary <= html.A(
-        'מידע נוסף',
+        _('מידע נוסף'),
         target='_blank',
         href='https://oknesset.org/vote/%d/' % data['id'],
         )

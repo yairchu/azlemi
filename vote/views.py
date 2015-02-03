@@ -12,6 +12,7 @@ from django.contrib.sessions.models import Session
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import Context, loader
+from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 
 from browser import html
@@ -94,7 +95,8 @@ def home(request):
     rendered_prevs_questions = []
     user_answers = {}
     for question in prev_questions:
-        panel, party_votes_doc, radios = render_content.question_panel(question)
+        (panel, party_votes_doc, radios
+            ) = render_content.question_panel(question, _)
         answer = int(state['q%d'%question['id']])
         user_answers[question['id']] = answer
         for radio in radios:
@@ -123,7 +125,8 @@ def home(request):
     if start_votes:
         question = start_votes.pop()
         prev_questions.append(question)
-        panel, _, _ = render_content.question_panel(question)
+        (panel, party_votes_doc, radios
+            ) = render_content.question_panel(question, _)
         rendered_prevs_questions.append(str(panel))
 
     context = {

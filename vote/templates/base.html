@@ -1,5 +1,7 @@
+{% load i18n %}
+
 <!doctype html>
-<html dir="rtl">
+<html dir="{{LANGUAGE_BIDI|yesno:"rtl,ltr"}}">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
@@ -17,10 +19,16 @@
   </script>
 
   <style type="text/css">
-    @import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
-    body {
-      font-family: 'Alef Hebrew', Helvetica, Arial, sans-serif;
-    }
+    {% if LANGUAGE_CODE == 'he' %}
+      @import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
+      body {
+        font-family: 'Alef Hebrew', Helvetica, Arial, sans-serif;
+      }
+    {% else %}
+      body {
+        font-family: Helvetica, Arial, sans-serif;
+      }
+    {% endif %}
     .table-packed>thead>tr>td, .table-packed>tbody>tr>td,
     .table-packed>thead>tr>th, .table-packed>tbody>tr>th {
       padding-left: 1px;
@@ -65,7 +73,7 @@
       background-size: auto 66%;
       width: 200px;
       height: 200px;
-      float: left;
+      float: {{LANGUAGE_BIDI|yesno:"left,right"}};
     }
 
     .question-box {
@@ -105,15 +113,19 @@
   {% block modal %} {% endblock %}
   <div style="background: #3fa9f5;">
     <div class="container" style="color: white; text-align: center; height: 80px; line-height: 80px;">
-      <div style="float: left; font-size: 24px;">
-        <a target="_blank" href="/draft" style="color: #fff; text-decoration: underline;">
-          (טיוטא די ראשונית בהחלט!)
+      <div style="float: {{LANGUAGE_BIDI|yesno:"left,right"}}; font-size: 24px;">
+        <a target="_blank" href="{% url 'feincms_handler' 'draft' %}" style="color: #fff; text-decoration: underline;">
+          {% trans "(טיוטא די ראשונית בהחלט!)" %}
         </a>
       </div>
-      <div style="float: right; font-size: 30px;">
-        <a href="/" style="color: white;">
+      <div style="float: {{LANGUAGE_BIDI|yesno:"right,left"}}; font-size: 30px;">
+        {% if LANGUAGE_CODE == 'he' %}
+          <a href="/" style="color: white;">
+        {% else %}
+          <a href="/{{LANGUAGE_CODE}}/" style="color: white;">
+        {% endif %}
           <img src="http://cdn.azlemi.org.il/static/box.svg" height=35 style="padding-left: 12px;" />
-          אז למי להצביע?
+          {% trans "אז למי להצביע?" %}
         </a>
       </div>
     </div>
@@ -125,17 +137,21 @@
         </div>
         <div style="padding-top: 30px; padding-bottom: 30px;">
           <p>
-            לקראת הבחירות המתקרבות,
-            הכנו (אנחנו עוד מכינים אותו) אתר
-            ששואל אתכם לדעתכם על הצבעות בכנסת,
-            ומראה לכם איזה מפלגות הצביעו כמוכם
-            ומדרג אותן לפי ההתאמה אליכם.
+            {% blocktrans %}
+              לקראת הבחירות המתקרבות,
+              אנחנו מכינים אתר
+              ששואל אתכם לדעתכם על הצבעות בכנסת,
+              ומראה לכם איזה מפלגות הצביעו כמוכם
+              ומדרג אותן לפי ההתאמה אליכם.
+            {% endblocktrans %}
           </p>
           <p>
-            הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים
-            לגבש דעה מודעת על המפלגות השונות,
-            שלא על סמך פרשנויות על מצע או הוייב,
-            אלא תכלס על סמך הצבעות בפועל.
+            {% blocktrans %}
+              הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים
+              לגבש דעה מודעת על המפלגות השונות,
+              שלא על סמך פרשנויות על מצע או הוייב,
+              אלא תכלס על סמך הצבעות בפועל.
+            {% endblocktrans %}
           </p>
         </div>
       </div>
@@ -148,13 +164,13 @@
   <footer>
     <div class="container" style="text-align: center;">
       <p>
-        "אז למי להצביע?"
-        <a target="_blank" href="/about">על האתר</a>
+        "{% trans "אז למי להצביע?" %}"
+        <a target="_blank" href="{% url 'feincms_handler' 'about' %}">{% trans "על האתר" %}</a>
       </p>
       <p>
-        מבוסס על מאגר המידע של
+        {% trans "מבוסס על מאגר המידע של" %}
         <a target="_blank" href="https://oknesset.org">
-          ״כנסת פתוחה״
+          "{% trans "כנסת פתוחה" %}"
           <img src="http://cdn.azlemi.org.il/static/oknesset_icon_black.png" />
         </a>
       </p>
