@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 19:42+0000\n"
+"POT-Creation-Date: 2015-02-03 20:07+0000\n"
 "Last-Translator: Yair Chuchem\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +30,10 @@ msgstr "Skip to the next question"
 #: vote/render_content.py:87 vote_tool/static/render_content.py:87
 msgid "מידע נוסף"
 msgstr "More information"
+
+#: vote/render_content.py:102 vote_tool/static/render_content.py:102
+msgid "מפלגה"
+msgstr "Party"
 
 #: vote/templates/base.html:118
 msgid "(טיוטא די ראשונית בהחלט!)"
@@ -107,3 +111,39 @@ msgstr "Hebrew"
 #: vote_tool/settings.py:116
 msgid "אנגלית"
 msgstr "English"
+
+msgid "הבית היהודי"
+msgstr "Jewish Home"
+
+msgid "ישראל ביתנו"
+msgstr "Israel Our Home"
+
+msgid "יש עתיד"
+msgstr "Future Exists"
+
+msgid "הליכוד"
+msgstr "Likud"
+
+msgid "מרצ"
+msgstr "Meretz"
+
+msgid "המחנה הציוני"
+msgstr "Zionist Camp"
+
+msgid "הרשימה המשותפת"
+msgstr "Joint List"
+
+msgid "יהדות התורה"
+msgstr "Torah Judaism"
+
+msgid "ש”ס"
+msgstr "Shas"
+
+msgid "הרשימה הערבית*"
+msgstr "Arab List*"
+
+msgid "יחד*"
+msgstr "Together*"
+
+msgid "כולנו*"
+msgstr "All of us*"

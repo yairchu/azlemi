@@ -103,7 +103,7 @@ def home(request):
             if int(radio.attrs['value']) == answer:
                 radio.attrs['checked'] = 'true'
         render_content.question_party_votes(
-            party_votes_doc, question, answer)
+            party_votes_doc, question, answer, _)
         rendered_prevs_questions.append(str(panel))
     results = render_content.calc_results(
         dict((q['id'], q) for q in prev_questions), user_answers)
@@ -112,7 +112,8 @@ def home(request):
     progress_html = html.DIV(id='progress-bar')
     radial_progress_html = html.DIV(id='radial-progress-bar')
     render_content.render_results(
-        results_html, small_results_html, progress_html, radial_progress_html, results, user_answers)
+        results_html, small_results_html, progress_html,
+        radial_progress_html, results, user_answers, _)
 
     start_votes = [
         x for x in
@@ -163,7 +164,8 @@ def publish_data(votes_str):
         vote = votes[vote_id]
         vote['answer'] = user_answers[vote_id]
         party_votes = html.DIV(Class='table-responsive')
-        render_content.question_party_votes(party_votes, vote, vote['answer'])
+        render_content.question_party_votes(
+            party_votes, vote, vote['answer'], _)
         vote['party_votes_html'] = party_votes
         questions.append(vote)
 
@@ -200,7 +202,7 @@ def publish(request, votes_str):
 
     context = {
         'questions': questions,
-        'results_html': render_content.render_results_table(results),
+        'results_html': render_content.render_results_table(results, _),
         'url': request.get_host()+request.path,
         'share': request.GET.get('share', False),
         'results_summary': results_desc,

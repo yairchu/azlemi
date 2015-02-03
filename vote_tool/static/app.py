@@ -43,7 +43,7 @@ class Question:
         party_votes_doc.clear()
         if self.answer is None:
             return
-        question_party_votes(party_votes_doc, self.data, self.answer)
+        question_party_votes(party_votes_doc, self.data, self.answer, translate)
 
 def is_boring_question(question_data):
     for x in ['for_votes_count', 'against_votes_count']:
@@ -126,7 +126,7 @@ class Game:
         render_results(
             document['results'], document['results-small'],
             document['progress-bar'], document['radial-progress-bar'],
-            results, user_answers)
+            results, user_answers, translate)
 
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])

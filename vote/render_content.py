@@ -91,7 +91,7 @@ def question_panel(data, _):
     content <= summary
     return outer_frame, party_votes_doc, [against_radio, skip_radio, for_radio]
 
-def question_party_votes(party_votes_doc, data, user_answer):
+def question_party_votes(party_votes_doc, data, user_answer, _):
     def key(x):
         results = x[1]
         return x[0]
@@ -99,7 +99,7 @@ def question_party_votes(party_votes_doc, data, user_answer):
         style={'text-align': 'center', 'background': '#f9f9f9'},
         Class='table table-packed')
     party_votes_doc <= table
-    parties_row = html.TR(html.TH('מפלגה', style={'vertical-align': 'top'}))
+    parties_row = html.TR(html.TH(_('מפלגה'), style={'vertical-align': 'top'}))
     table <= html.THEAD(parties_row)
     tbody = html.TBODY()
     table <= tbody
@@ -115,7 +115,7 @@ def question_party_votes(party_votes_doc, data, user_answer):
             style['font-weight'] = 'bold'
         elif user_answer:
             style['color'] = '#666'
-        row = html.TR(html.TH(name), style=style)
+        row = html.TR(html.TH(_(name)), style=style)
         tbody <= row
         rows[v] = row
     for party_name, results in sorted(data['party_votes'].items(), key=key):
@@ -123,7 +123,7 @@ def question_party_votes(party_votes_doc, data, user_answer):
             '%.0f%%'%(100*r) if r else '-'
             for r in [results.get('for'), results.get('against')]]
         for row, val in [
-            (parties_row, party_name),
+            (parties_row, _(party_name)),
             (rows[1], for_txt),
             (rows[-1], vs_txt),
             ]:
@@ -181,14 +181,14 @@ party_links = {
     'הרשימה הערבית': 'https://he.wikipedia.org/wiki/הרשימה_הערבית',
     }
 
-def render_results_table(results):
+def render_results_table(results, _):
     results_table = html.TABLE(Class='table table-striped')
     header_row = html.TR()
-    header_row <= html.TH('מקום', style={'text-align': 'right'})
-    header_row <= html.TH('מפלגה', style={'text-align': 'right'})
-    header_row <= html.TH('איתך')
-    header_row <= html.TH('נגדך')
-    header_row <= html.TH('סה״כ')
+    header_row <= html.TH(_('מקום'), style={'text-align': 'right'})
+    header_row <= html.TH(_('מפלגה'), style={'text-align': 'right'})
+    header_row <= html.TH(_('איתך'))
+    header_row <= html.TH(_('נגדך'))
+    header_row <= html.TH(_('סה״כ'))
     results_table <= html.THEAD(header_row)
     table_body = html.TBODY()
     results_table <= table_body
@@ -200,7 +200,7 @@ def render_results_table(results):
         row <= html.TD(str(pos))
         link = party_links.get(party_name.strip('*'))
         if link:
-            party_name = html.A(party_name, target='_blank', href=link)
+            party_name = html.A(_(party_name), target='_blank', href=link)
         row <= html.TD(party_name)
         for k in [1, -1, 'overall']:
             cell = '%.0f%%'%(100*score[k])
@@ -208,13 +208,17 @@ def render_results_table(results):
         table_body <= row
     return results_table
 
-def render_results(results_dest, results_small_dest, progress_dest, progress_circle_dest, res, user_answers):
+def render_results(results_dest, results_small_dest, progress_dest, progress_circle_dest, res, user_answers, _):
     (results, num_answers) = res
 
     if num_answers == 1:
-        progress_text_lines = ['ענית על', 'שאלה', 'אחת']
+        progress_text_lines = [
+            _('ענית על'),
+            _('שאלה'),
+            _('אחת'),
+            ]
     else:
-        progress_text_lines = ['ענית על', str(num_answers), 'שאלות']
+        progress_text_lines = [_('ענית על'), str(num_answers), _('שאלות')]
     num_questions_to_answer = 12
     progress = min(1, num_answers/num_questions_to_answer)
     progress_dest <= html.DIV(
@@ -227,7 +231,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
                 }),
         Class='progress')
 
-    results_dest <= render_results_table(results)
+    results_dest <= render_results_table(results, _)
 
     progress_rotate = 'rotate(%ddeg)' % (180+360*progress)
     circle_fill_style = {
@@ -272,20 +276,19 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
             }
     results_small = html.DIV(style=results_small_style)
     results_small_dest <= results_small
-    results_small <= html.B('תוצאות:')
+    results_small <= html.B(_('תוצאות:'))
 
     for pos, party_name, score in sorted_results(results):
-        short_name = '%d. %s' % (pos, party_name)
         results_small <= html.BR()
-        results_small <= short_name
+        results_small <= '%d. %s' % (pos, _(party_name))
 
     results_small <= html.BR()
     if progress < 1:
-        results_small <= 'ראה פירוט ←'
+        results_small <= _('ראה פירוט ←')
     else:
-        results_small <= 'ראה פירוט ושתף! ←'
+        results_small <= _('ראה פירוט ושתף! ←')
 
-    results_dest <= '* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה'
+    results_dest <= _('* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה')
     results_dest <= html.BR()
 
     if num_answers >= num_questions_to_answer:
@@ -293,13 +296,13 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
             'q%d%s'%(k, 'f' if v == 1 else 'a') for k, v in sorted(user_answers.items()) if v)
         results_dest <= html.FORM(
             html.INPUT(
-                value='שתף את התוצאות שלי!',
+                value=_('שתף את התוצאות שלי!'),
                 type="submit", Class='btn btn-lg btn-success'),
             method='post',
             action='/publish/%s/'%votes_str,
             style={'text-align': 'center', 'margin': '5px'})
 
-    results_dest <= html.A('איך נקבע הניקוד?', target='_blank', href='/scoring')
+    results_dest <= html.A(_('איך נקבע הניקוד?'), target='_blank', href='/scoring')
     results_dest <= html.BR()
-    results_dest <= html.A('התחל מההתחלה (אפס מצב)', href='/restart/')
+    results_dest <= html.A(_('התחל מההתחלה (אפס מצב)'), href='/restart/')
     results_dest <= html.BR()
