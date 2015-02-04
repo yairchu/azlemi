@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-04 14:40+0000\n"
+"POT-Creation-Date: 2015-02-04 14:50+0000\n"
 "Last-Translator: Yair Chuchem\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -234,6 +234,10 @@ msgstr "My votes"
 #: vote/templates/vote/publish.html:143
 msgid "התוצאות שלי"
 msgstr "My results"
+
+#: vote/templates/vote/publish.html:159
+msgid "שחק גם!"
+msgstr "Play too!"
 
 #: vote/views.py:86
 msgid "הבית היהודי"
