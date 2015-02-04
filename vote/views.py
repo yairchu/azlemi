@@ -323,18 +323,20 @@ def choose_question_set(lang_code, already_asked):
     if lang_code != 'he':
         result = set(
             x.id for x in
-            models.Vote.objects.exclude(**{'vt_title_'+lang_code: ''})
+            models.Vote.objects.exclude(**{'vt_title_'+lang_code: ''}
+                ).only('id')
             ) - already_asked
     if not result and random.random() < 0.9:
         result = set(
             x.id for x in
-            models.Vote.objects.filter(is_interesting = True)
+            models.Vote.objects.filter(is_interesting = True).only('id')
             ) - already_asked
     if not result and random.random() < 0.9:
         result = set(
             x.id for x in
             models.Vote.objects.filter(
-                for_votes_count__gte = 10, against_votes_count__gte = 10)
+                for_votes_count__gte = 10, against_votes_count__gte = 10
+                ).only('id')
             ) - already_asked
     if not result:
         result = set(range(1, common_data['num_votes']+1)) - already_asked
@@ -468,9 +470,17 @@ def get_question(request):
         question_id = random.choice(list(question_set))
         vote = export_vote(fetch_vote(question_id))
         if is_vote_ok(vote):
-            return HttpResponse(json.dumps(vote, ensure_ascii=False))
+            break
         else:
             already_asked.add(question_id)
+    if request.GET.get('html'):
+        context = {
+            'vote_json':
+                json.dumps(vote, ensure_ascii=False, indent=4
+                ).replace('\n', '<br>').replace(' ', '&nbsp;'),
+            }
+        return render(request, 'vote/get_question_debug.html', context)
+    return HttpResponse(json.dumps(vote, ensure_ascii=False))
 
 def save_vote(request):
     track_changes(request)
