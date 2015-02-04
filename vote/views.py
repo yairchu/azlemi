@@ -136,13 +136,14 @@ def home(request):
         results_html, small_results_html, progress_html,
         radial_progress_html, results, user_answers, _)
 
-    start_votes = [
-        x for x in
-        models.Vote.objects.filter(is_interesting = True)
-        if x.id not in prev_question_ids
-        ]
-    random.shuffle(start_votes)
-    start_votes = [export_vote(x) for x in start_votes[:3]]
+    start_votes = []
+    prev_question_ids = set(prev_question_ids)
+    for i in range(3):
+        question_set = choose_question_set(request.LANGUAGE_CODE, prev_question_ids)
+        question_id = random.choice(list(question_set))
+        vote = export_vote(fetch_vote(question_id))
+        if is_vote_ok(vote):
+            start_votes.append(vote)
 
     if start_votes:
         question = start_votes.pop()
@@ -317,9 +318,14 @@ def fetch_vote(vote_id):
         vote.save()
     return vote
 
-def choose_question_set(already_asked):
+def choose_question_set(lang_code, already_asked):
     result = set()
-    if random.random() < 0.9:
+    if lang_code != 'he':
+        result = set(
+            x.id for x in
+            models.Vote.objects.exclude(**{'vt_title_'+lang_code: ''})
+            ) - already_asked
+    if not result and random.random() < 0.9:
         result = set(
             x.id for x in
             models.Vote.objects.filter(is_interesting = True)
@@ -455,14 +461,16 @@ def get_question(request):
     queue = request.GET.get('queue', '')
     if queue:
         already_asked += queue.split(',')
-    already_asked = set( int(x[1:]) for x in already_asked if x.startswith('q'))
+    already_asked = set(int(x[1:]) for x in already_asked if x.startswith('q'))
 
     while True:
-        question_set = choose_question_set(already_asked)
+        question_set = choose_question_set(request.LANGUAGE_CODE, already_asked)
         question_id = random.choice(list(question_set))
         vote = export_vote(fetch_vote(question_id))
         if is_vote_ok(vote):
             return HttpResponse(json.dumps(vote, ensure_ascii=False))
+        else:
+            already_asked.add(question_id)
 
 def save_vote(request):
     track_changes(request)
