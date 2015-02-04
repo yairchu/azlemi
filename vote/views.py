@@ -192,7 +192,7 @@ def publish_data(votes_str):
         vote['party_votes_html'] = party_votes
         questions.append(vote)
 
-    (results, _) = render_content.calc_results(votes, user_answers)
+    (results, _unused) = render_content.calc_results(votes, user_answers)
 
     return questions, results
 
