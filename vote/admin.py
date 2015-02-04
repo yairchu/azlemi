@@ -1,22 +1,32 @@
 from django import forms
 from django.contrib import admin
 
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TabbedTranslationAdmin
 
 from vote import models
+
+def vote_form_widgets():
+    result = {}
+    for field in ['title', 'vt_title', 'vt_description']:
+        suffixes = ['']
+        if field.startswith('vt_'):
+            suffixes = ['_he', '_en']
+        for suffix in suffixes:
+            attrs = {'cols': 100, 'rows': 1}
+            if 'description' in field:
+                attrs['rows'] = 20
+            if suffix in ['', '_he']:
+                attrs['dir'] = 'rtl'
+            result[field+suffix] = forms.Textarea(attrs=attrs)
+    return result
 
 class VoteForm(forms.ModelForm):
     class Meta:
         model = models.Vote
         exclude = []
-        widgets = {
-            'vt_description_he':
-                forms.Textarea(attrs={'cols': 80, 'rows': 20, 'dir': 'rtl'}),
-            'vt_description_en':
-                forms.Textarea(attrs={'cols': 80, 'rows': 20}),
-        }
+        widgets = vote_form_widgets()
 
-class VoteAdmin(TranslationAdmin):
+class VoteAdmin(TabbedTranslationAdmin):
     form = VoteForm
     list_filter = ['is_interesting']
 
