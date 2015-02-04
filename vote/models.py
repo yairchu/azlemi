@@ -24,7 +24,7 @@ class Vote(models.Model):
 
     oknesset_data = models.BinaryField()
     is_interesting = models.BooleanField(default = False)
-    vt_title = models.CharField(max_length=120, blank=True, default='')
+    vt_title = models.CharField(max_length=140, blank=True, default='')
     vt_description = models.CharField(max_length=2000, blank=True, default='')
     def __str__(self):
         return '%s %d: %s' % (
