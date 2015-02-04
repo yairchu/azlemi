@@ -206,7 +206,7 @@ def publish(request, votes_str):
         random_key = ''.join(random_key[:10])
 
         models.Publish(votes=votes_str, key=random_key).save()
-        return HttpResponseRedirect('/publish/%s/?share=1' % random_key)
+        return HttpResponseRedirect(_('/')+'publish/%s/?share=1' % random_key)
 
     try:
         votes_str = models.Publish.objects.get(key=votes_str).votes

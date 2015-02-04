@@ -328,7 +328,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
                 value=_(texts['share']),
                 type="submit", Class='btn btn-lg btn-success'),
             method='post',
-            action='/publish/%s/'%votes_str,
+            action=_(texts['lang_prefix'])+'publish/%s/'%votes_str,
             style={'text-align': 'center', 'margin': '5px'})
 
     results_dest <= html.A(_(texts['scoring']), target='_blank', href='/scoring')

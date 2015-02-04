@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block head-extra %}
-  <title>אז למי להצביע - התוצאות שלי</title>
+  <title> {% trans "אז למי להצביע - התוצאות שלי" %}</title>
 
   <meta property="og:title" content="{{summary|safe}}" />
   <meta property="og:site_name" content="אז למי?" />
@@ -74,20 +76,20 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">פרסם את תוצאותיי!</h4>
+          <h4 class="modal-title"> {% trans "פרסם את תוצאותיי!" %} </h4>
         </div>
         <div class="modal-body">
           <p>
-            העמוד הנ״ל מכיל את תוצאותיך ב״אז למי להצביע?״.
+            {% trans "העמוד הנ״ל מכיל את תוצאותיך ב״אז למי להצביע?״." %}
           </p>
           <p>
-            לחץ ״שתף״ כדי לשתף עם החברים בפייסבוק.
+            {% trans "לחץ ״שתף״ כדי לשתף עם החברים בפייסבוק." %}
           </p>
         </div>
         <div class="modal-footer">
-          <button data-dismiss="modal" type="button" class="btn btn-primary" onclick="facebook_share()">שתף בפייסבוק!</button>
-          <a class="btn btn-info" target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F{{url}}&text={{summary}}&hashtags=אזלמי,IsraelElex">שתף בטוויטר!</a>
-          <button data-dismiss="modal" type="button" class="btn btn-default">רגע.. תן לראות קודם ואז אשתף!</button>
+          <button data-dismiss="modal" type="button" class="btn btn-primary" onclick="facebook_share()"> {% trans "שתף בפייסבוק!" %} </button>
+          <a class="btn btn-info" target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F{{url}}&text={{summary}}&hashtags=אזלמי,IsraelElex"> {% trans "שתף בטוויטר!" %} </a>
+          <button data-dismiss="modal" type="button" class="btn btn-default"> {% trans "רגע.. תן לראות קודם ואז אשתף!" %} </button>
         </div>
       </div>
     </div>
@@ -99,7 +101,7 @@
     <div class="row bigger-font">
       <div class="col-md-8 col-md-offset-2" role="main">
 
-        <h2> ההצבעות שלי: </h2>
+        <h2> {% trans "ההצבעות שלי" %}: </h2>
 
         {% for question in questions %}
 
@@ -108,11 +110,11 @@
             {{question.title}}:
             {% if question.answer == 1 %}
               <span class='answer answer-for'>
-                בעד.
+                {% trans "בעד"%}.
               </span>
             {% else %}
               <span class='answer answer-against'>
-                נגד.
+                {% trans "נגד"%}.
               </span>
             {% endif %}
           </a>
@@ -123,7 +125,7 @@
                 <br>
               {% endif %}
               <a href="https://oknesset.org/vote/{{question.id}}">
-                מידע נוסף
+                {% trans "מידע נוסף" %}
               </a>
               <br>
               {{question.party_votes_html|safe}}
@@ -138,23 +140,23 @@
     </div>
     <div class="row bigger-font">
       <div class="col-md-6 col-md-offset-4">
-        <h2> התוצאות שלי: </h2>
+        <h2> {% trans "התוצאות שלי" %}: </h2>
 
         {{results_html|safe}}
         <span style="font-size: 14px;">
-        * מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה
+        {% trans "* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג מהימנה את שאר חברי המפלגה" %}
         </span>
         <br>
-        <a target="_blank" href="/scoring" style="font-size: 14px;">(איך נקבע הניקוד?)</a>
+        <a target="_blank" href="/scoring" style="font-size: 14px;">({% trans "איך נקבע הניקוד?" %})</a>
 
         <div class="fb-comments" data-href="http://{{url}}" data-numposts="5" data-colorscheme="light"></div>
 
         <div style='text-align: center;'>
           {% if share %}
-            <button style="margin-top: 7px;" class="btn btn-lg btn-primary" onclick="facebook_share()">שתף בפייסבוק!</button>
-            <a style="margin-top: 7px;" class="btn btn-lg btn-info" target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F{{url}}&text={{summary}}&hashtags=אזלמי,IsraelElex">שתף בטוויטר!</a>
+            <button style="margin-top: 7px;" class="btn btn-lg btn-primary" onclick="facebook_share()">{% trans "שתף בפייסבוק!" %}</button>
+            <a style="margin-top: 7px;" class="btn btn-lg btn-info" target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F{{url}}&text={{summary}}&hashtags=אזלמי,IsraelElex">{% trans "שתף בטוויטר!" %}</a>
           {% else %}
-            <a style="margin-top: 7px;" href="/" class="btn btn-lg btn-success">שחק גם!</a>
+            <a style="margin-top: 7px;" href="/" class="btn btn-lg btn-success">{% trans "שחק גם!" }</a>
           {% endif %}
         </div>
         <br>
