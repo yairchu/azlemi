@@ -37,6 +37,7 @@ class HasTranslationFilter(admin.FieldListFilter):
     def expected_parameters(self):
         for lang_key, lang_name in settings.LANGUAGES[1:]:
             yield '%s_%s__exact' % (self.field_path, lang_key)
+            yield '%s_%s__gt' % (self.field_path, lang_key)
 
     def choices(self, cl):
         params = set()
@@ -51,13 +52,14 @@ class HasTranslationFilter(admin.FieldListFilter):
             'query_string': cl.get_query_string({}, params),
             }
         for lang_key, lang_name in settings.LANGUAGES[1:]:
-            param = '%s_%s__exact' % (self.field_path, lang_key)
-            is_chosen = self.request.GET.get(param) == ''
-            yield {
-                'selected': is_chosen,
-                'display': 'Lacks %s' % lang_name,
-                'query_string': cl.get_query_string({param: ''}, params),
-                }
+            for op, desc in [('exact', 'Lacks'), ('gt', 'Has')]:
+                param = '%s_%s__%s' % (self.field_path, lang_key, op)
+                is_chosen = self.request.GET.get(param) == ''
+                yield {
+                    'selected': is_chosen,
+                    'display': '%s %s' % (desc, lang_name),
+                    'query_string': cl.get_query_string({param: ''}, params),
+                    }
 
 class VoteAdmin(TabbedTranslationAdmin):
     form = VoteForm
