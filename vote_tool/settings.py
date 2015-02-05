@@ -119,6 +119,7 @@ gettext = lambda s: s
 LANGUAGES = (
     ('he', gettext('Hebrew')),
     ('en', gettext('English')),
+    ('ru', gettext('Russian')),
 )
 SOLID_I18N_USE_REDIRECTS = False
 
