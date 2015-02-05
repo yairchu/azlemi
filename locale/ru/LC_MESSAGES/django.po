@@ -1,12 +1,12 @@
 # azlemi.org.il English translations
-# Yair Chuchem, 2015.
+# Ira Rozina, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 19:35+0000\n"
-"Last-Translator: Yair Chuchem\n"
+"POT-Creation-Date: 2015-02-05 19:38+0000\n"
+"Last-Translator: Ira Rozina\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,71 +19,65 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"Answer questions to see answers,\n"
-"The more questions you answer, the more informative answer you will get."
+"Ответьте на вопросы, чтобы увидеть ответы,\n"
+"Чем больше вопросов вы ответите, тем больше информации вы получите."
 
 #: vote/render_content.py:15 vote/templates/vote/publish.html:117
 #: vote_tool/static/render_content.py:15
 msgid "נגד"
-msgstr "Against"
+msgstr "Против"
 
 #: vote/render_content.py:16 vote/templates/vote/publish.html:113
 #: vote_tool/static/render_content.py:16
 msgid "בעד"
-msgstr "For"
+msgstr "За"
 
 #: vote/render_content.py:17 vote_tool/static/render_content.py:17
 msgid "לא בטוח"
-msgstr "Not sure"
+msgstr "Не уверен/а"
 
 #: vote/render_content.py:18 vote_tool/static/render_content.py:18
 msgid "דלג לשאלה הבאה"
-msgstr "Skip to the next question"
+msgstr "Пропустить вопрос"
 
 #: vote/render_content.py:19 vote/templates/vote/publish.html:128
 #: vote_tool/static/render_content.py:19
 msgid "מידע נוסף"
-msgstr "More information"
+msgstr "Больше информации"
 
 #: vote/render_content.py:20 vote/render_content.py:33
 #: vote_tool/static/render_content.py:20 vote_tool/static/render_content.py:33
 msgid "מפלגה"
-msgstr "Party"
+msgstr "Партия"
 
 #: vote/render_content.py:21 vote_tool/static/render_content.py:21
 msgid "מקום"
-msgstr "Position"
+msgstr "Позиция"
 
 #: vote/render_content.py:22 vote_tool/static/render_content.py:22
 msgid "ענית על"
-msgstr "You answered"
+msgstr "Вы ответили"
 
 #: vote/render_content.py:23 vote_tool/static/render_content.py:23
 msgid "שאלה"
-msgstr "question"
+msgstr "вопрос"
 
 #: vote/render_content.py:24 vote_tool/static/render_content.py:24
 msgid "שאלות"
-msgstr "questions"
-
-#: vote/render_content.py:25 vote_tool/static/render_content.py:25
-#, fuzzy
-#| msgid "יחד*"
-msgid "אחת"
-msgstr "Together*"
+msgstr "вопросы"
 
 #: vote/render_content.py:26 vote/templates/vote/home.html:182
 #: vote_tool/static/render_content.py:26
 msgid "תוצאות"
-msgstr "Results"
+msgstr "Результаты"
 
 #: vote/render_content.py:27 vote_tool/static/render_content.py:27
 msgid "ראה פירוט ←"
-msgstr "Review details →"
+msgstr "Посмотреть детали →"
 
 #: vote/render_content.py:28 vote_tool/static/render_content.py:28
 msgid "ראה פירוט ושתף! ←"
-msgstr "Review details and share! →"
+msgstr "Посмотреть детали и поделиться! →"
 
 #: vote/render_content.py:29 vote/templates/vote/publish.html:147
 #: vote_tool/static/render_content.py:29
@@ -91,9 +85,7 @@ msgid ""
 "* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג "
 "מהימנה את שאר חברי המפלגה"
 msgstr ""
-"* Parties in which only one or two members were in the Knesset. The "
-"knowledge about them doesn't necessarily represent the rest of the party "
-"members"
+"* Партии, только один или два члена которых были в Кнессете. Информация о них не обязательно представляет всю партию."
 
 #: vote/render_content.py:30 vote_tool/static/render_content.py:30
 msgid "שתף את התוצאות שלי!"
@@ -253,60 +245,60 @@ msgstr "Play too!"
 
 #: vote/views.py:86
 msgid "הבית היהודי"
-msgstr "Jewish Home"
+msgstr "Еврейский Дом"
 
 #: vote/views.py:87
 msgid "ישראל ביתנו"
-msgstr "Israel Our Home"
+msgstr "Наш дом Израиль"
 
 #: vote/views.py:88
 msgid "יש עתיד"
-msgstr "Future Exists"
+msgstr "Еш атид"
 
 #: vote/views.py:89
 msgid "הליכוד"
-msgstr "Likud"
+msgstr "Ликуд"
 
 #: vote/views.py:90
 msgid "מרצ"
-msgstr "Meretz"
+msgstr "Мерец"
 
 #: vote/views.py:91
 msgid "המחנה הציוני"
-msgstr "Zionist Camp"
+msgstr "сионистский лагерь"
 
 #: vote/views.py:92
 msgid "הרשימה המשותפת"
-msgstr "Joint List"
+msgstr "הרשימה המשותפת"
 
 #: vote/views.py:93
 msgid "יהדות התורה"
-msgstr "Torah Judaism"
+msgstr "Яхаду́т ха-Тора́"
 
 #: vote/views.py:94
 msgid "ש”ס"
-msgstr "Shas"
+msgstr "ШАС"
 
 #: vote/views.py:95
 msgid "הרשימה הערבית*"
-msgstr "Arab List*"
+msgstr "הרשימה הערבית*"
 
 #: vote/views.py:96
 msgid "יחד*"
-msgstr "Together*"
+msgstr "יחד*"
 
 #: vote/views.py:97
 msgid "כולנו*"
-msgstr "All of us*"
+msgstr "כולנו*"
 
 #: vote_tool/settings.py:120
 msgid "Hebrew"
-msgstr "Hebrew"
+msgstr "Иври́т"
 
 #: vote_tool/settings.py:121
 msgid "English"
-msgstr "English"
+msgstr "Англи́йский"
 
 #: vote_tool/settings.py:122
 msgid "Russian"
-msgstr "Russian"
+msgstr "Русский"
