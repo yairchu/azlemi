@@ -13,7 +13,7 @@ class Question:
         self.data = data
 
     def render(self):
-        panel, _, _ = question_panel(self.data, translate)
+        panel, _, _ = question_panel(self.data, is_staff, translate)
         document['questions'] <= panel
 
         desc_id = 'q%d-desc' % self.data['id']

@@ -115,9 +115,10 @@ def home(request):
 
     rendered_prevs_questions = []
     user_answers = {}
+    is_staff = request.user and request.user.is_staff
     for question in prev_questions:
         (panel, party_votes_doc, radios
-            ) = render_content.question_panel(question, _)
+            ) = render_content.question_panel(question, is_staff, _)
         answer = int(state['q%d'%question['id']])
         user_answers[question['id']] = answer
         for radio in radios:
@@ -149,7 +150,7 @@ def home(request):
         question = start_votes.pop()
         prev_questions.append(question)
         (panel, party_votes_doc, radios
-            ) = render_content.question_panel(question, _)
+            ) = render_content.question_panel(question, is_staff, _)
         rendered_prevs_questions.append(str(panel))
 
     context = {

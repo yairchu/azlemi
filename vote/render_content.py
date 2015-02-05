@@ -39,7 +39,7 @@ def make_texts():
         }
 texts = make_texts()
 
-def question_panel(data, _):
+def question_panel(data, is_staff, _):
     outer_frame = html.DIV(id='q%d'%data['id'], Class='question-box')
     panel = html.DIV()
     outer_frame <= panel
@@ -78,7 +78,11 @@ def question_panel(data, _):
     skip <= html.SPAN(_(texts['unsure'])+'? ')
     skip <= html.SPAN(_(texts['skip']), style={'text-decoration': 'underline'})
 
-    content <= html.H3(data['title'])
+    title = data['title']
+    if is_staff:
+        title = html.A(
+            title, target='_blank', href='/en/admin/vote/vote/%d/' % data['id'])
+    content <= html.H3(title)
 
     description = data['summary']
     too_long = 700
