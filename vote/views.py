@@ -434,7 +434,7 @@ def is_vote_ok(vote):
     # Budget vote (see http://he.wikipedia.org/wiki/חוק_ההסדרים)
     # We want to filter these votes because
     # these are pro/con government votes, not legislation.
-    if 'הכלכלית לשנ' in vote['title'] and 'תיקוני חקיקה ל' in vote['title']:
+    if 'הכלכלית לשנ' in vote['title'] and 'תיקוני חקיקה' in vote['title']:
         return False
     if 'הצעת חוק התקציב לשנ' in vote['title']:
         return False
