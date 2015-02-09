@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 
 from vote import models, views, render_content
-import time
 
 class Command(BaseCommand):
     help = '''

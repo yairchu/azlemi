@@ -43,8 +43,20 @@ def is_simple(item):
     k, v = item
     return 'הסתייגות' not in v['title']
 
+stop_at = 50
+
+if sys.argv[1:2] == ['list']:
+    if len(sys.argv) == 3:
+        stop_at = int(sys.argv[2])
+    print(
+        ','.join(
+            str(vote_id) for vote_id, data in
+            sorted(filter(is_simple, data.items()), key=key)[:stop_at])
+        )
+    sys.exit(0)
+
 for i, item in enumerate(sorted(filter(is_simple, data.items()), key=key)):
-    if i == 20:
+    if i == stop_at:
         break
     vote_id, data = item
     a = data['answers']
