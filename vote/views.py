@@ -469,6 +469,31 @@ def is_vote_ok(vote):
 
     return True
 
+def differentiating_questions(request):
+    user_answers = {}
+    for key, value in request.session['state'].items():
+        if not key.startswith('q'):
+            continue
+        if value == '0':
+            continue
+        user_answers[int(key[1:])] = int(value)
+    vote_ids = user_answers.keys()
+    votes = {}
+    for vote in models.Vote.objects.filter(id__in=tuple(vote_ids)):
+        vote = export_vote(vote)
+        votes[vote['id']] = vote
+
+    (results, _unused) = render_content.calc_results(votes, user_answers)
+
+    [party_a, party_b] = sorted(
+        party_name for pos, party_name, score in
+        list(render_content.sorted_results(results))[:2])
+
+    return set(
+        x.vote_id for x in
+        models.VoteToDistinguishParties.objects.filter(
+            party_a=party_a, party_b=party_b).only('vote_id'))
+
 def get_question(request):
     track_changes(request)
 
@@ -479,7 +504,11 @@ def get_question(request):
     already_asked = set(int(x[1:]) for x in already_asked if x.startswith('q'))
 
     while True:
-        question_set = choose_question_set(request.LANGUAGE_CODE, already_asked)
+        question_set = None
+        if len(already_asked) % 5 == 0:
+            question_set = differentiating_questions(request) - already_asked
+        if not question_set:
+            question_set = choose_question_set(request.LANGUAGE_CODE, already_asked)
         question_id = random.choice(list(question_set))
         vote = export_vote(fetch_vote(question_id))
         if is_vote_ok(vote):
