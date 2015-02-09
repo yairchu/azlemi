@@ -57,3 +57,6 @@ class VoteToDistinguishParties(models.Model):
     # The party coming alphabetically first should be first
     party_a = models.CharField(max_length=100)
     party_b = models.CharField(max_length=100)
+    def __str__(self):
+        return 'VoteToDistinguishParties %s %s %s' % (
+            self.party_a, self.party_b, self.vote)
