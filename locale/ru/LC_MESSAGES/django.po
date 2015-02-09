@@ -1,12 +1,12 @@
-# azlemi.org.il English translations
-# Ira Rozina, 2015.
+# azlemi.org.il Russian translations
+# Ira Rozina and Michael Morozov, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-05 19:38+0000\n"
-"Last-Translator: Ira Rozina\n"
+"Last-Translator: Michael Morozov\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
