@@ -89,28 +89,28 @@ msgstr ""
 
 #: vote/render_content.py:30 vote_tool/static/render_content.py:30
 msgid "שתף את התוצאות שלי!"
-msgstr "Share my results!"
+msgstr "поделись моими результатами!"
 
 #: vote/render_content.py:31 vote/templates/vote/publish.html:150
 #: vote_tool/static/render_content.py:31
 msgid "איך נקבע הניקוד?"
-msgstr "How is the scoring determined?"
+msgstr "как определяется результат?"
 
 #: vote/render_content.py:32 vote_tool/static/render_content.py:32
 msgid "התחל מההתחלה (אפס מצב)"
-msgstr "Start over (reset state)"
+msgstr "начать с начало (аннулировать)"
 
 #: vote/render_content.py:34 vote_tool/static/render_content.py:34
 msgid "איתך"
-msgstr "With you"
+msgstr "C тобой"
 
 #: vote/render_content.py:35 vote_tool/static/render_content.py:35
 msgid "נגדך"
-msgstr "Against you"
+msgstr "против тебя"
 
 #: vote/render_content.py:36 vote_tool/static/render_content.py:36
 msgid "סה״כ"
-msgstr "Total"
+msgstr "общий счет"
 
 #: vote/render_content.py:37 vote_tool/static/render_content.py:37
 msgid "right"
@@ -135,12 +135,12 @@ msgstr ""
 
 #: vote/templates/base.html:118
 msgid "(טיוטא די ראשונית בהחלט!)"
-msgstr "(Beta / work in progress!)"
+msgstr "(первоначальная версия!)"
 
 #: vote/templates/base.html:128 vote/templates/base.html.py:167
 #: vote/templates/vote/home.html:6
 msgid "אז למי להצביע?"
-msgstr "So, what to vote?"
+msgstr "так за кого голосовать?"
 
 #: vote/templates/base.html:140
 msgid ""
@@ -153,11 +153,11 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"Towards the upcoming Israeli elections,\n"
-"we're making a website\n"
-"that asks you for your opinion on votes from the Knesset,\n"
-"and shows you which parties voted like you\n"
-"and orders them by their opinion's similarity to yours."
+"по случаю приближающихся выборов,\n"
+"мы готовим сайт\n"
+"который спрашивает о вашим мнение по поводу голосований в кнессете,\n"
+"и показывает вам какие партии голосовали подобно вам\n"
+"и расставляет их по степени сходству с вами."
 
 #: vote/templates/base.html:149
 msgid ""
@@ -169,79 +169,77 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"The idea is to create an objective tool that will help people\n"
-"form an informed opinion on the different parties,\n"
-"which isn't based on subjective interpretations about parties' platforms or "
-"vibes,\n"
-"but actually based on the votes in practice."
+"наша идея создать объективней инструмент, который поможет людям\n"
+"сформировать сознательное мнение о разных партиях,\n"
+"не базируясь на комментарий на платформах или атмосферы\n"
+"а на том, как на самом деле они проголосовали.\n"
+" "
 
 #: vote/templates/base.html:168
 msgid "על האתר"
-msgstr "About"
+msgstr "о сайте"
 
 #: vote/templates/base.html:171
 msgid "מבוסס על מאגר המידע של"
-msgstr "Based on the database of"
+msgstr "основано на базе данных"
 
 #: vote/templates/base.html:173
 msgid "כנסת פתוחה"
-msgstr "Open Knesset"
+msgstr "открытый кнессет"
 
 #: vote/templates/vote/home.html:157
 msgid "כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009."
 msgstr ""
-"Here you will get questions about various topics from the actual votes of "
-"the Knesset since 2009"
+"здесь вам зададут вопросы по различным темам из реальных голосований в кнессете."
 
 #: vote/templates/vote/home.html:160
 msgid "לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם."
 msgstr ""
-"According to your answers, we'll present the party that best suits your "
-"opinions."
+"отталкиваясь от ваших ответов, мы предложим вам самую подходящею партию."
 
 #: vote/templates/vote/home.html:161
 msgid "ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר."
-msgstr "The more questions you answer - the more exact your match will be."
+msgstr "на как больше вопросов вы ответите так результат будет более точный."
 
 #: vote/templates/vote/publish.html:6
 msgid "אז למי להצביע - התוצאות שלי"
-msgstr "So, what to vote - my results"
+msgstr "так за кого голосовать - мой результаты"
 
 #: vote/templates/vote/publish.html:79
 msgid "פרסם את תוצאותיי!"
-msgstr "Publish my results!"
+msgstr "Опубликуй мой результаты!"
 
 #: vote/templates/vote/publish.html:83
 msgid "העמוד הנ״ל מכיל את תוצאותיך ב״אז למי להצביע?״."
-msgstr "This page contains your results in \"So, what to vote?\""
+msgstr "эта страница содержит твои результаты в \"так за кого голосовать?\""
 
 #: vote/templates/vote/publish.html:86
 msgid "לחץ ״שתף״ כדי לשתף עם החברים בפייסבוק."
-msgstr "Click \"Share\" to share with your friends."
+msgstr "нажми “поделится” чтобы поделится с друзьями в феисбуке"
 
 #: vote/templates/vote/publish.html:90 vote/templates/vote/publish.html:156
 msgid "שתף בפייסבוק!"
-msgstr "Share in Facebook!"
+msgstr "поделится в феисбуке!"
 
 #: vote/templates/vote/publish.html:91 vote/templates/vote/publish.html:157
 msgid "שתף בטוויטר!"
-msgstr "Share in Twitter!"
+msgstr "поделится в твитэре!"
 
 #: vote/templates/vote/publish.html:92
 msgid "רגע.. תן לראות קודם ואז אשתף!"
-msgstr "Let me look first and then share!"
+msgstr "покажи мне с начало а потом поделись"
 
 #: vote/templates/vote/publish.html:104
 msgid "ההצבעות שלי"
-msgstr "My votes"
+msgstr "мой голосования"
 
 #: vote/templates/vote/publish.html:143
 msgid "התוצאות שלי"
-msgstr "My results"
+msgstr "мой результаты"
 
 #: vote/templates/vote/publish.html:159
 msgid "שחק גם!"
-msgstr "Play too!"
+msgstr "сыграй тоже!"
 
 #: vote/views.py:86
 msgid "הבית היהודי"
@@ -269,7 +267,7 @@ msgstr "сионистский лагерь"
 
 #: vote/views.py:92
 msgid "הרשימה המשותפת"
-msgstr "הרשימה המשותפת"
+msgstr "совместный список"
 
 #: vote/views.py:93
 msgid "יהדות התורה"
@@ -281,15 +279,15 @@ msgstr "ШАС"
 
 #: vote/views.py:95
 msgid "הרשימה הערבית*"
-msgstr "הרשימה הערבית*"
+msgstr "Объединённый арабский список*"
 
 #: vote/views.py:96
 msgid "יחד*"
-msgstr "יחד*"
+msgstr "Яхад*"
 
 #: vote/views.py:97
 msgid "כולנו*"
-msgstr "כולנו*"
+msgstr "Куляну*"
 
 #: vote_tool/settings.py:120
 msgid "Hebrew"
