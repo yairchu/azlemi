@@ -165,7 +165,15 @@ def home(request):
         }
     return render(request, 'vote/home.html', context)
 
-def publish_data(votes_str):
+def parse_publish_votes_str(votes_str):
+    '''
+    votes_str contains the info for user's vote in a weird format.
+    originally this string was supposed to go into the url parameters so it
+    uses letter seperators..
+    then I changed it to shorten the links for twitter shares,
+    but still support the old format for the first facebook shares that used
+    the old scheme..
+    '''
     user_answers = {}
     vote_ids = []
     assert votes_str.startswith('q')
@@ -178,6 +186,10 @@ def publish_data(votes_str):
         vote_id = int(part[:-1])
         vote_ids.append(vote_id)
         user_answers[vote_id] = val
+    return user_answers, vote_ids
+
+def publish_data(votes_str):
+    user_answers, vote_ids = parse_publish_votes_str(votes_str)
     votes = {}
     for vote in models.Vote.objects.filter(id__in=tuple(vote_ids)):
         vote = export_vote(vote)
