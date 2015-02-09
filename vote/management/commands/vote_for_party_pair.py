@@ -23,6 +23,10 @@ class Command(BaseCommand):
             return party_votes.get('for', 0) - party_votes.get('against', 0)
         for vote in models.Vote.objects.filter(id__in=tuple(vote_ids)):
             vote = views.export_vote(vote)
+            if party_a not in vote['party_votes']:
+                continue
+            if party_b not in vote['party_votes']:
+                continue
             score_a = party_score(party_a)
             score_b = party_score(party_b)
             vote['score'] = (score_a * score_b < 0) + abs(score_a - score_b)
