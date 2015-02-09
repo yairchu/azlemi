@@ -436,9 +436,9 @@ def is_vote_ok(vote):
     # these are pro/con government votes, not legislation.
     if 'הכלכלית לשנ' in vote['title'] and 'תיקוני חקיקה' in vote['title']:
         return False
-    if 'הצעת חוק התקציב לשנ' in vote['title']:
+    if 'חוק התקציב לשנ' in vote['title']:
         return False
-    if 'הצעת חוק תקציב המדינה לשנ' in vote['title']:
+    if 'תקציב המדינה לשנ' in vote['title']:
         return False
 
     # Political pro/con government vote - not legislation.
