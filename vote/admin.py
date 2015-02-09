@@ -11,7 +11,7 @@ def vote_form_widgets():
     for field in ['title', 'vt_title', 'vt_description']:
         suffixes = ['']
         if field.startswith('vt_'):
-            suffixes = ['_he', '_en']
+            suffixes = ['_he', '_en', '_ru']
         for suffix in suffixes:
             attrs = {'cols': 100, 'rows': 1}
             if 'description' in field:
