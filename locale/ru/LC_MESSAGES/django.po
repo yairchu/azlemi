@@ -119,7 +119,7 @@ msgstr "left"
 #: vote/render_content.py:38 vote/templates/base.html:168 vote/views.py:210
 #: vote/views.py:493 vote_tool/static/render_content.py:38
 msgid "/"
-msgstr "/en/"
+msgstr "/ru/"
 
 #: vote/templates/admin/recent_actions.html:7
 msgid "Recent Actions"
