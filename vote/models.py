@@ -51,3 +51,9 @@ class Publish(models.Model):
     when = models.DateTimeField(auto_now=True)
     def __str__(self):
         return 'Publish %s when=%s' % (self.key, self.when)
+
+class VoteToDistinguishParties(models.Model):
+    vote = models.ForeignKey(Vote)
+    # The party coming alphabetically first should be first
+    party_a = models.CharField(max_length=100)
+    party_b = models.CharField(max_length=100)

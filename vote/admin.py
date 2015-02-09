@@ -66,6 +66,11 @@ class VoteAdmin(TabbedTranslationAdmin):
     list_filter = ['is_interesting', ('vt_title', HasTranslationFilter)]
     search_fields = ['title', 'vt_title', 'vt_description']
 
+class VoteToDistinguishPartiesAdmin(admin.ModelAdmin):
+    raw_id_fields = ['vote']
+
 admin.site.register(models.UserAnswer)
 admin.site.register(models.Vote, VoteAdmin)
 admin.site.register(models.Publish)
+admin.site.register(
+    models.VoteToDistinguishParties, VoteToDistinguishPartiesAdmin)
