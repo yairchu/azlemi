@@ -64,6 +64,7 @@ class HasTranslationFilter(admin.FieldListFilter):
 class VoteAdmin(TabbedTranslationAdmin):
     form = VoteForm
     list_filter = ['is_interesting', ('vt_title', HasTranslationFilter)]
+    search_fields = ['title', 'vt_title', 'vt_description']
 
 admin.site.register(models.UserAnswer)
 admin.site.register(models.Vote, VoteAdmin)
