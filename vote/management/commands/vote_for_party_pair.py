@@ -14,6 +14,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         [party_a, party_b, votes_str] = args
+        party_a = party_a.replace('_', ' ')
+        party_b = party_b.replace('_', ' ')
         vote_ids = [int(x) for x in votes_str.split(',')]
         votes = []
         def party_score(party):
