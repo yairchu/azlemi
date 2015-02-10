@@ -16,15 +16,10 @@ class Question:
         panel, _, _ = question_panel(self.data, is_staff, translate)
         document['questions'] <= panel
 
-        dollar = getattr(window, '$')
-
         desc_id = 'q%d-desc' % self.data['id']
         for desc in panel.get(selector='p[data-toggle]'):
             desc.id = desc_id
-        dollar('#'+desc_id).tooltip()
-
-        box_id = 'q%d' % self.data['id']
-        dollar('#'+box_id).jTinder(window.jTinderConfig)
+        getattr(window, '$')('#'+desc_id).tooltip()
 
         self.bind_buttons()
 

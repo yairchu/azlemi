@@ -119,25 +119,6 @@
       position: fixed;
       left: 22px
     }
-
-    .like,
-    .dislike {
-        opacity: 0;
-        height: 80px;
-        position: absolute;
-        width: 170px;
-        top: 40px;
-    }
-
-    .like {
-        background: url("/static/jTinder/img/liked.png") no-repeat scroll 0 0;
-        left: 45px;
-    }
-
-    .dislike {
-        background: url("/static/jTinder/img/nope.png") no-repeat scroll 0 0;
-        right: 45px;
-    }
   </style>
   <script type="text/javascript" src="/static/brython/src/brython.js"></script>
 {% endblock %}
@@ -221,10 +202,8 @@
 
     var jTinderConfig = {
       onDislike: function (item) {
-        item.find(".answer-against").click();
       },
       onLike: function (item) {
-        item.find(".answer-for").click();
       },
       animationRevertSpeed: 200,
       animationSpeed: 400,
