@@ -56,6 +56,9 @@ def question_panel(data, is_staff, _):
     panel <= html.LABEL(skip, Class='answer answer-skip')
     panel <= party_votes_doc
 
+    panel <= html.DIV(Class='like')
+    panel <= html.DIV(Class='dislike')
+
     against_radio = html.INPUT(type='radio', name=str(data['id']), value='-1')
     skip_radio = html.INPUT(type='radio', name=str(data['id']), value='0')
     for_radio = html.INPUT(type='radio', name=str(data['id']), value='1')
