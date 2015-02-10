@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 19:35+0000\n"
+"POT-Creation-Date: 2015-02-10 21:30+0000\n"
 "Last-Translator: Yair Chuchem\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,11 +33,11 @@ msgid "בעד"
 msgstr "For"
 
 #: vote/render_content.py:17 vote_tool/static/render_content.py:17
-msgid "לא בטוח"
+msgid "לא בטוחים"
 msgstr "Not sure"
 
 #: vote/render_content.py:18 vote_tool/static/render_content.py:18
-msgid "דלג לשאלה הבאה"
+msgid "דלגו לשאלה הבאה"
 msgstr "Skip to the next question"
 
 #: vote/render_content.py:19 vote/templates/vote/publish.html:128
@@ -72,7 +72,7 @@ msgstr "questions"
 msgid "אחת"
 msgstr "Together*"
 
-#: vote/render_content.py:26 vote/templates/vote/home.html:182
+#: vote/render_content.py:26 vote/templates/vote/home.html:205
 #: vote_tool/static/render_content.py:26
 msgid "תוצאות"
 msgstr "Results"
@@ -124,8 +124,8 @@ msgstr "Total"
 msgid "right"
 msgstr "left"
 
-#: vote/render_content.py:38 vote/templates/base.html:168 vote/views.py:210
-#: vote/views.py:493 vote_tool/static/render_content.py:38
+#: vote/render_content.py:38 vote/templates/base.html:189 vote/views.py:222
+#: vote/views.py:536 vote_tool/static/render_content.py:38
 msgid "/"
 msgstr "/en/"
 
@@ -141,16 +141,12 @@ msgstr ""
 msgid "Unknown content"
 msgstr ""
 
-#: vote/templates/base.html:118
-msgid "(טיוטא די ראשונית בהחלט!)"
-msgstr "(Beta / work in progress!)"
-
-#: vote/templates/base.html:128 vote/templates/base.html.py:167
+#: vote/templates/base.html:128 vote/templates/base.html.py:188
 #: vote/templates/vote/home.html:6
 msgid "אז למי להצביע?"
 msgstr "So, what to vote?"
 
-#: vote/templates/base.html:140
+#: vote/templates/base.html:161
 msgid ""
 "\n"
 "              לקראת הבחירות המתקרבות,\n"
@@ -167,7 +163,7 @@ msgstr ""
 "and shows you which parties voted like you\n"
 "and orders them by their opinion's similarity to yours."
 
-#: vote/templates/base.html:149
+#: vote/templates/base.html:170
 msgid ""
 "\n"
 "              הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים\n"
@@ -183,31 +179,31 @@ msgstr ""
 "vibes,\n"
 "but actually based on the votes in practice."
 
-#: vote/templates/base.html:168
+#: vote/templates/base.html:189
 msgid "על האתר"
 msgstr "About"
 
-#: vote/templates/base.html:171
+#: vote/templates/base.html:192
 msgid "מבוסס על מאגר המידע של"
 msgstr "Based on the database of"
 
-#: vote/templates/base.html:173
+#: vote/templates/base.html:194
 msgid "כנסת פתוחה"
 msgstr "Open Knesset"
 
-#: vote/templates/vote/home.html:157
+#: vote/templates/vote/home.html:180
 msgid "כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009."
 msgstr ""
 "Here you will get questions about various topics from the actual votes of "
 "the Knesset since 2009"
 
-#: vote/templates/vote/home.html:160
+#: vote/templates/vote/home.html:183
 msgid "לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם."
 msgstr ""
 "According to your answers, we'll present the party that best suits your "
 "opinions."
 
-#: vote/templates/vote/home.html:161
+#: vote/templates/vote/home.html:184
 msgid "ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר."
 msgstr "The more questions you answer - the more exact your match will be."
 
@@ -310,3 +306,6 @@ msgstr "English"
 #: vote_tool/settings.py:122
 msgid "Russian"
 msgstr "Russian"
+
+#~ msgid "(טיוטא די ראשונית בהחלט!)"
+#~ msgstr "(Beta / work in progress!)"

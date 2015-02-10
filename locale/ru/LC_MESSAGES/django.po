@@ -1,12 +1,12 @@
 # azlemi.org.il Russian translations
-# Ira Rozina and Michael Morozov, 2015.
+# Ira, Michael, Ilya, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 19:38+0000\n"
-"Last-Translator: Michael Morozov\n"
+"POT-Creation-Date: 2015-02-10 21:30+0000\n"
+"Last-Translator: Ilya\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,17 +33,17 @@ msgid "בעד"
 msgstr "За"
 
 #: vote/render_content.py:17 vote_tool/static/render_content.py:17
-msgid "לא בטוח"
-msgstr "Не уверен/а"
+msgid "לא בטוחים"
+msgstr "Не уверены"
 
 #: vote/render_content.py:18 vote_tool/static/render_content.py:18
-msgid "דלג לשאלה הבאה"
-msgstr "Пропустить вопрос"
+msgid "דלגו לשאלה הבאה"
+msgstr "Пропустите вопрос"
 
 #: vote/render_content.py:19 vote/templates/vote/publish.html:128
 #: vote_tool/static/render_content.py:19
 msgid "מידע נוסף"
-msgstr "Больше информации"
+msgstr "Дополнительная информация"
 
 #: vote/render_content.py:20 vote/render_content.py:33
 #: vote_tool/static/render_content.py:20 vote_tool/static/render_content.py:33
@@ -66,7 +66,11 @@ msgstr "вопрос"
 msgid "שאלות"
 msgstr "вопросы"
 
-#: vote/render_content.py:26 vote/templates/vote/home.html:182
+#: vote/render_content.py:25 vote_tool/static/render_content.py:25
+msgid "אחת"
+msgstr "один"
+
+#: vote/render_content.py:26 vote/templates/vote/home.html:205
 #: vote_tool/static/render_content.py:26
 msgid "תוצאות"
 msgstr "Результаты"
@@ -85,7 +89,8 @@ msgid ""
 "* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג "
 "מהימנה את שאר חברי המפלגה"
 msgstr ""
-"* Партии, только один или два члена которых были в Кнессете. Информация о них не обязательно представляет всю партию."
+"* Партии, только один или два члена которых были в Кнессете. Информация о "
+"них не обязательно представляет всю партию."
 
 #: vote/render_content.py:30 vote_tool/static/render_content.py:30
 msgid "שתף את התוצאות שלי!"
@@ -116,8 +121,8 @@ msgstr "общий счет"
 msgid "right"
 msgstr "left"
 
-#: vote/render_content.py:38 vote/templates/base.html:168 vote/views.py:210
-#: vote/views.py:493 vote_tool/static/render_content.py:38
+#: vote/render_content.py:38 vote/templates/base.html:189 vote/views.py:222
+#: vote/views.py:536 vote_tool/static/render_content.py:38
 msgid "/"
 msgstr "/ru/"
 
@@ -133,16 +138,12 @@ msgstr ""
 msgid "Unknown content"
 msgstr ""
 
-#: vote/templates/base.html:118
-msgid "(טיוטא די ראשונית בהחלט!)"
-msgstr "(первоначальная версия!)"
-
-#: vote/templates/base.html:128 vote/templates/base.html.py:167
+#: vote/templates/base.html:128 vote/templates/base.html.py:188
 #: vote/templates/vote/home.html:6
 msgid "אז למי להצביע?"
 msgstr "так за кого голосовать?"
 
-#: vote/templates/base.html:140
+#: vote/templates/base.html:161
 msgid ""
 "\n"
 "              לקראת הבחירות המתקרבות,\n"
@@ -159,7 +160,7 @@ msgstr ""
 "и показывает вам какие партии голосовали подобно вам\n"
 "и расставляет их по степени сходству с вами."
 
-#: vote/templates/base.html:149
+#: vote/templates/base.html:170
 msgid ""
 "\n"
 "              הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים\n"
@@ -175,29 +176,30 @@ msgstr ""
 "а на том, как на самом деле они проголосовали.\n"
 " "
 
-#: vote/templates/base.html:168
+#: vote/templates/base.html:189
 msgid "על האתר"
 msgstr "о сайте"
 
-#: vote/templates/base.html:171
+#: vote/templates/base.html:192
 msgid "מבוסס על מאגר המידע של"
 msgstr "основано на базе данных"
 
-#: vote/templates/base.html:173
+#: vote/templates/base.html:194
 msgid "כנסת פתוחה"
 msgstr "открытый кнессет"
 
-#: vote/templates/vote/home.html:157
+#: vote/templates/vote/home.html:180
 msgid "כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009."
 msgstr ""
-"здесь вам зададут вопросы по различным темам из реальных голосований в кнессете."
+"здесь вам зададут вопросы по различным темам из реальных голосований в "
+"кнессете."
 
-#: vote/templates/vote/home.html:160
+#: vote/templates/vote/home.html:183
 msgid "לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם."
 msgstr ""
 "отталкиваясь от ваших ответов, мы предложим вам самую подходящею партию."
 
-#: vote/templates/vote/home.html:161
+#: vote/templates/vote/home.html:184
 msgid "ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר."
 msgstr "на как больше вопросов вы ответите так результат будет более точный."
 
@@ -300,3 +302,6 @@ msgstr "Англи́йский"
 #: vote_tool/settings.py:122
 msgid "Russian"
 msgstr "Русский"
+
+#~ msgid "(טיוטא די ראשונית בהחלט!)"
+#~ msgstr "(первоначальная версия!)"
