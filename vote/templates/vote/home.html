@@ -191,9 +191,27 @@
 {% endblock %}
 
 {% block body-end-scripts %}
+  <!-- jTinder: -->
+  <script type="text/javascript" src="/static/jTinder/js/jquery.transform2d.js"></script>
+  <script type="text/javascript" src="/static/jTinder/js/jquery.jTinder.js"></script>
+
   <script>
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
+
+    var jTinderConfig = {
+      onDislike: function (item) {
+      },
+      onLike: function (item) {
+      },
+      animationRevertSpeed: 200,
+      animationSpeed: 400,
+      threshold: 1,
+      likeSelector: '.like',
+      dislikeSelector: '.dislike'
+    };
+
+    $(".question-box").jTinder(jTinderConfig);
   </script>
 {% endblock %}

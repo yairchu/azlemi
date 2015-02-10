@@ -477,6 +477,8 @@ def differentiating_questions(request):
         if value == '0':
             continue
         user_answers[int(key[1:])] = int(value)
+    if not user_answers:
+        return set()
     vote_ids = user_answers.keys()
     votes = {}
     for vote in models.Vote.objects.filter(id__in=tuple(vote_ids)):
