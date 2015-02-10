@@ -103,6 +103,17 @@
     .answer-for {
       color: #69c134;
     }
+
+    .language-links {
+      font-size: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    .language-links>a {
+      margin: 4px;
+      color: white;
+    }
   </style>
   {% block head-extra %} {% endblock %}
 </head>
@@ -113,11 +124,6 @@
   {% block modal %} {% endblock %}
   <div style="background: #3fa9f5;">
     <div class="container" style="color: white; text-align: center; height: 80px; line-height: 80px;">
-      <div style="float: {{LANGUAGE_BIDI|yesno:"left,right"}}; font-size: 24px;">
-        <a target="_blank" href="{% url 'feincms_handler' 'draft' %}" style="color: #fff; text-decoration: underline;">
-          {% trans "(טיוטא די ראשונית בהחלט!)" %}
-        </a>
-      </div>
       <div style="float: {{LANGUAGE_BIDI|yesno:"right,left"}}; font-size: 30px;">
         {% if LANGUAGE_CODE == 'he' %}
           <a href="/" style="color: white;">
@@ -126,6 +132,31 @@
         {% endif %}
           <img src="http://cdn.azlemi.org.il/static/box.svg" height=35 style="padding-left: 12px;" />
           {% trans "אז למי להצביע?" %}
+        </a>
+      </div>
+      <div class="language-links" style="float: {{LANGUAGE_BIDI|yesno:"left,right"}}">
+        {% if LANGUAGE_CODE != 'he' %}
+          <a href="/">
+            עברית
+          </a>
+        {% endif %}
+        {% if LANGUAGE_CODE != 'ru' %}
+          <a href="/ru/">
+            Русский
+          </a>
+        {% endif %}
+        {% if LANGUAGE_CODE != 'en' %}
+          <a href="/en/">
+            English
+          </a>
+        {% endif %}
+        <a href="/draft" style="color: #eee; font-size: 11px;">
+          العربية? ייִדיש? አማርኛ?
+        </a>
+      </div>
+      <div style="float: {{LANGUAGE_BIDI|yesno:"left,right"}}; font-size: 20px;">
+        <a target="_blank" href="{% url 'feincms_handler' 'draft' %}" style="color: #fff; text-decoration: underline;">
+          {% trans "(טיוטא די ראשונית בהחלט!)" %}
         </a>
       </div>
     </div>
