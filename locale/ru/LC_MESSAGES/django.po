@@ -279,7 +279,7 @@ msgstr "ШАС"
 
 #: vote/views.py:95
 msgid "הרשימה הערבית*"
-msgstr "Объединённый арабский список*"
+msgstr "арабский список*"
 
 #: vote/views.py:96
 msgid "יחד*"
