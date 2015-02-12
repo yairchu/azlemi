@@ -2,6 +2,7 @@ import datetime
 
 from browser import html
 
+num_questions_to_answer = 12
 answers = list(zip([1, 0, -1], ['בעד', 'נמנע', 'נגד']))
 
 def make_texts():
@@ -36,6 +37,9 @@ def make_texts():
         'total': _('סה״כ'),
         'align_right': _('right'),
         'lang_prefix': _('/'),
+        'congrat': _('כל הכבוד! ענית על %d שאלות!'),
+        'congrat_results': _('כדי לראות את התוצאות שלך לחץ כאן!'),
+        'congrat_resume': _('אפשר להמשיך לענות על עוד שאלות כדי לקבל תוצאה מדויקת יותר.'),
         }
 texts = make_texts()
 
@@ -255,7 +259,6 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
             ]
     else:
         progress_text_lines = [_(texts['answered']), str(num_answers), _(texts['questions'])]
-    num_questions_to_answer = 12
     progress = min(1, num_answers/num_questions_to_answer)
     progress_dest <= html.DIV(
         html.DIV(' '.join(progress_text_lines),

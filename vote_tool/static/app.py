@@ -58,7 +58,32 @@ def is_boring_question(question_data):
 class Game:
     def __init__(self):
         self.questions = []
+        self.congrats_panel_shown = False
+    def congrat(self):
+        if self.congrats_panel_shown:
+            return
+        self.congrats_panel_shown = True
+        _ = translate
+        panel = html.DIV(style={'text-align': 'center'})
+        panel <= html.BR()
+        panel <= html.SPAN(
+            _(texts['congrat']) % num_questions_to_answer,
+            style={'font-size': '20px'})
+        panel <= html.BR()
+        panel <= html.BR()
+        panel <= html.A(
+            _(texts['congrat_results']), href='#results',
+            Class='btn btn-lg btn-success')
+        panel <= html.BR()
+        panel <= html.BR()
+        panel <= _(texts['congrat_resume'])
+        panel <= html.BR()
+        panel <= html.BR()
+        document['questions'] <= panel
     def add_question(self, *args):
+        num_answered = len([x for x in self.questions if x.answer])
+        if num_answered == num_questions_to_answer:
+            self.congrat()
         if questions:
             self.got_question(questions.pop())
             self.ajax_request_question(self.ajax_response_add_question_to_queue)
