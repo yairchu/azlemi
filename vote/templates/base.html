@@ -60,6 +60,11 @@
       text-shadow: -0.5px 0.5px 2px black;
     }
 
+    .intro a {
+      color: #eee;
+      text-decoration: underline;
+    }
+
     .logo-left {
       background-image: url("http://cdn.azlemi.org.il/static/logo.svg");
       background-position: center;
@@ -158,10 +163,10 @@
         </div>
         <div style="padding-top: 30px; padding-bottom: 30px;">
           <p>
+            {% trans "לקראת הבחירות המתקרבות" %},
+            <a target="_blank" href="/about">{% trans "הכנו" %}</a>
             {% blocktrans %}
-              לקראת הבחירות המתקרבות,
-              אנחנו מכינים אתר
-              ששואל אתכם לדעתכם על הצבעות בכנסת,
+              אתר ששואל אתכם לדעתכם על הצבעות בכנסת,
               ומראה לכם איזה מפלגות הצביעו כמוכם
               ומדרג אותן לפי ההתאמה אליכם.
             {% endblocktrans %}

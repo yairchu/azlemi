@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-12 11:48+0000\n"
+"POT-Creation-Date: 2015-02-12 16:58+0000\n"
 "Last-Translator: Yair Chuchem\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,8 +123,8 @@ msgstr "Total"
 msgid "right"
 msgstr "left"
 
-#: vote/render_content.py:39 vote/templates/base.html:189 vote/views.py:222
-#: vote/views.py:536 vote_tool/static/render_content.py:39
+#: vote/render_content.py:39 vote/templates/base.html:194 vote/views.py:222
+#: vote/views.py:539 vote_tool/static/render_content.py:39
 msgid "/"
 msgstr "/en/"
 
@@ -139,7 +139,8 @@ msgstr "To view your results click here!"
 
 #: vote/render_content.py:42 vote_tool/static/render_content.py:42
 msgid "אפשר להמשיך לענות על עוד שאלות כדי לקבל תוצאה מדויקת יותר."
-msgstr "You can keep answering more questions to obtain a more accurate result."
+msgstr ""
+"You can keep answering more questions to obtain a more accurate result."
 
 #: vote/templates/admin/recent_actions.html:7
 msgid "Recent Actions"
@@ -153,29 +154,33 @@ msgstr ""
 msgid "Unknown content"
 msgstr ""
 
-#: vote/templates/base.html:128 vote/templates/base.html.py:188
+#: vote/templates/base.html:133 vote/templates/base.html.py:193
 #: vote/templates/vote/home.html:6
 msgid "אז למי להצביע?"
 msgstr "So, what to vote?"
 
-#: vote/templates/base.html:161
+#: vote/templates/base.html:166
+msgid "לקראת הבחירות המתקרבות"
+msgstr "Towards the upcoming Israeli elections"
+
+#: vote/templates/base.html:167
+msgid "הכנו"
+msgstr "we made"
+
+#: vote/templates/base.html:168
 msgid ""
 "\n"
-"              לקראת הבחירות המתקרבות,\n"
-"              אנחנו מכינים אתר\n"
-"              ששואל אתכם לדעתכם על הצבעות בכנסת,\n"
+"              אתר ששואל אתכם לדעתכם על הצבעות בכנסת,\n"
 "              ומראה לכם איזה מפלגות הצביעו כמוכם\n"
 "              ומדרג אותן לפי ההתאמה אליכם.\n"
 "            "
 msgstr ""
 "\n"
-"Towards the upcoming Israeli elections,\n"
-"we're making a website\n"
-"that asks you for your opinion on votes from the Knesset,\n"
+"a website that asks you for your opinion on votes from the Knesset,\n"
 "and shows you which parties voted like you\n"
 "and orders them by their opinion's similarity to yours."
 
-#: vote/templates/base.html:170
+#: vote/templates/base.html:175
 msgid ""
 "\n"
 "              הרעיון הוא ליצור כלי אובייקטיבי שיעזור לאנשים\n"
@@ -191,15 +196,15 @@ msgstr ""
 "vibes,\n"
 "but actually based on the votes in practice."
 
-#: vote/templates/base.html:189
+#: vote/templates/base.html:194
 msgid "על האתר"
 msgstr "About"
 
-#: vote/templates/base.html:192
+#: vote/templates/base.html:197
 msgid "מבוסס על מאגר המידע של"
 msgstr "Based on the database of"
 
-#: vote/templates/base.html:194
+#: vote/templates/base.html:199
 msgid "כנסת פתוחה"
 msgstr "Open Knesset"
 
@@ -251,7 +256,7 @@ msgstr "Let me look first and then share!"
 msgid "ההצבעות שלי"
 msgstr "My votes"
 
-#: vote/templates/vote/publish.html:143
+#: vote/templates/vote/publish.html:143 vote/views.py:269
 msgid "התוצאות שלי"
 msgstr "My results"
 
