@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" direction="rtl" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" direction="{{LANGUAGE_BIDI|yesno:"rtl,ltr"}}" viewBox="0 0 1200 630">
   <defs>
     <clipPath id="clip-a">
       <rect x="0" y="-2000" width="2000" height="1990" transform="translate(300 0) rotate(60)"/>
@@ -23,11 +23,11 @@
 
   <g clip-path="url(#clip-b)">
     <g transform="rotate(-30) translate(0 300)">
-      <text text-anchor="{{text_anchor_start}}" x="220" y="-40" font-size="40" {{text_args|safe}}>
+      <text text-anchor="{{text_anchor_start}}" x="{{LANGUAGE_BIDI|yesno:"220,-70"}}" y="-40" font-size="40" {{text_args|safe}}>
         {{my_results_text}}
       </text>
       {% for result in results %}
-        <text text-anchor="{{text_anchor_start}}" x="220" y="{{result.y}}" font-size="30" {{text_args|safe}}>
+        <text text-anchor="{{text_anchor_start}}" x="{{LANGUAGE_BIDI|yesno:"220,-70"}}" y="{{result.y}}" font-size="30" {{text_args|safe}}>
           {{result.text}}
         </text>
       {% endfor %}

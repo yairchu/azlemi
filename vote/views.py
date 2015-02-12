@@ -249,7 +249,7 @@ def publish(request, votes_str):
 def identity(x):
     return x
 
-def publish_image_svg(votes_str, process_text=identity, text_anchor_start='start'):
+def publish_image_svg(request, votes_str, process_text=identity, text_anchor_start='start'):
     questions, results = publish_data(votes_str)
     for i, q in enumerate(questions):
         q['y'] = 55*i
@@ -260,20 +260,20 @@ def publish_image_svg(votes_str, process_text=identity, text_anchor_start='start
         render_content.sorted_results(results)):
         ordered_results.append({
             'y': 15 + 45*i,
-            'text': process_text('%d. %s' % (pos, party_name)),
+            'text': process_text('%d. %s' % (pos, _(party_name))),
             })
     logo = open(dirname+'/../vote_tool/static/logo.svg'
         ).read().split('<svg', 1)[1].split('>', 1)[1].rsplit('</svg>',1)[0]
     context = {
         'text_anchor_start': text_anchor_start,
-        'my_results_text': process_text('התוצאות שלי:'),
+        'my_results_text': process_text(_('התוצאות שלי')+':'),
         'questions': questions,
         'results': ordered_results,
         'logo': logo,
         'text_args':
             'font-family="arial"' if platform.system() == 'Darwin' else '',
         }
-    return loader.get_template('vote/publish_image.svg').render(Context(context))
+    return render(request, 'vote/publish_image.svg', context)
 
 def publish_image(request, votes_str, extension):
     try:
@@ -283,15 +283,18 @@ def publish_image(request, votes_str, extension):
         pass
 
     if extension == 'svg':
-        svg = publish_image_svg(votes_str)
+        svg = publish_image_svg(request, votes_str)
         return HttpResponse(svg, content_type='image/svg+xml')
     elif extension == 'png':
-        svg = publish_image_svg(
-            votes_str,
-            process_text=bidi.algorithm.get_display,
-            text_anchor_start='end',
-            )
-        return HttpResponse(cairosvg.svg2png(bytestring=svg), content_type='image/png')
+        if request.LANGUAGE_CODE in ['he']:
+            svg = publish_image_svg(
+                request, votes_str,
+                process_text=bidi.algorithm.get_display,
+                text_anchor_start='end',
+                )
+        else:
+            svg = publish_image_svg(request, votes_str)
+        return HttpResponse(cairosvg.svg2png(bytestring=svg.content), content_type='image/png')
     raise Http404
 
 def track_changes(request):
