@@ -139,7 +139,17 @@ def home(request):
 
     start_votes = []
     prev_question_ids = set(prev_question_ids)
-    for i in range(3):
+
+    num_initial_questions = 3
+    user_agent = request.META.get('HTTP_USER_AGENT', '')
+    for agent_prefix in [
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 6',
+        'Mozilla/5.0 (iPad; CPU OS 6',
+        ]:
+        if user_agent.startswith(agent_prefix):
+            num_initial_questions = 30
+
+    for i in range(num_initial_questions):
         question_set = choose_question_set(request.LANGUAGE_CODE, prev_question_ids)
         question_id = random.choice(list(question_set))
         vote = export_vote(fetch_vote(question_id))
