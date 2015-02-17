@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-12 16:58+0000\n"
+"POT-Creation-Date: 2015-02-17 15:46+0000\n"
 "Last-Translator: Yair Chuchem\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,8 +45,8 @@ msgstr "Skip to the next question"
 msgid "מידע נוסף"
 msgstr "More information"
 
-#: vote/render_content.py:21 vote/render_content.py:34
-#: vote_tool/static/render_content.py:21 vote_tool/static/render_content.py:34
+#: vote/render_content.py:21 vote/render_content.py:35
+#: vote_tool/static/render_content.py:21 vote_tool/static/render_content.py:35
 msgid "מפלגה"
 msgstr "Party"
 
@@ -55,37 +55,47 @@ msgid "מקום"
 msgstr "Position"
 
 #: vote/render_content.py:23 vote_tool/static/render_content.py:23
-msgid "ענית על"
-msgstr "You answered"
+msgid ""
+"ענית על\n"
+"שאלה\n"
+"אחת"
+msgstr "You have\nanswered one\nquestion"
 
 #: vote/render_content.py:24 vote_tool/static/render_content.py:24
+msgid ""
+"ענית על\n"
+"%d\n"
+"שאלות"
+msgstr "You have\nanswered %d\nquestions"
+
+#: vote/render_content.py:25 vote_tool/static/render_content.py:25
 msgid "שאלה"
 msgstr "question"
 
-#: vote/render_content.py:25 vote_tool/static/render_content.py:25
+#: vote/render_content.py:26 vote_tool/static/render_content.py:26
 msgid "שאלות"
 msgstr "questions"
 
-#: vote/render_content.py:26 vote_tool/static/render_content.py:26
+#: vote/render_content.py:27 vote_tool/static/render_content.py:27
 #, fuzzy
 msgid "אחת"
 msgstr "one"
 
-#: vote/render_content.py:27 vote/templates/vote/home.html:208
-#: vote_tool/static/render_content.py:27
+#: vote/render_content.py:28 vote/templates/vote/home.html:208
+#: vote_tool/static/render_content.py:28
 msgid "תוצאות"
 msgstr "Results"
 
-#: vote/render_content.py:28 vote_tool/static/render_content.py:28
+#: vote/render_content.py:29 vote_tool/static/render_content.py:29
 msgid "ראה פירוט ←"
 msgstr "Review details →"
 
-#: vote/render_content.py:29 vote_tool/static/render_content.py:29
+#: vote/render_content.py:30 vote_tool/static/render_content.py:30
 msgid "ראה פירוט ושתף! ←"
 msgstr "Review details and share! →"
 
-#: vote/render_content.py:30 vote/templates/vote/publish.html:147
-#: vote_tool/static/render_content.py:30
+#: vote/render_content.py:31 vote/templates/vote/publish.html:147
+#: vote_tool/static/render_content.py:31
 msgid ""
 "* מפלגות שרק מועמד אחד או שניים מתוכם היו בכנסת. המידע עליהם לא בהכרח מייצג "
 "מהימנה את שאר חברי המפלגה"
@@ -94,50 +104,50 @@ msgstr ""
 "knowledge about them doesn't necessarily represent the rest of the party "
 "members"
 
-#: vote/render_content.py:31 vote_tool/static/render_content.py:31
+#: vote/render_content.py:32 vote_tool/static/render_content.py:32
 msgid "שתף את התוצאות שלי!"
 msgstr "Share my results!"
 
-#: vote/render_content.py:32 vote/templates/vote/publish.html:150
-#: vote_tool/static/render_content.py:32
+#: vote/render_content.py:33 vote/templates/vote/publish.html:150
+#: vote_tool/static/render_content.py:33
 msgid "איך נקבע הניקוד?"
 msgstr "How is the scoring determined?"
 
-#: vote/render_content.py:33 vote_tool/static/render_content.py:33
+#: vote/render_content.py:34 vote_tool/static/render_content.py:34
 msgid "התחל מההתחלה (אפס מצב)"
 msgstr "Start over (reset state)"
 
-#: vote/render_content.py:35 vote_tool/static/render_content.py:35
+#: vote/render_content.py:36 vote_tool/static/render_content.py:36
 msgid "איתך"
 msgstr "With you"
 
-#: vote/render_content.py:36 vote_tool/static/render_content.py:36
+#: vote/render_content.py:37 vote_tool/static/render_content.py:37
 msgid "נגדך"
 msgstr "Against you"
 
-#: vote/render_content.py:37 vote_tool/static/render_content.py:37
+#: vote/render_content.py:38 vote_tool/static/render_content.py:38
 msgid "סה״כ"
 msgstr "Total"
 
-#: vote/render_content.py:38 vote_tool/static/render_content.py:38
+#: vote/render_content.py:39 vote_tool/static/render_content.py:39
 msgid "right"
 msgstr "left"
 
-#: vote/render_content.py:39 vote/templates/base.html:194 vote/views.py:222
-#: vote/views.py:539 vote_tool/static/render_content.py:39
+#: vote/render_content.py:40 vote/templates/base.html:194 vote/views.py:232
+#: vote/views.py:549 vote_tool/static/render_content.py:40
 msgid "/"
 msgstr "/en/"
 
-#: vote/render_content.py:40 vote_tool/static/render_content.py:40
+#: vote/render_content.py:41 vote_tool/static/render_content.py:41
 #, python-format
 msgid "כל הכבוד! ענית על %d שאלות!"
 msgstr "Congratulations! You have answered %d questions"
 
-#: vote/render_content.py:41 vote_tool/static/render_content.py:41
+#: vote/render_content.py:42 vote_tool/static/render_content.py:42
 msgid "כדי לראות את התוצאות שלך לחץ כאן!"
 msgstr "To view your results click here!"
 
-#: vote/render_content.py:42 vote_tool/static/render_content.py:42
+#: vote/render_content.py:43 vote_tool/static/render_content.py:43
 msgid "אפשר להמשיך לענות על עוד שאלות כדי לקבל תוצאה מדויקת יותר."
 msgstr ""
 "You can keep answering more questions to obtain a more accurate result."
@@ -256,7 +266,7 @@ msgstr "Let me look first and then share!"
 msgid "ההצבעות שלי"
 msgstr "My votes"
 
-#: vote/templates/vote/publish.html:143 vote/views.py:269
+#: vote/templates/vote/publish.html:143 vote/views.py:279
 msgid "התוצאות שלי"
 msgstr "My results"
 
@@ -323,6 +333,9 @@ msgstr "English"
 #: vote_tool/settings.py:122
 msgid "Russian"
 msgstr "Russian"
+
+#~ msgid "ענית על"
+#~ msgstr "You answered"
 
 #~ msgid "(טיוטא די ראשונית בהחלט!)"
 #~ msgstr "(Beta / work in progress!)"

@@ -20,7 +20,8 @@ def make_texts():
         'more_info': _('מידע נוסף'),
         'party': _('מפלגה'),
         'pos': _('מקום'),
-        'answered': _('ענית על'),
+        'answered_one': _('ענית על\nשאלה\nאחת'),
+        'answered_many': _('ענית על\n%d\nשאלות'),
         'question': _('שאלה'),
         'questions': _('שאלות'),
         'one': _('אחת'),
@@ -252,16 +253,15 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
     (results, num_answers) = res
 
     if num_answers == 1:
-        progress_text_lines = [
-            _(texts['answered']),
-            _(texts['question']),
-            _(texts['one']),
-            ]
+        progress_text_lines = _(texts['answered_one'])
+    elif num_answers >= 5 and _('/') == '/ru/':
+        # different plural in russian for larger numbers
+        progress_text_lines = 'Вы ответили\nна %d\nвопросов' % num_answers
     else:
-        progress_text_lines = [_(texts['answered']), str(num_answers), _(texts['questions'])]
+        progress_text_lines = _(texts['answered_many']) % num_answers
     progress = min(1, num_answers/num_questions_to_answer)
     progress_dest <= html.DIV(
-        html.DIV(' '.join(progress_text_lines),
+        html.DIV(progress_text_lines.replace('\n', ' '),
             Class='progress-bar progress-bar-success', role='progressbar',
             style={
                 'min-width': '10em',
@@ -295,7 +295,7 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
         html.DIV(circle_fill, Class='mask', style={'clip': progress_clip}),
         Class='circle')
     radial_progress_inset = html.DIV(Class='inset', style={'color': progress_color})
-    for i, t in enumerate(progress_text_lines):
+    for i, t in enumerate(progress_text_lines.split('\n')):
         if i > 0:
             radial_progress_inset <= html.BR()
         radial_progress_inset <= html.B(t)
