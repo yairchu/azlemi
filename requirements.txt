@@ -1,5 +1,5 @@
-CairoSVG==1.0.9
-Django==1.7.1
+CairoSVG==1.0.11
+Django==1.7.4
 FeinCMS==1.10.1
 SQLAlchemy==0.9.8
 cffi==0.8.6
@@ -8,8 +8,8 @@ django-debug-toolbar==1.2.2
 django-modeltranslation==0.8
 django-postgrespool==0.3.0
 django-smuggler==0.6.0
-gunicorn==19.1.1
-psycopg2==2.5.4
+gunicorn==19.2.1
+psycopg2==2.6
 six==1.9.0
-solid-i18n==0.5.1
+solid-i18n==0.6.1
 whitenoise==1.0.6
