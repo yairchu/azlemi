@@ -155,6 +155,7 @@ def home(request):
         vote = export_vote(fetch_vote(question_id))
         if is_vote_ok(vote):
             start_votes.append(vote)
+            prev_question_ids.add(question_id)
 
     if start_votes:
         question = start_votes.pop()
