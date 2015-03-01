@@ -538,7 +538,9 @@ def get_question(request):
                 ).replace('\n', '<br>').replace(' ', '&nbsp;'),
             }
         return render(request, 'vote/get_question_debug.html', context)
-    return HttpResponse(json.dumps(vote, ensure_ascii=False))
+    response = HttpResponse(json.dumps(vote, ensure_ascii=False))
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
 
 def save_vote(request):
     track_changes(request)
