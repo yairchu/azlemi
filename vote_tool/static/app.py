@@ -100,7 +100,10 @@ class Game:
         return {'s': ','.join(params)}
     def save_vote(self, *args):
         req = ajax.ajax()
-        req.open('GET', '/save_vote/?'+self.save_vote_query())
+        req.open('GET',
+            root_url +
+            '/save_vote/?' + self.save_vote_query() +
+            '&callback=?')
         req.send()
     def ajax_request_question(self, handler):
         req = ajax.ajax()
@@ -112,8 +115,10 @@ class Game:
         params = self.save_vote_query()
         params['queue'] = ','.join('q%d'%x for x in queue)
         req.open('GET',
+            root_url +
             translate('/') + 'get_question/?' +
-            '&'.join('%s=%s'%(k, v) for k, v in params.items()))
+            '&'.join('%s=%s'%(k, v) for k, v in params.items()) +
+            '&callback=?')
         req.send()
     def ajax_response_add_question(self, req):
         if req.status not in [0, 200]:
