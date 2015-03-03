@@ -24,7 +24,10 @@ class Question:
         dollar('#'+desc_id).tooltip()
 
         box_id = 'q%d' % self.data['id']
-        dollar('#'+box_id).jTinder(window.jTinderConfig)
+        try:
+            dollar('#'+box_id).jTinder(window.jTinderConfig)
+        except AttributeError:
+            pass
 
         self.bind_buttons()
 
@@ -153,13 +156,17 @@ class Game:
         results = calc_results(
             dict((q.data['id'], q.data) for q in self.questions), user_answers)
 
-        document['results'].clear()
-        document['results-small'].clear()
-        document['progress-bar'].clear()
-        document['radial-progress-bar'].clear()
+        parts = {}
+        for k in ['results', 'results-small', 'radial-progress-bar', 'progress-bar']:
+            try:
+                parts[k] = document[k]
+            except KeyError:
+                parts[k] = html.DIV()
+            else:
+                parts[k].clear()
         render_results(
-            document['results'], document['results-small'],
-            document['progress-bar'], document['radial-progress-bar'],
+            parts['results'], parts['results-small'],
+            parts['progress-bar'], parts['radial-progress-bar'],
             results, user_answers, translate)
 
 def id_from_uri(uri):
