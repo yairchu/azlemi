@@ -450,7 +450,9 @@ def get_specific_question(request, question_ids = None):
     result = []
     for qid_str in question_ids.split(','):
         result.append(export_vote(fetch_vote(int(qid_str))))
-    return HttpResponse(json.dumps(result, ensure_ascii=False))
+    response = HttpResponse(json.dumps(result, ensure_ascii=False))
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
 
 def is_vote_ok(vote):
     if vote['against_votes_count'] == 0 or vote['for_votes_count'] == 0:
