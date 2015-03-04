@@ -182,7 +182,7 @@
         </div>
       </div>
       <div class="col-md-8" role="main">
-        <div class="bigger-font" id="questions">
+        <div class="bigger-font">
           <p>
             {% trans "כאן תקבלו שאלות בנושאים מגוונים מתוך הצבעות הכנסת בפועל מאז 2009." %}
           </p>
@@ -190,6 +190,8 @@
             {% trans "לפי תשובותיכם, נציע לכם את המפלגה שהכי תואמת לדעתכם." %}
             <b> {% trans "ככל שתענו על יותר שאלות - כך ההתאמה תהיה מדוייקת יותר." %} </b>
           </p>
+        </div>
+        <div class="bigger-font" id="questions">
           {{prev_questions_html|safe}}
         </div>
         {{progress_html|safe}}

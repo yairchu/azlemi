@@ -60,6 +60,9 @@ def is_boring_question(question_data):
 
 class Game:
     def __init__(self):
+        self.hide_previous_questions = False
+        self.finish_after_enough_answers = False
+
         self.questions = []
         self.congrats_panel_shown = False
     def congrat(self):
@@ -86,6 +89,8 @@ class Game:
     def add_question(self, *args):
         num_answered = len([x for x in self.questions if x.answer])
         if num_answered == num_questions_to_answer:
+            if self.finish_after_enough_answers:
+                return
             self.congrat()
         if questions:
             self.got_question(questions.pop())
@@ -143,6 +148,8 @@ class Game:
         for question in self.questions:
             assert question_id != question.data['id']
         question = Question(question_data)
+        if self.hide_previous_questions:
+            document['questions'].clear()
         if render:
             question.render()
         else:
