@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^publish/(?P<votes_str>[^/]+)/$', 'vote.views.publish'),
     url(r'^publish/(?P<votes_str>[^/]+)/image.(?P<extension>[a-z]+)$', 'vote.views.publish_image'),
     url(r'^get_question/$', 'vote.views.get_question'),
-    url(r'^get_question/(?P<question_id>[0-9]+)/$', 'vote.views.get_specific_question'),
+    url(r'^get_question/(?P<question_ids>[0-9,\,]+)/$', 'vote.views.get_specific_question'),
     url(r'^restart/$', 'vote.views.restart'),
     url(r'^admin/recent_actions/$',
         login_required(login_url='/admin/login/')(
