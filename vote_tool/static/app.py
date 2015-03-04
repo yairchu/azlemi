@@ -169,6 +169,13 @@ class Game:
             parts['progress-bar'], parts['radial-progress-bar'],
             results, user_answers, translate)
 
+    def start(self):
+        for question in self.questions:
+            if question.answer is None:
+                break
+        else:
+            timer.request_animation_frame(self.add_question)
+
 def id_from_uri(uri):
     return int(uri.rstrip('/').rsplit('/', 1)[1])
 
@@ -184,9 +191,3 @@ game = Game()
 
 for question in prev_questions:
     game.got_question(question, False)
-
-for question in game.questions:
-    if question.answer is None:
-        break
-else:
-    timer.request_animation_frame(game.add_question)
