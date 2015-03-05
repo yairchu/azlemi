@@ -94,7 +94,8 @@ class Game:
             self.congrat()
         if questions:
             self.got_question(questions.pop())
-            self.ajax_request_question(self.ajax_response_add_question_to_queue)
+            if len(questions) < 3:
+                self.ajax_request_question(self.ajax_response_add_question_to_queue)
         else:
             self.ajax_request_question(self.ajax_response_add_question)
     def save_vote_query(self):
