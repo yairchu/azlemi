@@ -146,7 +146,7 @@
       overflow: hidden;
     }
   </style>
-  <script type="text/javascript" src="/static/brython/src/brython.js"></script>
+  <script type="text/javascript" src="/static/brython/www/src/brython.js"></script>
 {% endblock %}
 
 {% block body-tag %}
@@ -155,16 +155,18 @@
 
 {% block body-scripts %}
   <script type="text/python">
-    prev_questions = {{prev_questions|safe}}
-    questions = {{questions|safe}}
-    client_side_translations = {{client_side_translations|safe}}
-    is_staff = {{request.user.is_staff}}
-    root_url = ''
+    from browser import window
+    window.prev_questions = {{prev_questions|safe}}
+    window.questions = {{questions|safe}}
+    window.client_side_translations = {{client_side_translations|safe}}
+    window.is_staff = {{request.user.is_staff}}
+    window.root_url = ''
   </script>
   <script type="text/python" src="/static/render_content.py"></script>
   <script type="text/python" src="/static/app.py"></script>
   <script type="text/python">
-    game.start()
+    from browser import window
+    window.game.start()
   </script>
 {% endblock %}
 {% block content %}

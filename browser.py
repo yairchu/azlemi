@@ -32,3 +32,7 @@ class Html:
         return f
 
 html = Html()
+
+class Window:
+    pass
+window = Window()

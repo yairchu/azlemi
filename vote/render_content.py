@@ -345,3 +345,13 @@ def render_results(results_dest, results_small_dest, progress_dest, progress_cir
     results_dest <= html.BR()
     results_dest <= html.A(_(texts['restart']), href=_(texts['lang_prefix'])+'restart/')
     results_dest <= html.BR()
+
+from browser import window
+window.num_questions_to_answer = num_questions_to_answer
+window.texts = texts
+window.render_content = {
+    'question_panel': question_panel,
+    'question_party_votes': question_party_votes,
+    'calc_results': calc_results,
+    'render_results': render_results,
+    }

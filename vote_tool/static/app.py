@@ -6,14 +6,14 @@ import json
 from browser import ajax, document, html, timer, window
 
 def translate(text):
-    return client_side_translations.get(text, text)
+    return window.client_side_translations.get(text, text)
 
 class Question:
     def __init__(self, data):
         self.data = data
 
     def render(self):
-        panel, _, _ = question_panel(self.data, is_staff, translate)
+        panel, _, _ = window.render_content['question_panel'](self.data, window.is_staff, translate)
         document['questions'] <= panel
 
         dollar = getattr(window, '$')
@@ -50,7 +50,7 @@ class Question:
         party_votes_doc.clear()
         if self.answer is None:
             return
-        question_party_votes(party_votes_doc, self.data, self.answer, translate)
+        window.render_content['question_party_votes'](party_votes_doc, self.data, self.answer, translate)
 
 def is_boring_question(question_data):
     for x in ['for_votes_count', 'against_votes_count']:
@@ -73,28 +73,28 @@ class Game:
         panel = html.DIV(style={'text-align': 'center'})
         panel <= html.BR()
         panel <= html.SPAN(
-            _(texts['congrat']) % num_questions_to_answer,
+            _(window.texts['congrat']) % window.num_questions_to_answer,
             style={'font-size': '20px'})
         panel <= html.BR()
         panel <= html.BR()
         panel <= html.A(
-            _(texts['congrat_results']), href='#results',
+            _(window.texts['congrat_results']), href='#results',
             Class='btn btn-lg btn-success')
         panel <= html.BR()
         panel <= html.BR()
-        panel <= _(texts['congrat_resume'])
+        panel <= _(window.texts['congrat_resume'])
         panel <= html.BR()
         panel <= html.BR()
         document['questions'] <= panel
     def add_question(self, *args):
         num_answered = len([x for x in self.questions if x.answer])
-        if num_answered == num_questions_to_answer:
+        if num_answered == window.num_questions_to_answer:
             if self.finish_after_enough_answers:
                 return
             self.congrat()
-        if questions:
-            self.got_question(questions.pop())
-            if len(questions) < 3:
+        if window.questions:
+            self.got_question(window.questions.pop())
+            if len(window.questions) < 3:
                 self.ajax_request_question(self.ajax_response_add_question_to_queue)
         else:
             self.ajax_request_question(self.ajax_response_add_question)
@@ -110,21 +110,21 @@ class Game:
     def save_vote(self, *args):
         req = ajax.ajax()
         req.open('GET',
-            root_url +
+            window.root_url +
             '/save_vote/?' + self.save_vote_query() +
             '&callback=?')
         req.send()
     def ajax_request_question(self, handler):
         req = ajax.ajax()
         req.bind('complete', handler)
-        queue = [q['id'] for q in questions]
+        queue = [q['id'] for q in window.questions]
         for question in self.questions:
             if question.answer is None:
                 queue.append(question.data['id'])
         params = self.save_vote_query()
         params['queue'] = ','.join('q%d'%x for x in queue)
         req.open('GET',
-            root_url +
+            window.root_url +
             translate('/') + 'get_question/?' +
             '&'.join('%s=%s'%(k, v) for k, v in params.items()) +
             '&callback=?')
@@ -142,7 +142,7 @@ class Game:
         if is_boring_question(question_data):
             self.ajax_request_question(self.ajax_response_add_question_to_queue)
             return
-        questions.append(question_data)
+        window.questions.append(question_data)
 
     def got_question(self, question_data, render=True):
         question_id = question_data['id']
@@ -161,7 +161,7 @@ class Game:
         user_answers = dict(
             (q.data['id'], q.answer) for q in self.questions
             if q.answer is not None)
-        results = calc_results(
+        results = window.render_content['calc_results'](
             dict((q.data['id'], q.data) for q in self.questions), user_answers)
 
         parts = {}
@@ -172,7 +172,7 @@ class Game:
                 parts[k] = html.DIV()
             else:
                 parts[k].clear()
-        render_results(
+        window.render_content['render_results'](
             parts['results'], parts['results-small'],
             parts['progress-bar'], parts['radial-progress-bar'],
             results, user_answers, translate)
@@ -197,5 +197,7 @@ def radio_val(elem_id):
 
 game = Game()
 
-for question in prev_questions:
+for question in window.prev_questions:
     game.got_question(question, False)
+
+window.game = game
