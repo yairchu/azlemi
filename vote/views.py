@@ -312,6 +312,8 @@ def track_changes(request):
     prev_state = request.session.get('state', {})
     if 's' in request.GET:
         t = [x.split(':') for x in request.GET['s'].split(',')]
+        if not request.session.session_key:
+            t = t[-1:]
         request.session['state'] = dict(t)
         request.session['questions_order'] = [x[0] for x in t]
     else:
