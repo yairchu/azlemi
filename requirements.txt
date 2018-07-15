@@ -8,8 +8,8 @@ django-debug-toolbar==1.9.1
 django-modeltranslation==0.12.2
 django-postgrespool==0.3.0
 django-smuggler==0.6.0
-gunicorn==19.2.1
+gunicorn==19.5.0
 psycopg2==2.7.5
 six==1.9.0
-solid-i18n==0.6.1
+solid-i18n==1.4.2
 whitenoise==1.0.6
