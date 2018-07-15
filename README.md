@@ -10,8 +10,8 @@ How to set up your own local development environment
 
 In the shell - run:
 
-    $ git clone --recursive https://github.com/yairchu/vote_tool.git
-    $ cd vote_tool
+    $ git clone --recursive https://github.com/yairchu/azlemi.git
+    $ cd azlemi
     $ virtualenv -p python3 venv
     $ source venv/bin/activate
     (venv)$ pip install -r requirements.txt
